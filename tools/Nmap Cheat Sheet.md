@@ -63,3 +63,7 @@
 - `nmap -oN scan.txt ip` - normal output
 - `nmap -oX scan.xml ip` - XML output
 - `nmap -oA scan ip` - save normal, grepable, and XML output
+
+## Study Use Cases
+
+- [Nmap examples](../references/Challenge%20Use%20Cases.md#nmap)

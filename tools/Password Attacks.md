@@ -73,3 +73,5 @@ kerbrute passwordspray -d domain.local users.txt 'Password123!'
 
 - [Kerberoasting Cheat Sheet](Kerberoasting%20Cheat%20Sheet.md)
 - [Pass-the-Hash Cheat Sheet](Pass-the-Hash%20Cheat%20Sheet.md)
+- [Hydra examples](../references/Challenge%20Use%20Cases.md#hydra)
+- [John and Hashcat examples](../references/Challenge%20Use%20Cases.md#john-and-hashcat)

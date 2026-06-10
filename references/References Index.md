@@ -8,6 +8,7 @@ Long-form source and offline reference material.
 - [Linux x86_64 syscall table](Linux%20System%20Call%20Table%20for%20x86%2064%20-%20Ryan%20A.%20Chapman.html)
 - [Local Linux Enumeration & Privilege Escalation](Local%20Linux%20Enumeration%20%26%20Privilege%20Escalation.md)
 - [Local Linux Enumeration duplicate redirect](Local%20Linux%20Enumeration%20%2526%20Privilege%20Escalation.md)
+- [Challenge Use Cases](Challenge%20Use%20Cases.md)
 - [REV references](refernces.txt)
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)

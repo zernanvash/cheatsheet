@@ -70,3 +70,7 @@
 - `smbclient -L //ip/ -m SMB3` - force SMB3
 - `smbclient -L //ip/ -p 445` - connect on port 445
 - `smbclient -L //ip/ -d 3` - show more debug output
+
+## Study Use Cases
+
+- [SMBClient and SMB examples](../references/Challenge%20Use%20Cases.md#smbclient-and-smb-enumeration)

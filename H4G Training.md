@@ -12,6 +12,7 @@ Start here. Pick the path that matches the challenge, then use the tool and refe
 
 - [Tools Index](tools/Tools%20Index.md)
 - [References Index](references/References%20Index.md)
+- [Challenge Use Cases](references/Challenge%20Use%20Cases.md)
 - [Red Team Machine](RedTeam%20Machine.md)
 - [RE Targets](RE-Targets.md)
 

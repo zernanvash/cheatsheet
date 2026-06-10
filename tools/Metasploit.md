@@ -73,3 +73,4 @@ Only pivot when the lab scope includes the downstream network.
 
 - [EternalBlue Cheat Sheet](EternalBlue%20Cheat%20Sheet.md)
 - [Post-Exploitation](Post-Exploitation.md)
+- [Metasploit examples](../references/Challenge%20Use%20Cases.md#metasploit)

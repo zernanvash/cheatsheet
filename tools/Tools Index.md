@@ -40,3 +40,4 @@ Command-focused notes for the H4G paths.
 - [Web Exploit Path](../guides/Web%20Exploit%20Path.md)
 - [Machine Exploit Path](../guides/Machine%20Exploit%20Path.md)
 - [Reverse Engineering Path](../guides/Reverse%20Engineering%20Path.md)
+- [Challenge Use Cases](../references/Challenge%20Use%20Cases.md)

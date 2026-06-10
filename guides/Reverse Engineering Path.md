@@ -143,3 +143,9 @@ For constraints, use Z3; for path-heavy native binaries, consider angr.
 - [picoCTF Web and REV Patterns](picoCTF%20Web%20and%20REV%20Patterns.md)
 - [REV references](../references/refernces.txt)
 - [References Index](../references/References%20Index.md)
+
+## Study Use Cases
+
+- [GDB and assembly examples](../references/Challenge%20Use%20Cases.md#gdb-and-assembly)
+- [Python solver scripting examples](../references/Challenge%20Use%20Cases.md#python-solver-scripting)
+- [WebAssembly examples](../references/Challenge%20Use%20Cases.md#webassembly-checks)
