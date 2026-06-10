@@ -1,0 +1,6 @@
+https://anti-debug.checkpoint.com/
+https://www.pylingual.io/
+http://md5.cz/
+https://defuse.ca/online-x86-assembler.htm
+python disass: 	https://github.com/extremecoders-re/pyinstxtractor
+		https://github.com/extremecoders-re/decompyle-builds
