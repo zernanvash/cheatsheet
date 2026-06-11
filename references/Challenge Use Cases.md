@@ -160,7 +160,7 @@ How it is used:
 Path references:
 
 - [Web Exploit Path - WebAssembly-Backed Web Challenges](../guides/Web%20Exploit%20Path.md#12-webassembly-backed-web-challenges)
-- [Reverse Engineering Path - WebAssembly](../guides/Reverse%20Engineering%20Path.md#8-webassembly)
+- [Reverse Engineering Path - WebAssembly](../guides/Reverse%20Engineering%20Path.md#10-webassembly)
 
 ## Machine And Service Use Cases
 
@@ -228,7 +228,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Credential Attacks](../guides/Machine%20Exploit%20Path.md#5-credential-attacks)
+- [Machine Exploit Path - Credential Attacks](../guides/Machine%20Exploit%20Path.md#7-credential-attacks)
 - [Password Attacks - Hydra](../tools/Password%20Attacks.md#hydra)
 
 ### John And Hashcat
@@ -252,7 +252,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Credential Attacks](../guides/Machine%20Exploit%20Path.md#5-credential-attacks)
+- [Machine Exploit Path - Credential Attacks](../guides/Machine%20Exploit%20Path.md#7-credential-attacks)
 - [Password Attacks - John](../tools/Password%20Attacks.md#john)
 - [Password Attacks - Hashcat](../tools/Password%20Attacks.md#hashcat)
 
@@ -274,7 +274,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Metasploit Decision Points](../guides/Machine%20Exploit%20Path.md#6-metasploit-decision-points)
+- [Machine Exploit Path - Metasploit Decision Points](../guides/Machine%20Exploit%20Path.md#8-metasploit-decision-points)
 - [Metasploit](../tools/Metasploit.md)
 - [EternalBlue Cheat Sheet](../tools/EternalBlue%20Cheat%20Sheet.md)
 
@@ -321,7 +321,7 @@ How it is used:
 
 Path references:
 
-- [Reverse Engineering Path - Solver Scripting](../guides/Reverse%20Engineering%20Path.md#10-solver-scripting)
+- [Reverse Engineering Path - Solver Scripting](../guides/Reverse%20Engineering%20Path.md#12-solver-scripting)
 - [REV Python Toolkit](../tools/REV%20Python%20Toolkit.md)
 
 ### Buffer Overflow
@@ -348,5 +348,5 @@ How it is used:
 
 Path references:
 
-- [Reverse Engineering Path - Buffer Overflow Branch](../guides/Reverse%20Engineering%20Path.md#11-buffer-overflow-branch)
+- [Reverse Engineering Path - Buffer Overflow Branch](../guides/Reverse%20Engineering%20Path.md#13-buffer-overflow-branch)
 - [Buffer Overflow Guide](../guides/Buffer%20Overflow%20Guide.md)
