@@ -20,6 +20,7 @@ Local source folders retained for future restructuring and writeup mining. These
   - `2024.md`
   - `2025.md`
   - `2026.md`
+  - `soupedecode-01.md`
   - `sitemap.xml`
   - `sitemap-pages.xml`
 - Notes: GitBook exposes Markdown alternates for the TryHackMe year indexes at `https://0xb0b.gitbook.io/writeups/tryhackme/YYYY.md` for 2023-2026. Use the sitemap later to choose which individual room pages to mirror or analyze.
