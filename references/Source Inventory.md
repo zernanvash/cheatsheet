@@ -29,7 +29,7 @@ Local source folders retained for future restructuring and writeup mining. These
 
 - `_source_hackmyvm_writeups`
   - Use later for: boot2root technique mapping, especially LFI, upload, anonymous FTP, SSH keys, SUID, cron, Docker, kernel CVEs, TFTP, and unusual Linux service pivots.
-  - Folded into: [Machine Exploitation Databank](../guides/Machine%20Exploitation%20Databank.md) and [Machine Attack Blueprint Index](../guides/machine-attacks/Machine%20Attack%20Blueprint%20Index.md).
+  - Folded into: [Machine Exploitation Databank](../blueprints/Machine%20Exploitation%20Databank.md) and [Machine Attack Blueprint Index](../blueprints/machine-attacks/Machine%20Attack%20Blueprint%20Index.md).
 - `_source_picoctf_cajac`
   - Use later for: support patterns inside machine challenges, especially source review, SQLi, SSTI, XXE, WebAssembly, pcap analysis, crypto/stego artifacts, and buffer overflow practice.
   - Folded into: [picoCTF Web and REV Patterns](../guides/picoCTF%20Web%20and%20REV%20Patterns.md), [Challenge Use Cases](Challenge%20Use%20Cases.md), and the new machine artifact blueprints.
@@ -40,3 +40,11 @@ Local source folders retained for future restructuring and writeup mining. These
   - Folded into: [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md) and new blueprints for SSRF, WebDAV, XXE, SSTI, Webmin, ActiveMQ/CVE-style services, ADCS, NTLM capture, TFTP, and port knocking.
 - `_source_temperance`
   - Use later for: solver scripting, service interaction, and reverse/support challenge workflows.
+
+## Fundamentals Sources Added
+
+- Esther7171 TryHackMe walkthrough: [Web Application Basics](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Web_Application_Basics/readme.md)
+- Esther7171 TryHackMe walkthrough: [Web Application Security](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Web-Application-Security/readme.md)
+- Esther7171 TryHackMe walkthrough: [Red Team Fundamentals](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Red%20Team%20Fundamentals/readme.md)
+- Esther7171 TryHackMe walkthrough: [Windows Fundamentals 1](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Windows%20Fundamentals%201/readme.md)
+- Local offline PDF: [Web Exploitation.pdf](Web%20Exploitation.pdf)

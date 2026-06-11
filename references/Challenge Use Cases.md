@@ -26,7 +26,7 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - SQL Injection](../guides/Web%20Exploit%20Path.md#5-sql-injection)
+- [Web Exploit Blueprint - SQL Injection](../blueprints/Web%20Exploit%20Blueprint.md#5-sql-injection)
 - [Web Testing - SQL Injection](../tools/Web%20Testing.md#sql-injection)
 
 ### Content Discovery With Gobuster Or ffuf
@@ -51,7 +51,7 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - Content Discovery](../guides/Web%20Exploit%20Path.md#2-content-discovery)
+- [Web Exploit Blueprint - Content Discovery](../blueprints/Web%20Exploit%20Blueprint.md#2-content-discovery)
 - [Web Testing - Directory And Parameter Discovery](../tools/Web%20Testing.md#directory-and-parameter-discovery)
 
 ### LFI And Directory Traversal
@@ -75,7 +75,7 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - LFI And Directory Traversal](../guides/Web%20Exploit%20Path.md#7-lfi-and-directory-traversal)
+- [Web Exploit Blueprint - LFI And Directory Traversal](../blueprints/Web%20Exploit%20Blueprint.md#7-lfi-and-directory-traversal)
 - [Web Testing - LFI And Traversal](../tools/Web%20Testing.md#lfi-and-traversal)
 
 ### Command Injection
@@ -97,7 +97,7 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - Command Injection](../guides/Web%20Exploit%20Path.md#8-command-injection)
+- [Web Exploit Blueprint - Command Injection](../blueprints/Web%20Exploit%20Blueprint.md#8-command-injection)
 - [Web Testing - Command Injection](../tools/Web%20Testing.md#command-injection)
 
 ### SSTI
@@ -118,7 +118,7 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - SSTI](../guides/Web%20Exploit%20Path.md#10-ssti)
+- [Web Exploit Blueprint - SSTI](../blueprints/Web%20Exploit%20Blueprint.md#10-ssti)
 - [Web Testing - SSTI](../tools/Web%20Testing.md#ssti)
 
 ### XSS
@@ -139,7 +139,7 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - XSS](../guides/Web%20Exploit%20Path.md#6-xss)
+- [Web Exploit Blueprint - XSS](../blueprints/Web%20Exploit%20Blueprint.md#6-xss)
 - [Web Testing - XSS](../tools/Web%20Testing.md#xss)
 
 ### WebAssembly Checks
@@ -159,8 +159,8 @@ How it is used:
 
 Path references:
 
-- [Web Exploit Path - WebAssembly-Backed Web Challenges](../guides/Web%20Exploit%20Path.md#12-webassembly-backed-web-challenges)
-- [Reverse Engineering Path - WebAssembly](../guides/Reverse%20Engineering%20Path.md#10-webassembly)
+- [Web Exploit Blueprint - WebAssembly-Backed Web Challenges](../blueprints/Web%20Exploit%20Blueprint.md#12-webassembly-backed-web-challenges)
+- [Reverse Engineering Blueprint - WebAssembly](../blueprints/Reverse%20Engineering%20Blueprint.md#10-webassembly)
 
 ## Machine And Service Use Cases
 
@@ -299,7 +299,7 @@ How it is used:
 
 Path references:
 
-- [Reverse Engineering Path - GDB Workflow](../guides/Reverse%20Engineering%20Path.md#4-gdb-workflow)
+- [Reverse Engineering Blueprint - GDB Workflow](../blueprints/Reverse%20Engineering%20Blueprint.md#4-gdb-workflow)
 - [REV Python Toolkit - picoCTF REV Patterns](../tools/REV%20Python%20Toolkit.md#picoctf-rev-patterns)
 
 ### Python Solver Scripting
@@ -321,7 +321,7 @@ How it is used:
 
 Path references:
 
-- [Reverse Engineering Path - Solver Scripting](../guides/Reverse%20Engineering%20Path.md#12-solver-scripting)
+- [Reverse Engineering Blueprint - Solver Scripting](../blueprints/Reverse%20Engineering%20Blueprint.md#12-solver-scripting)
 - [REV Python Toolkit](../tools/REV%20Python%20Toolkit.md)
 
 ### Buffer Overflow
@@ -348,8 +348,8 @@ How it is used:
 
 Path references:
 
-- [Reverse Engineering Path - Buffer Overflow Branch](../guides/Reverse%20Engineering%20Path.md#13-buffer-overflow-branch)
-- [Buffer Overflow Guide](../guides/Buffer%20Overflow%20Guide.md)
+- [Reverse Engineering Blueprint - Buffer Overflow Branch](../blueprints/Reverse%20Engineering%20Blueprint.md#13-buffer-overflow-branch)
+- [Buffer Overflow Blueprint](../blueprints/Buffer%20Overflow%20Blueprint.md)
 
 ## Forensics And Crypto Use Cases
 
@@ -378,7 +378,7 @@ How it is used:
 
 Path references:
 
-- [Steganography Path](../guides/Steganography%20Path.md)
+- [Steganography Blueprint](../blueprints/Steganography%20Blueprint.md)
 
 ### Cryptography
 
@@ -406,4 +406,4 @@ How it is used:
 
 Path references:
 
-- [Cryptography Path](../guides/Cryptography%20Path.md)
+- [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md)
