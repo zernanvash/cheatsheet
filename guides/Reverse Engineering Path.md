@@ -17,6 +17,7 @@ Branch quickly:
 - ELF/PE -> strings, disassembly, debugger
 - APK/JAR -> Java decompile
 - `.wasm` -> WABT tools
+- crash after long input -> [Buffer Overflow Guide](Buffer%20Overflow%20Guide.md)
 - packed binary -> unpack or debug runtime
 
 ## 2. First Execution
@@ -137,9 +138,21 @@ print(plain)
 
 For constraints, use Z3; for path-heavy native binaries, consider angr.
 
+## 11. Buffer Overflow Branch
+
+Use [Buffer Overflow Guide](Buffer%20Overflow%20Guide.md) when a native binary crashes after long input, `checksec` shows exploitable mitigations, or the challenge category is `pwn` / `Binary Exploitation`.
+
+Fast decision path:
+
+1. Triage with `file`, `checksec`, `strings`, and first execution.
+2. Confirm crash and find the offset with a cyclic pattern.
+3. Decide between ret2win, shellcode, ret2libc, or ROP based on mitigations.
+4. Build a repeatable pwntools script for local and remote solving.
+
 ## Tool And Reference Links
 
 - [REV Python Toolkit](../tools/REV%20Python%20Toolkit.md)
+- [Buffer Overflow Guide](Buffer%20Overflow%20Guide.md)
 - [picoCTF Web and REV Patterns](picoCTF%20Web%20and%20REV%20Patterns.md)
 - [REV references](../references/refernces.txt)
 - [References Index](../references/References%20Index.md)
@@ -147,5 +160,6 @@ For constraints, use Z3; for path-heavy native binaries, consider angr.
 ## Study Use Cases
 
 - [GDB and assembly examples](../references/Challenge%20Use%20Cases.md#gdb-and-assembly)
+- [Buffer overflow examples](../references/Challenge%20Use%20Cases.md#buffer-overflow)
 - [Python solver scripting examples](../references/Challenge%20Use%20Cases.md#python-solver-scripting)
 - [WebAssembly examples](../references/Challenge%20Use%20Cases.md#webassembly-checks)

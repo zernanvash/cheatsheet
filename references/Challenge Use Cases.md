@@ -324,3 +324,29 @@ Path references:
 - [Reverse Engineering Path - Solver Scripting](../guides/Reverse%20Engineering%20Path.md#10-solver-scripting)
 - [REV Python Toolkit](../tools/REV%20Python%20Toolkit.md)
 
+### Buffer Overflow
+
+Use when a native binary accepts attacker-controlled input into a fixed-size buffer and a long input can overwrite control data such as a saved return address.
+
+Examples:
+
+- picoCTF `clutter-overflow`: classic overflow practice; use a cyclic pattern to find the offset, then build local and remote pwntools payloads.
+- picoCTF `buffer overflow 0/1/2`: staged beginner progression from crash/flag behavior to return-address control and function redirection.
+- picoCTF `Here's a LIBC`: ROP/ret2libc path; find offset, leak a libc address, calculate libc base, then call `system("/bin/sh")`.
+- picoCTF `PIE TIME`: use `checksec`, understand PIE, and automate address handling with pwntools.
+- HackMyVM `Driftingblues9`: SUID 32-bit stack overflow for privilege escalation, including EIP offset discovery and NOP-sled style lab exploitation.
+- HackMyVM `twelve`: SUID binary analyzed with Ghidra; exploit uses a ROP chain to call `setuid(0)` then `system("/bin/sh")`.
+
+How it is used:
+
+1. Triage binary with `file`, `checksec`, `strings`, and first execution.
+2. Confirm crash with long input in GDB.
+3. Generate a cyclic pattern and calculate the exact offset.
+4. Confirm instruction-pointer control.
+5. Pick the exploit style from mitigations: ret2win, shellcode, ret2libc, or ROP.
+6. Build a repeatable pwntools script and test locally before remote.
+
+Path references:
+
+- [Reverse Engineering Path - Buffer Overflow Branch](../guides/Reverse%20Engineering%20Path.md#11-buffer-overflow-branch)
+- [Buffer Overflow Guide](../guides/Buffer%20Overflow%20Guide.md)
