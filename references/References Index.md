@@ -9,6 +9,7 @@ Long-form source and offline reference material.
 - [Local Linux Enumeration & Privilege Escalation](Local%20Linux%20Enumeration%20%26%20Privilege%20Escalation.md)
 - [Local Linux Enumeration duplicate redirect](Local%20Linux%20Enumeration%20%2526%20Privilege%20Escalation.md)
 - [Challenge Use Cases](Challenge%20Use%20Cases.md)
+- [OSCP Module Map](OSCP%20Module%20Map.md)
 - [REV references](refernces.txt)
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)

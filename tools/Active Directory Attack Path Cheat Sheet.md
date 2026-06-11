@@ -2,6 +2,8 @@
 
 Translated and integrated from Spanish Active Directory notes in `ruycr4ft/cheatsheets`, plus the local Windows guide. Use only in authorized labs and red-team engagements.
 
+OSCP module source map: [OSCP Module Map](../references/OSCP%20Module%20Map.md#active-directory-module). The upstream module directory is currently a placeholder, while the upstream root README lists AD enumeration, main tools, Kerberoasting, AS-REP roasting, DCSync, Mimikatz, NTLM authentication, and Kerberos authentication as the intended topics.
+
 ## Core Flow
 
 1. Identify domain, DCs, DNS names, and exposed services.

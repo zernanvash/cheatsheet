@@ -14,9 +14,20 @@ nikto -h http://target/
 
 ```bash
 gobuster dir -u http://target/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -x php,txt,html,bak,zip
+gobuster dir -t 20 -u http://target/ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -x php --exclude-length SIZE
+gobuster vhost --append-domain -u http://domain.local/ -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
 ffuf -u http://target/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
 ffuf -u "http://target/page.php?FUZZ=test" -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt
 ffuf -u http://target/ -H "Host: FUZZ.domain.local" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs SIZE
+wfuzz -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt --hh CHARS "http://target/path?FUZZ=FUZZ"
+wfuzz -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt -d "FUZZ=test" "http://target/path"
+```
+
+DNS zone transfer:
+
+```bash
+dig NS domain.local
+dig axfr domain.local @target
 ```
 
 ## SQL Injection
@@ -99,3 +110,4 @@ Check WSDL, XML imports, SOAPAction, and XML body parsing. Confirm parser behavi
 - [Web Exploit Path](../guides/Web%20Exploit%20Path.md)
 - [Web Attack Alternatives](Web%20Attack%20Alternatives.md)
 - [Challenge Use Cases](../references/Challenge%20Use%20Cases.md#web-use-cases)
+- [OSCP Module Map](../references/OSCP%20Module%20Map.md#web-module)

