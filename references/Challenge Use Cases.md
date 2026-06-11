@@ -350,3 +350,60 @@ Path references:
 
 - [Reverse Engineering Path - Buffer Overflow Branch](../guides/Reverse%20Engineering%20Path.md#13-buffer-overflow-branch)
 - [Buffer Overflow Guide](../guides/Buffer%20Overflow%20Guide.md)
+
+## Forensics And Crypto Use Cases
+
+### Steganography
+
+Use when a challenge gives images, audio, PDFs, archives, suspicious whitespace, metadata hints, or wording such as hidden, invisible, pixels, sound, image, or secret.
+
+Examples:
+
+- picoCTF `advanced-potion-making`: image data requires stego-style visual inspection; StegSolve/StegOnline are useful for channels and bit planes.
+- TryHackMe `Brooklyn Nine Nine`: steganography appears as part of a boot2root chain.
+- TryHackMe `Year of the Rabbit`: image/audio style clues and hidden data contribute to credential discovery.
+- TryHackMe `Lian_Yu`: steganography appears alongside `ffuf` discovery and file extension hints.
+- HackMyVM `Gift`: file-transfer and steganography clues are part of the machine path.
+- HackMyVM `Luz`: steganography and cryptographic analysis are central challenge themes.
+- HackMyVM Venus `0x45`: `exiftool` reveals useful metadata from an image.
+- Sec-Fortress `ecowasctf`: snow steganography, `stegsnow`, `steghide`, `binwalk`, and `stegseek` style checks appear.
+
+How it is used:
+
+1. Triage with `file`, `exiftool`, `strings`, and `binwalk`.
+2. Use format-specific tools: `zsteg` for PNG/BMP, `steghide`/`stegseek` for JPG/WAV, spectrogram tools for audio.
+3. Use challenge text and metadata as password candidates.
+4. Extract embedded files and recurse through file triage.
+5. Use visual web tools when bit planes, channels, or image transforms are easier to inspect interactively.
+
+Path references:
+
+- [Steganography Path](../guides/Steganography%20Path.md)
+
+### Cryptography
+
+Use when a challenge gives ciphertext, keys, hashes, encoding chains, custom encryption code, public/private key files, or math parameters such as `n`, `e`, and `c`.
+
+Examples:
+
+- picoCTF `login`: Base64-looking web value is decoded with CyberChef or Linux `base64`.
+- picoCTF `XtraORdinary`: custom XOR-based encryption is reversed with known plaintext and Python scripting.
+- picoCTF `triple-secure`: RSA is broken and decrypted with Python using recovered factors.
+- picoCTF `spelling-quiz`: substitution cipher is solved with a substitution-breaking tool.
+- HackMyVM `Decode`: encoding analysis and decryption drive the challenge.
+- HackMyVM Venus `0x39`: RSA private key decrypts `pass.enc` with OpenSSL.
+- HackMyVM Venus `0x40`: Morse is decoded with CyberChef.
+- Sec-Fortress `iwconctf`: chained Morse/hex/Base64 and repeated MD5-style logic appear.
+
+How it is used:
+
+1. Decide encoding vs encryption vs hash.
+2. Decode obvious layers first: Base64, hex, binary, Morse, URL encoding.
+3. If source code is provided, reverse the algorithm instead of guessing.
+4. Use Python for XOR, RSA math, AES trials, and custom transforms.
+5. Use John/Hashcat for offline hash and encrypted archive cracking.
+6. Use web tools for quick CTF-only checks, then save the final repeatable solution locally.
+
+Path references:
+
+- [Cryptography Path](../guides/Cryptography%20Path.md)

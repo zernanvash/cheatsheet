@@ -7,6 +7,8 @@ Start here. Pick the path that matches the challenge, then use the tool and refe
 - [Web Exploit Path](guides/Web%20Exploit%20Path.md)
 - [Machine Exploit Path](guides/Machine%20Exploit%20Path.md)
 - [Reverse Engineering Path](guides/Reverse%20Engineering%20Path.md)
+- [Steganography Path](guides/Steganography%20Path.md)
+- [Cryptography Path](guides/Cryptography%20Path.md)
 
 ## Supporting Material
 

@@ -35,10 +35,19 @@ Command-focused notes for the H4G paths.
 - [REV Python Toolkit](REV%20Python%20Toolkit.md)
 - [Wireless](Wireless.md)
 
+## Forensics And Crypto Support
+
+- [Steganography Path](../guides/Steganography%20Path.md)
+- [Cryptography Path](../guides/Cryptography%20Path.md)
+- [Password Attacks](Password%20Attacks.md)
+- [REV Python Toolkit](REV%20Python%20Toolkit.md)
+
 ## Main Paths
 
 - [Web Exploit Path](../guides/Web%20Exploit%20Path.md)
 - [Machine Exploit Path](../guides/Machine%20Exploit%20Path.md)
 - [Reverse Engineering Path](../guides/Reverse%20Engineering%20Path.md)
+- [Steganography Path](../guides/Steganography%20Path.md)
+- [Cryptography Path](../guides/Cryptography%20Path.md)
 - [Buffer Overflow Guide](../guides/Buffer%20Overflow%20Guide.md)
 - [Challenge Use Cases](../references/Challenge%20Use%20Cases.md)
