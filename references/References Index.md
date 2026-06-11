@@ -10,6 +10,7 @@ Long-form source and offline reference material.
 - [Local Linux Enumeration duplicate redirect](Local%20Linux%20Enumeration%20%2526%20Privilege%20Escalation.md)
 - [Challenge Use Cases](Challenge%20Use%20Cases.md)
 - [OSCP Module Map](OSCP%20Module%20Map.md)
+- [Source Inventory](Source%20Inventory.md)
 - [REV references](refernces.txt)
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)
@@ -29,6 +30,8 @@ These folders are retained for local source material and writeup mining, but the
 - `_source_ruycr4ft_cheatsheets`
 - `_source_sec_fortress`
 - `_source_temperance`
+- `_source_tryhackme_cajac`
+- `_source_0xb0b_tryhackme`
 
 ## Notes
 
