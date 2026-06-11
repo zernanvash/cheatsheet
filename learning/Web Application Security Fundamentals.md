@@ -4,7 +4,7 @@ Use this after [Web Fundamentals](Web%20Fundamentals.md). The focus is risk cate
 
 Source summarized:
 
-- Esther7171 TryHackMe walkthrough: [Web Application Security](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Web-Application-Security/readme.md)
+- Official TryHackMe room: [Web Application Security](https://tryhackme.com/room/introwebapplicationsecurity)
 
 ## Core Risk Categories
 

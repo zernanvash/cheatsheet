@@ -43,8 +43,8 @@ Local source folders retained for future restructuring and writeup mining. These
 
 ## Fundamentals Sources Added
 
-- Esther7171 TryHackMe walkthrough: [Web Application Basics](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Web_Application_Basics/readme.md)
-- Esther7171 TryHackMe walkthrough: [Web Application Security](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Web-Application-Security/readme.md)
-- Esther7171 TryHackMe walkthrough: [Red Team Fundamentals](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Red%20Team%20Fundamentals/readme.md)
-- Esther7171 TryHackMe walkthrough: [Windows Fundamentals 1](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Windows%20Fundamentals%201/readme.md)
+- Official TryHackMe room: [Web Application Basics](https://tryhackme.com/room/webapplicationbasics)
+- Official TryHackMe room: [Web Application Security](https://tryhackme.com/room/introwebapplicationsecurity)
+- Official TryHackMe room: [Red Team Fundamentals](https://tryhackme.com/room/redteamfundamentals)
+- Official TryHackMe room: [Windows Fundamentals 1](https://tryhackme.com/room/windowsfundamentals1xbx)
 - Local offline PDF: [Web Exploitation.pdf](Web%20Exploitation.pdf)

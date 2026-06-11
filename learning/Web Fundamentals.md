@@ -4,7 +4,7 @@ Use this before the web exploitation blueprint. The goal is to understand what a
 
 Sources summarized:
 
-- Esther7171 TryHackMe walkthrough: [Web Application Basics](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Web_Application_Basics/readme.md)
+- Official TryHackMe room: [Web Application Basics](https://tryhackme.com/room/webapplicationbasics)
 - Local offline PDF: [Web Exploitation.pdf](../references/Web%20Exploitation.pdf)
 
 ## Web Application Model

@@ -4,7 +4,7 @@ Use this for engagement vocabulary and mindset before the machine/databank bluep
 
 Source summarized:
 
-- Esther7171 TryHackMe walkthrough: [Red Team Fundamentals](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Red%20Team%20Fundamentals/readme.md)
+- Official TryHackMe room: [Red Team Fundamentals](https://tryhackme.com/room/redteamfundamentals)
 
 ## Assessment Types
 

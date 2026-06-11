@@ -4,7 +4,7 @@ Use this before Windows privilege escalation and AD blueprints. The goal is to r
 
 Source summarized:
 
-- Esther7171 TryHackMe walkthrough: [Windows Fundamentals 1](https://github.com/Esther7171/TryHackMe-Walkthroughs/blob/main/Room/Windows%20Fundamentals%201/readme.md)
+- Official TryHackMe room: [Windows Fundamentals 1](https://tryhackme.com/room/windowsfundamentals1xbx)
 
 ## Core Concepts
 
