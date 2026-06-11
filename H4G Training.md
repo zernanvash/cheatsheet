@@ -5,6 +5,7 @@ Start here. Pick the path that matches the challenge, then use the tool and refe
 ## Learning Paths
 
 - [Web Exploit Path](guides/Web%20Exploit%20Path.md)
+- [Machine Exploitation Databank](guides/Machine%20Exploitation%20Databank.md)
 - [Machine Exploit Path](guides/Machine%20Exploit%20Path.md)
 - [Reverse Engineering Path](guides/Reverse%20Engineering%20Path.md)
 - [Steganography Path](guides/Steganography%20Path.md)

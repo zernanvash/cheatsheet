@@ -28,7 +28,15 @@ Local source folders retained for future restructuring and writeup mining. These
 ## Existing Sources
 
 - `_source_hackmyvm_writeups`
+  - Use later for: boot2root technique mapping, especially LFI, upload, anonymous FTP, SSH keys, SUID, cron, Docker, kernel CVEs, TFTP, and unusual Linux service pivots.
+  - Folded into: [Machine Exploitation Databank](../guides/Machine%20Exploitation%20Databank.md) and [Machine Attack Blueprint Index](../guides/machine-attacks/Machine%20Attack%20Blueprint%20Index.md).
 - `_source_picoctf_cajac`
+  - Use later for: support patterns inside machine challenges, especially source review, SQLi, SSTI, XXE, WebAssembly, pcap analysis, crypto/stego artifacts, and buffer overflow practice.
+  - Folded into: [picoCTF Web and REV Patterns](../guides/picoCTF%20Web%20and%20REV%20Patterns.md), [Challenge Use Cases](Challenge%20Use%20Cases.md), and the new machine artifact blueprints.
 - `_source_ruycr4ft_cheatsheets`
+  - Use later for: command variants and quick syntax reinforcement.
 - `_source_sec_fortress`
+  - Use later for: indexed writeup technique mining across TryHackMe, HackTheBox, Proving Grounds, PwnTillDawn, Vulnyx, and HackMyVM.
+  - Folded into: [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md) and new blueprints for SSRF, WebDAV, XXE, SSTI, Webmin, ActiveMQ/CVE-style services, ADCS, NTLM capture, TFTP, and port knocking.
 - `_source_temperance`
+  - Use later for: solver scripting, service interaction, and reverse/support challenge workflows.

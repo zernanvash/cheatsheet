@@ -11,6 +11,7 @@ Long-form source and offline reference material.
 - [Challenge Use Cases](Challenge%20Use%20Cases.md)
 - [OSCP Module Map](OSCP%20Module%20Map.md)
 - [Source Inventory](Source%20Inventory.md)
+- [Machine Exploitation Databank](../guides/Machine%20Exploitation%20Databank.md)
 - [REV references](refernces.txt)
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)
