@@ -24,6 +24,7 @@ Command-focused notes for the H4G paths.
 - [Password Attacks](Password%20Attacks.md)
 - [Metasploit](Metasploit.md)
 - [EternalBlue Cheat Sheet](EternalBlue%20Cheat%20Sheet.md)
+- [Windows Privilege Escalation Cheat Sheet](Windows%20Privilege%20Escalation%20Cheat%20Sheet.md)
 - [Kerberoasting Cheat Sheet](Kerberoasting%20Cheat%20Sheet.md)
 - [Pass-the-Hash Cheat Sheet](Pass-the-Hash%20Cheat%20Sheet.md)
 - [Mimikatz Cheat Sheet](Mimikatz%20Cheat%20Sheet.md)

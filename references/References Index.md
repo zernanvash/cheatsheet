@@ -13,6 +13,12 @@ Long-form source and offline reference material.
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)
 
+## External Course References
+
+- [Hexdump Windows Privilege Escalation full course](https://www.youtube.com/watch?v=OmW7351U8cI)
+- [LeonardoE95 yt-en teaching material](https://github.com/LeonardoE95/yt-en)
+- [LeonardoE95 OSCP notes and cheatsheet](https://github.com/LeonardoE95/OSCP)
+
 ## Offline Source Folders
 
 These folders are retained for local source material and writeup mining, but they are not part of the main training route.

