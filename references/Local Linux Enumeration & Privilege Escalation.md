@@ -1,3 +1,11 @@
+## Quick SUID Check
+
+Use this during Linux privilege escalation to list files with the SUID bit set:
+
+```bash
+find / -perm -4000 -type f 2>/dev/null
+```
+
 <b>Kernel, Operating System &amp; Device Information:</b></span></p>
 <table border="1" cellpadding="10" cellspacing="0" width="100%">
 <colgroup>
