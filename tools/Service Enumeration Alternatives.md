@@ -1,6 +1,13 @@
 # Service Enumeration Alternatives
 
-Integrated from Sec-Fortress QuickEnum and writeup patterns. Use in authorized labs and assessments.
+Service-by-service footprinting commands for authorized labs and assessments. Use [Footprinting Cheat Sheet](Footprinting%20Cheat%20Sheet.md) as the fast selector, then come here for variants and follow-up branches.
+
+## Use This When
+
+- nmap shows an open service and you need the next checks
+- passive recon found a hostname, mail server, or domain controller name
+- you recovered credentials and need to test them safely across services
+- a challenge seems blocked and you need alternate enumeration branches
 
 ## Infrastructure
 
@@ -31,13 +38,15 @@ Alternative checks:
 - `samrdump.py ip`
 - `smbmap -H ip`
 - `crackmapexec smb ip --shares -u '' -p ''`
+- `crackmapexec smb ip --rid-brute` (RID cycling user enumeration)
+- `impacket-lookupsid domain/user:pass@ip` (or anonymous `@ip`)
 - `enum4linux-ng.py ip -A`
 
 Alternative branches:
 
 - writable share -> test upload and user interaction
 - readable `SYSVOL` -> search scripts and credentials
-- null session -> enumerate users and descriptions
+- null session -> enumerate users, descriptions, and SIDs/RIDs (see [Active Directory Attack Path Cheat Sheet](Active%20Directory%20Attack%20Path%20Cheat%20Sheet.md#well-known-sids-and-rids) for RID mapping)
 - NTLM theft via writable share in AD labs
 
 ## NFS
@@ -152,4 +161,3 @@ Windows:
 - `evil-winrm -i ip -u user -p password`
 - `evil-winrm -i ip -u user -H NT_HASH`
 - `impacket-wmiexec user:'password'@ip 'whoami'`
-

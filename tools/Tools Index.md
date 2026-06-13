@@ -4,6 +4,7 @@ Command-focused notes. Start from [H4G Training](../H4G%20Training.md) or a blue
 
 ## Recon And Enumeration
 
+- [Footprinting Cheat Sheet](Footprinting%20Cheat%20Sheet.md)
 - [Passive Recon](Passive%20Recon.md)
 - [Nmap Cheat Sheet](Nmap%20Cheat%20Sheet.md)
 - [Dig Cheat Sheet](Dig%20Cheat%20Sheet.md)

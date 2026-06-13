@@ -103,6 +103,8 @@ curl -i $URL
 
 > **What to watch out for:** Capture product names, versions, hostnames, redirects, cookies, authentication realms, and technology stacks before using exploits.
 
+For service-specific footprinting commands, open [Footprinting Cheat Sheet](tools/Footprinting%20Cheat%20Sheet.md) first, then use [Service Enumeration Alternatives](tools/Service%20Enumeration%20Alternatives.md) for deeper branches.
+
 ### 1.4 Web Enumeration
 
 ```bash
@@ -945,6 +947,7 @@ Provide specific engineering fixes.
 
 ### 12.1 Linux Tools
 
+- [Footprinting Cheat Sheet](tools/Footprinting%20Cheat%20Sheet.md)
 - [Nmap Cheat Sheet](tools/Nmap%20Cheat%20Sheet.md)
 - [Networking](tools/Networking.md)
 - [Linux Text Processing](tools/Linux%20Text%20Processing.md)
