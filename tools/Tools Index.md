@@ -1,6 +1,6 @@
 # Tools Index
 
-Command-focused notes for the H4G paths.
+Command-focused notes. Start from [H4G Training](../H4G%20Training.md) or a blueprint first, then use this page for command syntax and variants.
 
 ## Recon And Enumeration
 
@@ -30,25 +30,20 @@ Command-focused notes for the H4G paths.
 - [Mimikatz Cheat Sheet](Mimikatz%20Cheat%20Sheet.md)
 - [Active Directory Attack Path Cheat Sheet](Active%20Directory%20Attack%20Path%20Cheat%20Sheet.md)
 
-## Post-Exploitation And REV
+## Post-Exploitation, Forensics, Crypto, And REV
 
 - [Post-Exploitation](Post-Exploitation.md)
+- [Linux Text Processing](Linux%20Text%20Processing.md)
 - [REV Python Toolkit](REV%20Python%20Toolkit.md)
 - [Wireless](Wireless.md)
 
-## Forensics And Crypto Support
+## Blueprint Links
 
-- [Steganography Path](../guides/Steganography%20Path.md)
-- [Cryptography Path](../guides/Cryptography%20Path.md)
-- [Password Attacks](Password%20Attacks.md)
-- [REV Python Toolkit](REV%20Python%20Toolkit.md)
-
-## Main Paths
-
-- [Web Exploit Path](../guides/Web%20Exploit%20Path.md)
-- [Machine Exploit Path](../guides/Machine%20Exploit%20Path.md)
-- [Reverse Engineering Path](../guides/Reverse%20Engineering%20Path.md)
-- [Steganography Path](../guides/Steganography%20Path.md)
-- [Cryptography Path](../guides/Cryptography%20Path.md)
-- [Buffer Overflow Guide](../guides/Buffer%20Overflow%20Guide.md)
+- [Machine Exploitation Databank](../blueprints/Machine%20Exploitation%20Databank.md)
+- [Machine Attack Blueprint Index](../blueprints/machine-attacks/Machine%20Attack%20Blueprint%20Index.md)
+- [Web Exploit Blueprint](../blueprints/Web%20Exploit%20Blueprint.md)
+- [Reverse Engineering Blueprint](../blueprints/Reverse%20Engineering%20Blueprint.md)
+- [Buffer Overflow Blueprint](../blueprints/Buffer%20Overflow%20Blueprint.md)
+- [Steganography Blueprint](../blueprints/Steganography%20Blueprint.md)
+- [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md)
 - [Challenge Use Cases](../references/Challenge%20Use%20Cases.md)

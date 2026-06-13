@@ -11,7 +11,7 @@ Use this page as a coverage checklist. Commands and local workflows are integrat
 
 ## Web Module
 
-Local guide: [Web Exploit Path](../guides/Web%20Exploit%20Path.md)  
+Local guide: [Web Exploit Blueprint](../blueprints/Web%20Exploit%20Blueprint.md)
 Command sheet: [Web Testing](../tools/Web%20Testing.md)
 
 Coverage:
@@ -40,7 +40,7 @@ Study order:
 ## Linux Module
 
 Local guide: [Linux Attack Path Cheat Sheet](../guides/Linux%20Attack%20Path%20Cheat%20Sheet.md)  
-Main path: [Machine Exploit Path](../guides/Machine%20Exploit%20Path.md#5-linux-machine-branch)
+Main path: [Machine Exploit Blueprint](../blueprints/Machine%20Exploit%20Blueprint.md#5-linux-machine-branch)
 
 Coverage:
 

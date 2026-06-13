@@ -17,7 +17,7 @@ Branch quickly:
 - ELF/PE -> strings, disassembly, debugger
 - APK/JAR -> Java decompile
 - `.wasm` -> WABT tools
-- crash after long input -> [Buffer Overflow Guide](Buffer%20Overflow%20Blueprint.md)
+- crash after long input -> [Buffer Overflow Blueprint](Buffer%20Overflow%20Blueprint.md)
 - packed binary -> unpack or debug runtime
 
 ## 2. First Execution
@@ -93,7 +93,7 @@ Decision points:
 - dynamically linked ELF -> inspect libc calls with `ltrace`.
 - syscalls or static binary -> inspect with `strace`, `objdump`, and GDB.
 - SUID binary -> look for unsafe file access, command execution, environment trust, or memory corruption.
-- crash after long input -> use [Buffer Overflow Guide](Buffer%20Overflow%20Blueprint.md).
+- crash after long input -> use [Buffer Overflow Blueprint](Buffer%20Overflow%20Blueprint.md).
 - stripped binary -> rely on function boundaries, imports, strings, and debugger behavior.
 
 ### Linux Debugging
@@ -238,7 +238,7 @@ For constraints, use Z3; for path-heavy native binaries, consider angr.
 
 ## 13. Buffer Overflow Branch
 
-Use [Buffer Overflow Guide](Buffer%20Overflow%20Blueprint.md) when a native binary crashes after long input, `checksec` shows exploitable mitigations, or the challenge category is `pwn` / `Binary Exploitation`.
+Use [Buffer Overflow Blueprint](Buffer%20Overflow%20Blueprint.md) when a native binary crashes after long input, `checksec` shows exploitable mitigations, or the challenge category is `pwn` / `Binary Exploitation`.
 
 Fast decision path:
 
@@ -250,8 +250,8 @@ Fast decision path:
 ## Tool And Reference Links
 
 - [REV Python Toolkit](../tools/REV%20Python%20Toolkit.md)
-- [Buffer Overflow Guide](Buffer%20Overflow%20Blueprint.md)
-- [picoCTF Web and REV Patterns\](../guides/picoCTF%20Web%20and%20REV%20Patterns.md)
+- [Buffer Overflow Blueprint](Buffer%20Overflow%20Blueprint.md)
+- [picoCTF Web and REV Patterns](../guides/picoCTF%20Web%20and%20REV%20Patterns.md)
 - [REV references](../references/refernces.txt)
 - [References Index](../references/References%20Index.md)
 

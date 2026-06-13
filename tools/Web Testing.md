@@ -107,7 +107,7 @@ Check WSDL, XML imports, SOAPAction, and XML body parsing. Confirm parser behavi
 
 ## Related
 
-- [Web Exploit Path](../guides/Web%20Exploit%20Path.md)
+- [Web Exploit Blueprint](../blueprints/Web%20Exploit%20Blueprint.md)
 - [Web Attack Alternatives](Web%20Attack%20Alternatives.md)
 - [Challenge Use Cases](../references/Challenge%20Use%20Cases.md#web-use-cases)
 - [OSCP Module Map](../references/OSCP%20Module%20Map.md#web-module)

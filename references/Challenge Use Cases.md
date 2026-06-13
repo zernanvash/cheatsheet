@@ -183,7 +183,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Port Scanning](../guides/Machine%20Exploit%20Path.md#2-port-scanning)
+- [Machine Exploit Blueprint - Port Scanning](../blueprints/Machine%20Exploit%20Blueprint.md#2-port-scanning)
 - [Nmap Cheat Sheet](../tools/Nmap%20Cheat%20Sheet.md)
 
 ### SMBClient And SMB Enumeration
@@ -204,7 +204,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Service Enumeration](../guides/Machine%20Exploit%20Path.md#3-service-enumeration)
+- [Machine Exploit Blueprint - Service Enumeration](../blueprints/Machine%20Exploit%20Blueprint.md#3-service-enumeration)
 - [SMBClient Cheat Sheet](../tools/SMBClient%20Cheat%20Sheet.md)
 
 ### Hydra
@@ -228,7 +228,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Credential Attacks](../guides/Machine%20Exploit%20Path.md#7-credential-attacks)
+- [Machine Exploit Blueprint - Credential Attacks](../blueprints/Machine%20Exploit%20Blueprint.md#7-credential-attacks)
 - [Password Attacks - Hydra](../tools/Password%20Attacks.md#hydra)
 
 ### John And Hashcat
@@ -252,7 +252,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Credential Attacks](../guides/Machine%20Exploit%20Path.md#7-credential-attacks)
+- [Machine Exploit Blueprint - Credential Attacks](../blueprints/Machine%20Exploit%20Blueprint.md#7-credential-attacks)
 - [Password Attacks - John](../tools/Password%20Attacks.md#john)
 - [Password Attacks - Hashcat](../tools/Password%20Attacks.md#hashcat)
 
@@ -274,7 +274,7 @@ How it is used:
 
 Path references:
 
-- [Machine Exploit Path - Metasploit Decision Points](../guides/Machine%20Exploit%20Path.md#8-metasploit-decision-points)
+- [Machine Exploit Blueprint - Metasploit Decision Points](../blueprints/Machine%20Exploit%20Blueprint.md#8-metasploit-decision-points)
 - [Metasploit](../tools/Metasploit.md)
 - [EternalBlue Cheat Sheet](../tools/EternalBlue%20Cheat%20Sheet.md)
 

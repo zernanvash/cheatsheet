@@ -286,6 +286,8 @@ cat ~/.bash_history
 ls -la /var/mail /var/spool/mail 2>/dev/null
 ```
 
+For advanced text filtering, parsing log files, or formatting command outputs, see the [Linux Text Processing Cheat Sheet](../tools/Linux%20Text%20Processing.md).
+
 ## Privilege Escalation Patterns
 
 ### Sudo NOPASSWD
