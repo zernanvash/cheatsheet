@@ -325,7 +325,7 @@
         .trim()
         .replace(/<[^>]*>/g, "")
         .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-");
+        .replace(/\s/g, "-");
     }
 
     function renderToc() {

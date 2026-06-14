@@ -35,6 +35,9 @@ Command-focused notes. Start from [H4G Training](../H4G%20Training.md) or a blue
 
 - [Post-Exploitation](Post-Exploitation.md)
 - [Linux Text Processing](Linux%20Text%20Processing.md)
+- [GDB Cheat Sheet](GDB%20Cheat%20Sheet.md)
+- [Vim For Reversing Cheat Sheet](Vim%20For%20Reversing%20Cheat%20Sheet.md)
+- [Reversing CLI Tools Cheat Sheet](Reversing%20CLI%20Tools%20Cheat%20Sheet.md)
 - [REV Python Toolkit](REV%20Python%20Toolkit.md)
 - [Wireless](Wireless.md)
 
