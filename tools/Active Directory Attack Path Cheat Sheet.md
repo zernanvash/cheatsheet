@@ -118,6 +118,36 @@ impacket-rpcdump domain/user:pass@host.domain.local
 
 If `spoolsv` is exposed, check print-spooler attack surface.
 
+### Well-Known SIDs and RIDs
+
+SIDs are generally formatted as `S-1-5-21-[Domain/MachineID]-[RID]`. Built-in accounts and groups have specific, well-known RIDs:
+
+| RID | Identity / Group | Description |
+| :--- | :--- | :--- |
+| **500** | Administrator | Built-in administrator account (full control) |
+| **501** | Guest | Built-in guest account (limited access) |
+| **502** | KRBTGT | Key Distribution Center service account (Kerberos) |
+| **512** | Domain Admins | Global group for domain administrators |
+| **513** | Domain Users | Global group containing all domain user accounts |
+| **514** | Domain Guests | Global group containing domain guest accounts |
+| **515** | Domain Computers | Global group containing all workstation/server computer accounts |
+| **516** | Domain Controllers | Global group containing all domain controllers |
+| **518** | Schema Admins | Group authorized to modify the Active Directory schema |
+| **519** | Enterprise Admins | Group authorized to make changes in any domain of the forest |
+| **520** | Group Policy Creator Owners | Group authorized to modify Group Policy Objects |
+| **544** | Administrators | Built-in local administrators group (`S-1-5-32-544`) |
+| **545** | Users | Built-in local users group (`S-1-5-32-545`) |
+| **546** | Guests | Built-in local guests group (`S-1-5-32-546`) |
+| **547** | Power Users | Built-in local power users group (`S-1-5-32-547`) |
+
+Use RID cycling with tools like `crackmapexec smb ip --rid-brute` or Impacket's `lookupsid.py` to enumerate users:
+
+```bash
+crackmapexec smb ip --rid-brute
+impacket-lookupsid domain.local/user:pass@ip
+```
+
+
 ## LDAP Enumeration
 
 ```bash

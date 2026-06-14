@@ -7,6 +7,7 @@ Long-form source and offline reference material.
 - [Guide to x86 Assembly](Guide%20to%20x86%20Assembly.html)
 - [Linux x86_64 syscall table](Linux%20System%20Call%20Table%20for%20x86%2064%20-%20Ryan%20A.%20Chapman.html)
 - [Local Linux Enumeration & Privilege Escalation](Local%20Linux%20Enumeration%20%26%20Privilege%20Escalation.md)
+- [0xrefs Interactive Command Reference](../0xrefs.html)
 - [Local Linux Enumeration duplicate redirect](Local%20Linux%20Enumeration%20%2526%20Privilege%20Escalation.md)
 - [Challenge Use Cases](Challenge%20Use%20Cases.md)
 - [OSCP Module Map](OSCP%20Module%20Map.md)
@@ -37,6 +38,7 @@ These folders are retained for local source material and writeup mining, but the
 - `_source_temperance`
 - `_source_tryhackme_cajac`
 - `_source_0xb0b_tryhackme`
+- `_source_0xrefs`
 - `rev_source`
 
 ## Notes

@@ -1,0 +1,1431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0xrefs Interactive Command Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d11;
+      --panel: #11141a;
+      --panel-elevated: #1a1e27;
+      --panel-hover: #222834;
+      --text: #eef2f7;
+      --muted: #8a99ad;
+      --line: #242b38;
+      --accent: #5cf2a9;
+      --accent-glow: rgba(92, 242, 169, 0.15);
+      --accent-dim: rgba(92, 242, 169, 0.5);
+      --accent-2: #64b5ff;
+      --accent-2-glow: rgba(100, 181, 255, 0.15);
+      --code-bg: #06080b;
+      --code-border: #181d26;
+      --var-token-color: #ff7b72;
+      --var-token-bg: rgba(255, 123, 114, 0.1);
+      --var-filled-color: #79c0ff;
+      --var-filled-bg: rgba(121, 192, 255, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(11, 13, 17, 0.85);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 14px 0;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-brand svg {
+      color: var(--accent);
+      fill: none;
+      stroke: currentColor;
+    }
+
+    .nav-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-title span {
+      color: var(--accent);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn:hover {
+      border-color: var(--accent-2);
+      background: var(--panel-elevated);
+      color: var(--accent-2);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0b0d11;
+    }
+
+    .btn-primary:hover {
+      background: #4ae297;
+      border-color: #4ae297;
+      color: #0b0d11;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .btn-icon {
+      padding: 8px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 64px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 78px;
+      align-self: start;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-right: 4px;
+    }
+
+    /* Scrollbar Styling for Sidebar */
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--line);
+      border-radius: 2px;
+    }
+
+    .sidebar-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .sidebar-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 12px;
+      color: var(--accent-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .variables-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .var-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .var-field span {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--code-bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .input-text:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .clear-btn {
+      font-size: 0.75rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .clear-btn:hover {
+      color: var(--accent);
+    }
+
+    .filter-group {
+      margin-bottom: 16px;
+    }
+
+    .filter-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill-checkbox {
+      display: none;
+    }
+
+    .pill-label {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: var(--code-bg);
+      transition: all 0.15s;
+    }
+
+    .pill-label:hover {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+
+    .pill-checkbox:checked + .pill-label {
+      background: var(--accent-2-glow);
+      border-color: var(--accent-2);
+      color: var(--text);
+    }
+
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .search-bar-container {
+      display: flex;
+      gap: 12px;
+      position: sticky;
+      top: 78px;
+      z-index: 50;
+      background: var(--bg);
+      padding: 4px 0 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-input-wrapper svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-2);
+      box-shadow: 0 0 12px var(--accent-2-glow);
+      background: var(--panel-elevated);
+    }
+
+    .shortcuts-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .key-badge {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: inherit;
+      font-weight: 600;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cmd-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .cmd-card:hover {
+      border-color: rgba(100, 181, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .card-title-area {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--code-bg);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .badge-linux {
+      border-color: rgba(255, 193, 7, 0.2);
+      color: #ffe082;
+      background: rgba(255, 193, 7, 0.05);
+    }
+
+    .badge-windows {
+      border-color: rgba(33, 150, 243, 0.2);
+      color: #90caf9;
+      background: rgba(33, 150, 243, 0.05);
+    }
+
+    .code-box-container {
+      position: relative;
+    }
+
+    .tabs-bar {
+      display: flex;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 8px;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 6px 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      border-bottom-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+
+    .code-block-wrapper {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .code-block {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'Fira Code', ui-monospace, monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .code-block code {
+      color: #c9d1d9;
+    }
+
+    .var-token {
+      color: var(--var-token-color);
+      background: var(--var-token-bg);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 123, 114, 0.25);
+    }
+
+    .var-filled {
+      color: var(--var-filled-color);
+      background: var(--var-filled-bg);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+      border: 1px solid rgba(121, 192, 255, 0.35);
+      box-shadow: 0 0 6px rgba(121, 192, 255, 0.1);
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-copy-btn {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      background: var(--panel-elevated);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      z-index: 5;
+    }
+
+    .card-copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--panel-hover);
+    }
+
+    .card-copy-btn.copied {
+      border-color: var(--accent) !important;
+      color: #0b0d11 !important;
+      background: var(--accent) !important;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--panel-elevated);
+      color: var(--muted);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .tag:hover {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+
+    .tag.active {
+      background: var(--accent-2-glow);
+      border-color: var(--accent-2);
+      color: var(--text);
+    }
+
+    .details-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .details-trigger:hover {
+      color: var(--accent-2);
+    }
+
+    .details-panel {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .details-panel.open {
+      display: flex;
+    }
+
+    .detail-section-title {
+      font-weight: 600;
+      color: var(--accent-2);
+      margin-bottom: 4px;
+    }
+
+    .ref-list {
+      margin: 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ref-link {
+      color: var(--accent-2);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .ref-link:hover {
+      text-decoration: underline;
+    }
+
+    .shell-install-panel {
+      background: linear-gradient(135deg, var(--panel) 0%, #151a24 100%);
+      border: 1px solid var(--accent-dim);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .shell-install-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .install-box {
+      background: var(--code-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .install-code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: var(--accent-2);
+      margin: 0;
+      word-break: break-all;
+      padding-right: 60px;
+    }
+
+    .no-results {
+      padding: 40px;
+      text-align: center;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--muted);
+      display: none;
+    }
+
+    .no-results svg {
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 992px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-bar">
+      <a href="index.html" class="nav-brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <span class="nav-title">H4G Training <span>0xrefs</span></span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to Vault
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left Sidebar: Parameter Inputs and Filters -->
+    <aside class="sidebar">
+      <!-- Live Variables Panel -->
+      <div class="sidebar-panel">
+        <h3 class="sidebar-title">
+          <span>Variables</span>
+          <button id="clear-vars" class="clear-btn" type="button" hidden>clear</button>
+        </h3>
+        <div class="variables-grid" id="variables-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Filters Panel -->
+      <div class="sidebar-panel">
+        <h3 class="sidebar-title">
+          <span>Filters</span>
+          <button id="clear-filters" class="clear-btn" type="button" hidden>clear all</button>
+        </h3>
+        <div id="filters-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Content: Search, Toolbar, and Cards Grid -->
+    <section class="content-area">
+      <div class="search-bar-container">
+        <div class="search-input-wrapper">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search-box" class="search-input" placeholder="Search commands: <command> +<filter> ...">
+        </div>
+        <div class="shortcuts-hint">
+          <span class="key-badge">ESC</span> to clear
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <span id="results-counter">Loading commands...</span>
+      </div>
+
+      <div class="no-results" id="no-results-panel">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <div>No commands match your query. Try clearing some filters.</div>
+      </div>
+
+      <div class="cards-grid" id="commands-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Shell History Install Panel -->
+      <div class="shell-install-panel">
+        <h3 class="shell-install-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          Load Set Into Shell History
+        </h3>
+        <p style="margin: 0; font-size: 0.9rem; color: var(--muted);">
+          Run this curl installer command in Kali/Linux to load all curated Linux commands directly into your shell history:
+        </p>
+        <div class="install-box">
+          <p id="install-cmd" class="install-code">curl -s http://localhost:8000/install.sh | bash -s -- oscp zsh</p>
+          <button class="card-copy-btn" id="install-copy-btn" type="button">copy</button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--muted); display: flex; gap: 10px;">
+          <span>Set: 
+            <select id="install-set" class="input-text" style="width: auto; padding: 2px 8px; display: inline-block;">
+              <option value="oscp">oscp (recommended)</option>
+              <option value="cli">cli</option>
+            </select>
+          </span>
+          <span>Shell: 
+            <select id="install-shell" class="input-text" style="width: auto; padding: 2px 8px; display: inline-block;">
+              <option value="zsh">zsh</option>
+              <option value="bash">bash</option>
+              <option value="fish">fish</option>
+            </select>
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Load the precompiled command dataset -->
+  <script src="references/0xrefs-data.js"></script>
+  <script>
+    // Constants
+    const STORAGE_KEY = "0xrefs.vars";
+    const PRIORITY_VARS = ["IP", "USER", "PASSWORD", "DOMAIN", "DCIP", "HASH", "LHOST", "LPORT"];
+    
+    // Global State
+    const values = loadValues();
+    const activeFilters = new Set();
+    let commands = [];
+    let metadata = {};
+    let uniqueVars = [];
+
+    // Initialize
+    function init() {
+      if (typeof OXREFS_DATA === "undefined") {
+        document.getElementById("results-counter").textContent = "Error: Could not load references/0xrefs-data.js";
+        return;
+      }
+      
+      commands = OXREFS_DATA.commands;
+      metadata = OXREFS_DATA.metadata;
+      
+      // Extract unique variables across all commands
+      uniqueVars = extractAllVariables(commands);
+      
+      // Setup dynamic variables panel
+      buildVariablesPanel();
+      
+      // Setup dynamic filters panel
+      buildFiltersPanel();
+      
+      // Setup event listeners
+      setupEvents();
+      
+      // Render
+      render();
+    }
+
+    function loadValues() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveValues() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+    }
+
+    function extractAllVariables(cmds) {
+      const names = new Set();
+      const regex = /\$([A-Z][A-Z0-9_]*)(?![a-zA-Z0-9_])/g;
+      
+      cmds.forEach(cmd => {
+        const checkText = (cmd.command || "") + "\n" + (cmd.variants || []).map(v => v.command).join("\n");
+        let match;
+        while ((match = regex.exec(checkText)) !== null) {
+          names.add(match[1]);
+        }
+      });
+      
+      // Sort: Priority variables first, then alphabetical
+      return [
+        ...PRIORITY_VARS.filter(v => names.has(v)),
+        ...Array.from(names).filter(v => !PRIORITY_VARS.includes(v)).sort()
+      ];
+    }
+
+    function buildVariablesPanel() {
+      const container = document.getElementById("variables-container");
+      container.innerHTML = "";
+      
+      uniqueVars.forEach(name => {
+        const field = document.createElement("div");
+        field.className = "var-field";
+        
+        const label = document.createElement("span");
+        label.textContent = `$${name}`;
+        
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "input-text";
+        input.value = values[name] || "";
+        input.placeholder = name.toLowerCase();
+        input.dataset.varName = name;
+        
+        input.addEventListener("input", (e) => {
+          values[name] = e.target.value;
+          saveValues();
+          updateCodeBlocks();
+          updateClearVarsBtn();
+        });
+        
+        field.appendChild(label);
+        field.appendChild(input);
+        container.appendChild(field);
+      });
+      
+      updateClearVarsBtn();
+    }
+
+    function updateClearVarsBtn() {
+      const btn = document.getElementById("clear-vars");
+      const hasValues = Object.values(values).some(v => v && v.trim());
+      btn.hidden = !hasValues;
+    }
+
+    function buildFiltersPanel() {
+      const container = document.getElementById("filters-container");
+      container.innerHTML = "";
+      
+      const filterTypes = [
+        { key: "os", label: "Operating System" },
+        { key: "category", label: "Category" },
+        { key: "phase", label: "Phase" },
+        { key: "service", label: "Service" },
+        { key: "have", label: "What You Have" }
+      ];
+      
+      filterTypes.forEach(ft => {
+        const groupData = metadata[ft.key];
+        if (!groupData) return;
+        
+        const group = document.createElement("div");
+        group.className = "filter-group";
+        
+        const title = document.createElement("div");
+        title.className = "filter-label";
+        title.textContent = ft.label;
+        group.appendChild(title);
+        
+        const options = document.createElement("div");
+        options.className = "filter-options";
+        
+        Object.entries(groupData).forEach(([val, meta]) => {
+          const id = `cb-${ft.key}-${val}`;
+          
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.className = "pill-checkbox";
+          checkbox.id = id;
+          checkbox.dataset.filterType = ft.key;
+          checkbox.dataset.filterVal = val;
+          
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+              activeFilters.add(`${ft.key}:${val}`);
+            } else {
+              activeFilters.delete(`${ft.key}:${val}`);
+            }
+            updateClearFiltersBtn();
+            render();
+          });
+          
+          const label = document.createElement("label");
+          label.className = "pill-label";
+          label.htmlFor = id;
+          label.textContent = meta.label || val;
+          label.title = meta.description || "";
+          
+          options.appendChild(checkbox);
+          options.appendChild(label);
+        });
+        
+        group.appendChild(options);
+        container.appendChild(group);
+      });
+    }
+
+    function updateClearFiltersBtn() {
+      const btn = document.getElementById("clear-filters");
+      const searchBox = document.getElementById("search-box");
+      const hasSearch = searchBox.value.trim().length > 0;
+      btn.hidden = !(activeFilters.size > 0 || hasSearch);
+    }
+
+    function setupEvents() {
+      // Clear variables button
+      document.getElementById("clear-vars").addEventListener("click", () => {
+        uniqueVars.forEach(name => {
+          values[name] = "";
+        });
+        saveValues();
+        buildVariablesPanel();
+        updateCodeBlocks();
+      });
+      
+      // Clear filters button
+      document.getElementById("clear-filters").addEventListener("click", () => {
+        activeFilters.clear();
+        document.getElementById("search-box").value = "";
+        
+        // Uncheck all checkboxes
+        document.querySelectorAll(".pill-checkbox").forEach(cb => {
+          cb.checked = false;
+        });
+        
+        updateClearFiltersBtn();
+        render();
+      });
+      
+      // Search Box
+      const searchBox = document.getElementById("search-box");
+      searchBox.addEventListener("input", () => {
+        updateClearFiltersBtn();
+        render();
+      });
+      
+      // Keyboard shortcuts
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          // Blur search and clear
+          searchBox.blur();
+          document.getElementById("clear-filters").click();
+          return;
+        }
+        
+        const activeTag = document.activeElement?.tagName?.toLowerCase();
+        if (activeTag === "input" || activeTag === "textarea" || activeTag === "select") return;
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        
+        // Focus search box on character press
+        if (e.key.length === 1) {
+          searchBox.focus();
+        }
+      });
+      
+      // Shell installer manifest updater
+      const setSelect = document.getElementById("install-set");
+      const shellSelect = document.getElementById("install-shell");
+      
+      const updateInstallCmd = () => {
+        const host = window.location.origin === "null" || !window.location.origin ? "http://localhost:8000" : window.location.origin;
+        const base = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+        const cleanPath = base === "/" || base === "" ? "" : base;
+        document.getElementById("install-cmd").textContent = `curl -s ${host}${cleanPath}/install.sh | bash -s -- ${setSelect.value} ${shellSelect.value}`;
+      };
+      
+      setSelect.addEventListener("change", updateInstallCmd);
+      shellSelect.addEventListener("change", updateInstallCmd);
+      updateInstallCmd();
+      
+      // Copy installer button
+      document.getElementById("install-copy-btn").addEventListener("click", async (e) => {
+        const btn = e.target;
+        await navigator.clipboard.writeText(document.getElementById("install-cmd").textContent);
+        btn.textContent = "copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "copy";
+          btn.classList.remove("copied");
+        }, 1200);
+      });
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[c]);
+    }
+
+    function substituteVariables(template) {
+      const regex = /\$([A-Z][A-Z0-9_]*)(?![a-zA-Z0-9_])/g;
+      return template.replace(regex, (token) => {
+        const varName = token.slice(1);
+        const val = values[varName];
+        if (val && val.trim()) {
+          return `<span class="var-filled" title="Variable: $${varName}">${escapeHtml(val)}</span>`;
+        } else {
+          return `<span class="var-token" title="Variable: $${varName}">${token}</span>`;
+        }
+      });
+    }
+
+    function getSubstitutedRawText(template) {
+      const regex = /\$([A-Z][A-Z0-9_]*)(?![a-zA-Z0-9_])/g;
+      return template.replace(regex, (token) => {
+        const varName = token.slice(1);
+        const val = values[varName];
+        return (val && val.trim()) ? val : token;
+      });
+    }
+
+    function updateCodeBlocks() {
+      document.querySelectorAll(".cmd-code-text").forEach(el => {
+        const template = el.dataset.rawTemplate;
+        el.innerHTML = substituteVariables(template);
+      });
+    }
+
+    // Main render function
+    function render() {
+      const container = document.getElementById("commands-container");
+      const searchBox = document.getElementById("search-box");
+      
+      // Parse search query
+      const query = searchBox.value.trim().toLowerCase();
+      let queryText = query;
+      let queryFilters = [];
+      
+      if (query.includes("+")) {
+        const parts = query.split("+").map(p => p.trim());
+        queryText = parts[0];
+        queryFilters = parts.slice(1).filter(Boolean);
+      }
+      
+      // Filter commands
+      const filteredCommands = commands.filter(cmd => {
+        // Search text matching
+        const searchPool = [
+          cmd.name,
+          cmd.description || "",
+          cmd.command || "",
+          ...(cmd.variants || []).map(v => v.command + " " + v.label)
+        ].join(" ").toLowerCase();
+        
+        if (queryText && !searchPool.includes(queryText)) {
+          return false;
+        }
+        
+        // Active Filter Checkboxes
+        let matchesSidebarFilters = true;
+        if (activeFilters.size > 0) {
+          // Group active filters by type (OR within types, AND between types)
+          const grouped = {};
+          activeFilters.forEach(f => {
+            const [type, val] = f.split(":");
+            if (!grouped[type]) grouped[type] = [];
+            grouped[type].push(val);
+          });
+          
+          matchesSidebarFilters = Object.entries(grouped).every(([type, vals]) => {
+            const cmdVals = cmd[type] || [];
+            return vals.some(v => cmdVals.includes(v));
+          });
+        }
+        
+        if (!matchesSidebarFilters) return false;
+        
+        // Search bar tag filters (AND logic: +enum +smb)
+        if (queryFilters.length > 0) {
+          const cmdTags = [
+            ...(cmd.os || []),
+            ...(cmd.category || []),
+            ...(cmd.phase || []),
+            ...(cmd.service || []),
+            ...(cmd.have || [])
+          ].map(t => t.toLowerCase());
+          
+          const matchesQueryFilters = queryFilters.every(qf => {
+            return cmdTags.some(tag => tag.includes(qf));
+          });
+          if (!matchesQueryFilters) return false;
+        }
+        
+        return true;
+      });
+      
+      // Display counter
+      document.getElementById("results-counter").textContent = `Showing ${filteredCommands.length} of ${commands.length} commands`;
+      
+      // Handle empty state
+      document.getElementById("no-results-panel").style.display = filteredCommands.length === 0 ? "block" : "none";
+      
+      // Build DOM
+      container.innerHTML = "";
+      
+      filteredCommands.forEach(cmd => {
+        const card = document.createElement("div");
+        card.className = "cmd-card";
+        
+        // Header
+        const header = document.createElement("div");
+        header.className = "card-header";
+        
+        const titleArea = document.createElement("div");
+        titleArea.className = "card-title-area";
+        
+        const title = document.createElement("div");
+        title.className = "card-title";
+        title.textContent = cmd.name;
+        
+        // OS Badges
+        (cmd.os || []).forEach(os => {
+          const badge = document.createElement("span");
+          badge.className = `badge badge-${os.toLowerCase()}`;
+          badge.innerHTML = os === "Linux" ? "🐧 Linux" : "🪟 Windows";
+          title.appendChild(badge);
+        });
+        
+        const desc = document.createElement("p");
+        desc.className = "card-desc";
+        desc.textContent = cmd.description || "";
+        
+        titleArea.appendChild(title);
+        titleArea.appendChild(desc);
+        header.appendChild(titleArea);
+        card.appendChild(header);
+        
+        // Code Block Container
+        const codeContainer = document.createElement("div");
+        codeContainer.className = "code-box-container";
+        
+        let activeTemplate = cmd.command || "";
+        
+        // Tabs for variants
+        if (cmd.variants && cmd.variants.length > 0) {
+          const tabsBar = document.createElement("div");
+          tabsBar.className = "tabs-bar";
+          
+          activeTemplate = cmd.variants[0].command;
+          
+          // Auto-select variant if a credential tag is in active filters
+          const activeHaves = Array.from(activeFilters)
+            .filter(f => f.startsWith("have:"))
+            .map(f => f.split(":")[1]);
+            
+          if (activeHaves.length > 0) {
+            // Find a variant that has keywords matching the active credential filter
+            const patterns = {
+              hash: /-hashes|--pw-nt-hash|\/pth:|\s-H(\s|$)|\$HASH/i,
+              ticket: /-no-pass|--ccache|\.ccache|\.kirbi|KRB5CCNAME|ssh -K/i,
+              cert: /\.pfx|\.pem/i
+            };
+            
+            for (const hv of activeHaves) {
+              const matchedVariant = cmd.variants.find(v => patterns[hv] && patterns[hv].test(v.command));
+              if (matchedVariant) {
+                activeTemplate = matchedVariant.command;
+                break;
+              }
+            }
+          }
+          
+          cmd.variants.forEach(variant => {
+            const btn = document.createElement("button");
+            btn.className = "tab-btn" + (variant.command === activeTemplate ? " active" : "");
+            btn.type = "button";
+            btn.textContent = variant.label;
+            
+            btn.addEventListener("click", () => {
+              tabsBar.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+              btn.classList.add("active");
+              activeTemplate = variant.command;
+              codeText.dataset.rawTemplate = activeTemplate;
+              codeText.innerHTML = substituteVariables(activeTemplate);
+            });
+            
+            tabsBar.appendChild(btn);
+          });
+          codeContainer.appendChild(tabsBar);
+        }
+        
+        // Code pre block
+        const codeWrapper = document.createElement("div");
+        codeWrapper.className = "code-block-wrapper";
+        
+        const pre = document.createElement("pre");
+        pre.className = "code-block";
+        
+        const codeText = document.createElement("code");
+        codeText.className = "cmd-code-text";
+        codeText.dataset.rawTemplate = activeTemplate;
+        codeText.innerHTML = substituteVariables(activeTemplate);
+        
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "card-copy-btn";
+        copyBtn.type = "button";
+        copyBtn.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          copy
+        `;
+        
+        copyBtn.addEventListener("click", async () => {
+          const rawText = getSubstitutedRawText(codeText.dataset.rawTemplate);
+          await navigator.clipboard.writeText(rawText.trim());
+          copyBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            copied!
+          `;
+          copyBtn.classList.add("copied");
+          setTimeout(() => {
+            copyBtn.innerHTML = `
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              copy
+            `;
+            copyBtn.classList.remove("copied");
+          }, 1200);
+        });
+        
+        pre.appendChild(codeText);
+        codeWrapper.appendChild(pre);
+        codeWrapper.appendChild(copyBtn);
+        codeContainer.appendChild(codeWrapper);
+        card.appendChild(codeContainer);
+        
+        // Footer and tags
+        const footer = document.createElement("div");
+        footer.className = "card-actions";
+        
+        const tagsContainer = document.createElement("div");
+        tagsContainer.className = "tags-container";
+        
+        // Add badges for Phase, Service, etc.
+        const addTagBadge = (type, val) => {
+          if (!val) return;
+          const badge = document.createElement("span");
+          badge.className = "tag";
+          const meta = metadata[type]?.[val];
+          badge.textContent = meta?.label || val;
+          badge.title = `${type}: ${meta?.description || val}`;
+          
+          const filterKey = `${type}:${val}`;
+          if (activeFilters.has(filterKey)) {
+            badge.classList.add("active");
+          }
+          
+          badge.addEventListener("click", () => {
+            const cbId = `cb-${type}-${val}`;
+            const cb = document.getElementById(cbId);
+            if (cb) {
+              cb.checked = !cb.checked;
+              cb.dispatchEvent(new Event("change"));
+            } else {
+              // Alternate toggle if not in sidebar (fallback)
+              if (activeFilters.has(filterKey)) {
+                activeFilters.delete(filterKey);
+              } else {
+                activeFilters.add(filterKey);
+              }
+              render();
+            }
+          });
+          tagsContainer.appendChild(badge);
+        };
+        
+        (cmd.phase || []).forEach(p => addTagBadge("phase", p));
+        (cmd.service || []).forEach(s => addTagBadge("service", s));
+        (cmd.category || []).forEach(c => addTagBadge("category", c));
+        (cmd.have || []).forEach(h => addTagBadge("have", h));
+        
+        footer.appendChild(tagsContainer);
+        
+        // Expandable drawer trigger
+        if (cmd.references && cmd.references.length > 0) {
+          const detailTrigger = document.createElement("button");
+          detailTrigger.className = "details-trigger";
+          detailTrigger.type = "button";
+          detailTrigger.innerHTML = `
+            <span>details</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          `;
+          
+          const detailsPanel = document.createElement("div");
+          detailsPanel.className = "details-panel";
+          
+          const refTitle = document.createElement("div");
+          refTitle.className = "detail-section-title";
+          refTitle.textContent = "References:";
+          detailsPanel.appendChild(refTitle);
+          
+          const refList = document.createElement("ul");
+          refList.className = "ref-list";
+          
+          cmd.references.forEach(ref => {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.className = "ref-link";
+            a.href = ref;
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.textContent = ref;
+            li.appendChild(a);
+            refList.appendChild(li);
+          });
+          detailsPanel.appendChild(refList);
+          
+          detailTrigger.addEventListener("click", () => {
+            const isOpen = detailsPanel.classList.toggle("open");
+            detailTrigger.querySelector("svg").style.transform = isOpen ? "rotate(180deg)" : "rotate(0)";
+          });
+          
+          footer.appendChild(detailTrigger);
+          card.appendChild(footer);
+          card.appendChild(detailsPanel);
+        } else {
+          card.appendChild(footer);
+        }
+        
+        container.appendChild(card);
+      });
+    }
+
+    // Run
+    init();
+  </script>
+</body>
+</html>

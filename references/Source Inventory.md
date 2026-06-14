@@ -27,6 +27,10 @@ Local source folders retained for future restructuring and writeup mining. These
 
 ## Existing Sources
 
+- `_source_0xrefs`
+  - Upstream: https://github.com/0xrefs/0xrefs.github.io
+  - Use for: Interactive command cheatsheet queries, variable injection, and shell history generation.
+  - Folded into: [0xrefs Interactive Command Reference](../0xrefs.html) and local manifests.
 - `_source_hackmyvm_writeups`
   - Use later for: boot2root technique mapping, especially LFI, upload, anonymous FTP, SSH keys, SUID, cron, Docker, kernel CVEs, TFTP, and unusual Linux service pivots.
   - Folded into: [Machine Exploitation Databank](../blueprints/Machine%20Exploitation%20Databank.md) and [Machine Attack Blueprint Index](../blueprints/machine-attacks/Machine%20Attack%20Blueprint%20Index.md).

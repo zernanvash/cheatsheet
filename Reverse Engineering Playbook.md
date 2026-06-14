@@ -1,4 +1,4 @@
-﻿# Reverse Engineering Playbook
+# Reverse Engineering Playbook
 
 A standalone guide covering learning, triage, cheatsheet commands, solver scripting, and tool reference for CTF reverse engineering challenges.
 
@@ -16,10 +16,10 @@ A standalone guide covering learning, triage, cheatsheet commands, solver script
   - [Static vs Dynamic Analysis](#static-vs-dynamic-analysis)
   - [Safe Lab Practices](#safe-lab-practices)
 - **Triage & Decision Tree**
-  - [Step 0 — Identify the Target](#step-0--identify-the-target)
-  - [Step 1 — Pattern Selector](#step-1--pattern-selector)
-  - [Step 2 — Evidence Notebook](#step-2--evidence-notebook)
-- **Cheatsheet — Commands & Workflows**
+  - [Step 0 - Identify the Target](#step-0---identify-the-target)
+  - [Step 1 - Pattern Selector](#step-1---pattern-selector)
+  - [Step 2 - Evidence Notebook](#step-2---evidence-notebook)
+- **Cheatsheet - Commands & Workflows**
   - [Strings & File Identification](#strings--file-identification)
   - [Disassembly & Decompilation](#disassembly--decompilation)
   - [GDB Quick Reference](#gdb-quick-reference)
@@ -34,8 +34,8 @@ A standalone guide covering learning, triage, cheatsheet commands, solver script
   - [Script & Payload Deobfuscation](#script--payload-deobfuscation)
   - [Anti-Debug & Hostile Runtime](#anti-debug--hostile-runtime)
 - **Solver Cookbook**
-  - [XOR — Single Byte](#xor--single-byte)
-  - [XOR — Repeating Key](#xor--repeating-key)
+  - [XOR - Single Byte](#xor---single-byte)
+  - [XOR - Repeating Key](#xor---repeating-key)
   - [Known-Plaintext Key Recovery](#known-plaintext-key-recovery)
   - [Byte Transform Skeleton](#byte-transform-skeleton)
   - [Index Shuffle / Reorder](#index-shuffle--reorder)
@@ -250,7 +250,7 @@ strcmp / memcmp:          call strcmp          ; or repe cmpsb
 
 ## Triage & Decision Tree
 
-### Step 0 — Identify the Target
+### Step 0 - Identify the Target
 
 ```bash
 file ./challenge
@@ -276,7 +276,7 @@ Then branch:
 | Image / PBM output | [Bitmap / PBM Bit Extraction](#bitmap--pbm-bit-extraction) |
 | Anti-debug / self-delete | [Anti-Debug & Hostile Runtime](#anti-debug--hostile-runtime) |
 
-### Step 1 — Pattern Selector
+### Step 1 - Pattern Selector
 
 | Signal | Likely path | First action |
 |---|---|---|
@@ -292,7 +292,7 @@ Then branch:
 | `Illegal instruction`, missing CPU feature, platform mismatch | Static solve | Reimplement validation from constants and code. |
 | APK/JAR/.NET/Flutter/mobile bundle | Managed / mobile | Decompile first, then inspect native libraries. |
 
-### Step 2 — Evidence Notebook
+### Step 2 - Evidence Notebook
 
 Track every challenge with this template:
 
@@ -313,7 +313,7 @@ Solver path:
 
 ---
 
-## Cheatsheet — Commands & Workflows
+## Cheatsheet - Commands & Workflows
 
 ### Strings & File Identification
 
@@ -645,7 +645,7 @@ strings -n 8 labcopy/challenge | tee labcopy/strings.txt
 
 ## Solver Cookbook
 
-### XOR — Single Byte
+### XOR - Single Byte
 
 ```python
 def xor_byte(data, key):
@@ -658,7 +658,7 @@ for k in range(256):
         print(k, pt)
 ```
 
-### XOR — Repeating Key
+### XOR - Repeating Key
 
 ```python
 def xor_key(data, key):

@@ -2,6 +2,8 @@
 
 Command-focused notes. Start from [H4G Training](../H4G%20Training.md) or a blueprint first, then use this page for command syntax and variants.
 
+> 🛠️ **Interactive Tool:** Use the [0xrefs Interactive Command Reference](../0xrefs.html) to search, filter, and dynamically inject environment variables into pentesting commands.
+
 ## Recon And Enumeration
 
 - [Footprinting Cheat Sheet](Footprinting%20Cheat%20Sheet.md)
