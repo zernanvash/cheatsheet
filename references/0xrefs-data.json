@@ -136,6 +136,10 @@
       "WMI": {
         "label": "WMI",
         "description": "Windows Management Instrumentation."
+      },
+      "FTP": {
+        "label": "FTP",
+        "description": "File Transfer Protocol."
       }
     }
   },
@@ -301,6 +305,28 @@
       "name": "certipy"
     },
     {
+      "variants": [
+        {
+          "label": "check-protections",
+          "command": "checksec --file=$FILE\n"
+        }
+      ],
+      "description": "Verify binary security protections (NX, PIE, Canary, ASLR, RELRO).",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md"
+      ],
+      "name": "checksec"
+    },
+    {
       "command": "credspray.sh -t $IP -u findings.txt -c findings.txt\n",
       "description": "Spray discovered credentials across a target.",
       "os": [
@@ -338,6 +364,69 @@
         "https://gist.github.com/3xocyte/cfaf8a34f76569a8251bde65fe69dccc"
       ],
       "name": "dementor"
+    },
+    {
+      "variants": [
+        {
+          "label": "standard",
+          "command": "dig $DOMAIN A\n"
+        },
+        {
+          "label": "reverse",
+          "command": "dig -x $IP\n"
+        },
+        {
+          "label": "axfr",
+          "command": "dig axfr $DOMAIN @$IP\n"
+        },
+        {
+          "label": "trace",
+          "command": "dig $DOMAIN +trace\n"
+        }
+      ],
+      "description": "DNS lookup, reverse lookup, trace recursion path, or request zone transfer using dig.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp",
+        "cli"
+      ],
+      "service": [
+        "DNS"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Dig%20Cheat%20Sheet.md"
+      ],
+      "name": "dig"
+    },
+    {
+      "variants": [
+        {
+          "label": "scan",
+          "command": "nmap --script smb-vuln-ms17-010 -p445 $IP\n"
+        }
+      ],
+      "description": "Scan for MS17-010 (EternalBlue) vulnerability in SMBv1.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp"
+      ],
+      "service": [
+        "SMB"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/EternalBlue%20Cheat%20Sheet.md"
+      ],
+      "name": "eternalblue"
     },
     {
       "variants": [
@@ -423,6 +512,40 @@
         "https://github.com/p0dalirius/FindUncommonShares"
       ],
       "name": "finduncommonshares"
+    },
+    {
+      "variants": [
+        {
+          "label": "mirror",
+          "command": "wget -m ftp://anonymous:anonymous@$IP/\n"
+        },
+        {
+          "label": "login",
+          "command": "ftp $IP\n"
+        },
+        {
+          "label": "crack",
+          "command": "hydra -l $USER -P /usr/share/wordlists/rockyou.txt ftp://$IP\n"
+        }
+      ],
+      "description": "Mirror anonymous FTP, connect interactively, or password spray.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp",
+        "cli"
+      ],
+      "service": [
+        "FTP"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/FTP%20Cheat%20Sheet.md"
+      ],
+      "name": "ftp"
     },
     {
       "command": "uv run gettgtpkinit.py $DOMAIN/$DC -cert-pfx crt.pfx -pfx-pass $PASSWORD out.ccache\n",
@@ -1292,8 +1415,42 @@
     {
       "variants": [
         {
+          "label": "trace-libc",
+          "command": "ltrace -o ltrace.log ./$FILE\n"
+        }
+      ],
+      "description": "Trace library calls (strcmp, strlen, memcmp, etc.) in dynamic binaries.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md"
+      ],
+      "name": "ltrace"
+    },
+    {
+      "variants": [
+        {
           "label": "dump",
           "command": ".\\mimikatz.exe \"privilege::debug\" \"token::elevate\" \"sekurlsa::logonpasswords\" \"lsadump::sam\" \"exit\"\n"
+        },
+        {
+          "label": "lsass-offline",
+          "command": ".\\mimikatz.exe \"privilege::debug\" \"sekurlsa::minidump lsass.dmp\" \"sekurlsa::logonpasswords\" \"exit\"\n"
+        },
+        {
+          "label": "pth",
+          "command": ".\\mimikatz.exe \"privilege::debug\" \"sekurlsa::pth /user:$USER /domain:$DOMAIN /ntlm:$HASH /run:cmd.exe\" \"exit\"\n"
+        },
+        {
+          "label": "ptt",
+          "command": ".\\mimikatz.exe \"kerberos::ptt ticket.kirbi\" \"exit\"\n"
         },
         {
           "label": "dcsync-all",
@@ -1708,6 +1865,44 @@
       "name": "pywhisker"
     },
     {
+      "variants": [
+        {
+          "label": "headers",
+          "command": "readelf -h $FILE\n"
+        },
+        {
+          "label": "sections",
+          "command": "readelf -S $FILE\n"
+        },
+        {
+          "label": "symbols",
+          "command": "readelf -s $FILE\n"
+        },
+        {
+          "label": "imports",
+          "command": "readelf -r $FILE\n"
+        },
+        {
+          "label": "dynamic",
+          "command": "readelf -d $FILE\n"
+        }
+      ],
+      "description": "Inspect ELF headers, sections, symbols, relocation table, or dynamic tags.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md"
+      ],
+      "name": "readelf"
+    },
+    {
       "command": "redis-cli -h $IP --user $USER -a $PASSWORD\n",
       "description": "Connect to a Redis instance with authentication.",
       "os": [
@@ -1777,6 +1972,32 @@
         "https://github.com/lgandx/Responder"
       ],
       "name": "responder"
+    },
+    {
+      "variants": [
+        {
+          "label": "search-gadget",
+          "command": "ROPgadget --binary $FILE | grep '$SEARCH'\n"
+        },
+        {
+          "label": "ropper-search",
+          "command": "ropper --file $FILE --search '$SEARCH'\n"
+        }
+      ],
+      "description": "Search for assembly instruction gadgets to build return-oriented programming (ROP) exploits.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Exploitation"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md"
+      ],
+      "name": "ropgadget"
     },
     {
       "command": "rpcclient -U '' -N $IP\n",
@@ -2153,6 +2374,36 @@
       "name": "ssh"
     },
     {
+      "variants": [
+        {
+          "label": "trace-syscalls",
+          "command": "strace -f -o strace.log ./$FILE\n"
+        },
+        {
+          "label": "filter-files",
+          "command": "strace -e trace=file ./$FILE\n"
+        },
+        {
+          "label": "filter-specific",
+          "command": "strace -e trace=openat,read,write,execve ./$FILE\n"
+        }
+      ],
+      "description": "Trace system calls, processes, and signals.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md"
+      ],
+      "name": "strace"
+    },
+    {
       "command": "./username-anarchy --input-file ./test-names.txt --select.format first.last\n",
       "description": "Generate candidate usernames from a list of real names.",
       "os": [
@@ -2169,6 +2420,32 @@
         "https://github.com/urbanadventurer/username-anarchy"
       ],
       "name": "username-anarchy"
+    },
+    {
+      "variants": [
+        {
+          "label": "convert-wat",
+          "command": "wasm2wat $FILE -o module.wat\n"
+        },
+        {
+          "label": "decompile",
+          "command": "wasm-decompile $FILE > module.c\n"
+        }
+      ],
+      "description": "Convert WebAssembly to WebAssembly Text (WAT) or decompile to pseudo-C code.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md"
+      ],
+      "name": "wasm2wat"
     },
     {
       "command": "wfuzz -u http://$IP -H \"Host: FUZZ.$DOMAIN\" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 315\n",
