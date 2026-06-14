@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=ede11e0290f790017dba33ce16e39d74e60f0887">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>CGB - Google CTF 2025: Challenge Writeup &amp; Analysis | allthingsreversed.io</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="CGB - Google CTF 2025: Challenge Writeup &amp; Analysis" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Articles for the allthingsreversed.io blog" />
+<meta property="og:description" content="Articles for the allthingsreversed.io blog" />
+<link rel="canonical" href="http://allthingsreversed.io/20250725-cgb-google-ctf.html" />
+<meta property="og:url" content="http://allthingsreversed.io/20250725-cgb-google-ctf.html" />
+<meta property="og:site_name" content="allthingsreversed.io" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-07-25T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="CGB - Google CTF 2025: Challenge Writeup &amp; Analysis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-07-25T00:00:00+00:00","datePublished":"2025-07-25T00:00:00+00:00","description":"Articles for the allthingsreversed.io blog","headline":"CGB - Google CTF 2025: Challenge Writeup &amp; Analysis","mainEntityOfPage":{"@type":"WebPage","@id":"http://allthingsreversed.io/20250725-cgb-google-ctf.html"},"url":"http://allthingsreversed.io/20250725-cgb-google-ctf.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>allthingsreversed.io</h1>
+        </a>
+        <h2>Articles for the allthingsreversed.io blog</h2>
+
+        <section id="downloads">
+
+          <a href="https://github.com/pawlos/allthingsreversed.io" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="cgb">CGB</h1>
+
+<p>ℹ️ Part of this analysis is done post CTF.</p>
+
+<p><em>CGB</em> was one of the reversing challenges from Google CTF 2025. It was solved by 23 teams and during the CTF I did mange to get part of the solution but not the final flag. After the CTF, with a bit more time, I attempted to solve it, and here’s a writeup.</p>
+
+<p>The task description reads:</p>
+
+<blockquote>
+  <p>A game I found in a developer’s drawer, it looks like an unfinished game about a character jumping rocks?</p>
+</blockquote>
+
+<p>and we are given an attachment that contains the following files</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── README.md
+├── hash
+│   └── gbcolor.xml
+└── roms
+    ├── gbcolor
+    │   ├── gbc_boot.1
+    │   └── gbc_boot.2
+    └── gctf
+        └── gctf.gb
+</code></pre></div></div>
+
+<p>Checking the <code class="language-plaintext highlighter-rouge">README.md</code>, we can see extra information about how we can run the game.</p>
+
+<blockquote>
+  <p>I don’t have a console with me, but you can emulate it with <a href="https://www.mamedev.org/">MAME</a>:</p>
+
+  <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>/usr/games/mame <span class="nt">-hashpath</span> <span class="nb">hash</span> <span class="nt">-window</span> <span class="nt">-rp</span> roms gbcolor gctf
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Let’s boot up the game and see what it’s about.</p>
+
+<p>When starting the game we can see a main screen
+<img src="/content/images/2025/07/cgb_start_screen.jpg" alt="" /></p>
+
+<p>and after pressing start we can start it</p>
+
+<p><img src="/content/images/2025/07/cgb_game.jpg" alt="" /></p>
+
+<p>but after a while, the game stops and displays garbage on screen.</p>
+
+<p><img src="/content/images/2025/07/cgb_endstate.jpg" alt="" /></p>
+
+<p>From the MAME documentation, we find that adding <code class="language-plaintext highlighter-rouge">-debug</code> to the command line we can run it with a debugger. That will be handy for sure.</p>
+
+<p>Let’s see what’s inside it using Ghidra.</p>
+
+<h2 id="static-analysis">Static analysis</h2>
+
+<p>Ghidra by default is not able to load <code class="language-plaintext highlighter-rouge">gctf.gb</code> file but we can install an extension <a href="https://github.com/Gekkio/GhidraBoy">GhidraBoy</a>. With that, it’s still recognized as Raw bytes, but we can pick a Sharp SM83 CPU as language which is what we need for this ROM. That’s the one that’s used in Game Boy Color.</p>
+
+<p>The file is loaded but not much analysis is performed and no memory maps are automatically created. We can overcome that consulting with the specification - I’ve used <a href="https://gbdev.io/">gbdev.io</a>. We can find there info that, in case of a ROM, the start address is at address 0x150 - we can navigate there and press <code class="language-plaintext highlighter-rouge">d</code> to convert bytes to code.</p>
+
+<p>As for the memory maps, the documentation also helps here and we can quickly create a couple more regions</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>region name</th>
+      <th>start</th>
+      <th>end</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ram</td>
+      <td>0x0000</td>
+      <td>0x7fff</td>
+    </tr>
+    <tr>
+      <td>video_bank</td>
+      <td>0x8000</td>
+      <td>0x9ffe</td>
+    </tr>
+    <tr>
+      <td>work_ram</td>
+      <td>0xc000</td>
+      <td>0xcffe</td>
+    </tr>
+    <tr>
+      <td>work_ram2</td>
+      <td>0xd000</td>
+      <td>0xdffe</td>
+    </tr>
+    <tr>
+      <td>OAM</td>
+      <td>0xfe00</td>
+      <td>0xfe9e</td>
+    </tr>
+    <tr>
+      <td>io_controls</td>
+      <td>0xff00</td>
+      <td>0xff7e</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Thanks to that, we won’t be dealing with errors that some references are not defined. Also thanks to the documentation we can give specific locations more meaningful names. Instead of <code class="language-plaintext highlighter-rouge">0xff40</code>, we can use <code class="language-plaintext highlighter-rouge">LCD_Control</code>, and <code class="language-plaintext highlighter-rouge">0xff41</code> is <code class="language-plaintext highlighter-rouge">LCD_Status</code>.</p>
+
+<p>The code that starts at <code class="language-plaintext highlighter-rouge">0x150</code> is basically the main loop of the game.</p>
+
+<p>Having more meaningful names is helpful as we can identify functions where some input is accessed. Such function is one at 0x228 (<code class="language-plaintext highlighter-rouge">check_for_key</code>). It reads the joypad input (<code class="language-plaintext highlighter-rouge">0xff00</code>) twice, first selecting the d-pad to be read</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  0234 3e 20           LD           A,0x20                  ; select d-pad
+  0236 77              LD           (HL=&gt;joypad_input),A
+  0237 7e              LD           A,(HL=&gt;joypad_input)
+  0238 2f              CPL
+  0239 e6 0f           AND          0xf
+  023b cb 27           SLA          A
+  023d cb 27           SLA          A
+  023f cb 27           SLA          A
+  0241 cb 27           SLA          A
+  0243 47              LD           B,A
+</code></pre></div></div>
+<p>and then shifting the 4 lower bits to be the top 4, and then reading the buttons</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  0244 3e 10           LD           A,0x10                  ; select buttons
+  0246 77              LD           (HL=&gt;joypad_input),A
+  0247 7e              LD           A,(HL=&gt;joypad_input)
+  0248 2f              CPL
+  0249 e6 0f           AND          0xf
+  024b b0              OR           B
+</code></pre></div></div>
+<p>and OR-ing them together.
+So after those operations the <code class="language-plaintext highlighter-rouge">A</code> register will hold:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>A-value</th>
+      <th>key pressed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0x80</td>
+      <td>Down</td>
+    </tr>
+    <tr>
+      <td>0x40</td>
+      <td>Up</td>
+    </tr>
+    <tr>
+      <td>0x20</td>
+      <td>Left</td>
+    </tr>
+    <tr>
+      <td>0x10</td>
+      <td>Right</td>
+    </tr>
+    <tr>
+      <td>0x08</td>
+      <td>Start</td>
+    </tr>
+    <tr>
+      <td>0x04</td>
+      <td>Select</td>
+    </tr>
+    <tr>
+      <td>0x02</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td>0x01</td>
+      <td>A</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>And if we follow the logic at the end of this function, it seems to be storing the inputs in the buffer located at <code class="language-plaintext highlighter-rouge">0xc001</code> and <code class="language-plaintext highlighter-rouge">0xc051</code>. When new input is detected, the old buffer is shifted to make room, and the new key is placed at the end. Also the last key is available as a value at memory <code class="language-plaintext highlighter-rouge">0xc000</code>.</p>
+
+<p>This function is called from 3 places: <code class="language-plaintext highlighter-rouge">0x1c0</code>, <code class="language-plaintext highlighter-rouge">0x1e2</code> and <code class="language-plaintext highlighter-rouge">0x220</code>.</p>
+
+<p>The first two are directly in the <code class="language-plaintext highlighter-rouge">main_loop</code>. The first instance is to wait for a start key on the main screen - which is obvious having the current knowledge of the program:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wait_for_game_start:
+          01c0 cd 28 02        CALL         check_for_key
+          01c3 fa 00 c0        LD           A,(input_key)
+          01c6 fe 08           CP           KEY_START       ; 0x08
+          01c8 20 f6           JR           NZ,wait_for_game_start
+</code></pre></div></div>
+
+<p>The second one is at <code class="language-plaintext highlighter-rouge">0x1e2</code> and just after that there’s a function <code class="language-plaintext highlighter-rouge">0x5b9</code> where the input at <code class="language-plaintext highlighter-rouge">0xc001</code> is compared with the following values <code class="language-plaintext highlighter-rouge">[0x01, 0x02, 0x10, 0x20, 0x10, 0x20, 0x80, 0x80, 0x40, 0x40]</code> and if we map it to the keys we get <code class="language-plaintext highlighter-rouge">[A, B, Right, Left, Right, Left, Down, Down, Up, Up]</code> which is <a href="https://en.wikipedia.org/wiki/Konami_Code">Konami code</a> in reverse.</p>
+
+<p>If we try that during the game we are presented with the next screen.</p>
+
+<p><img src="/content/images/2025/07/cgb_flag.jpg" alt="" /></p>
+
+<p>Some progress, but the flag is not there yet.</p>
+
+<p>The full function in question:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>undefined check_konami_code()
+    05b9 f5              PUSH         AF
+    05ba c5              PUSH         BC
+    05bb d5              PUSH         DE
+    05bc e5              PUSH         HL
+    05bd 21 40 4d        LD           pKonami,konami_keys
+    05c0 11 01 c0        LD           pInput,input
+    05c3 0e 0a           LD           C,0xa
+    05c5 1a              LD           A,(pInput=&gt;input)
+    05c6 be              CP           (pKonami=&gt;konami_keys)
+    05c7 20 0d           JR           NZ,no_konami_code
+    05c9 23              INC          pKonami
+    05ca 13              INC          pInput
+    05cb 0d              DEC          C
+    05cc 20 f7           JR           NZ,keep_checking
+    05ce e1              POP          pKonami
+    05cf d1              POP          pInput
+    05d0 c1              POP          BC
+    05d1 f1              POP          AF
+    05d2 e1              POP          pKonami
+    05d3 c3 1d 02        JP           konami_code_accepted
+</code></pre></div></div>
+
+<p>So we should continue <code class="language-plaintext highlighter-rouge">konami_code_accepted</code> at address <code class="language-plaintext highlighter-rouge">0x21d</code>.</p>
+
+<p>The function at <code class="language-plaintext highlighter-rouge">0x21d</code> is quite simple</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>undefined konami_code_accepted()
+    021d cd a5 02        CALL         show_flag_screen_after_konami
+LAB_0220:
+    0220 cd 28 02        CALL         check_for_key
+    0223 cd 5d 03        CALL         FUN_035d
+    0226 18 f8           JR           LAB_0220
+</code></pre></div></div>
+
+<p>We need to check the function located at <code class="language-plaintext highlighter-rouge">0x35d</code>. That one is also not very interesting, but the function it calls located at 0x369 is.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>undefined FUN_0369()
+    0369 f5              PUSH         AF
+    036a c5              PUSH         BC
+    036b d5              PUSH         DE
+    036c e5              PUSH         HL
+    036d cd d3 02        CALL         FUN_02d3
+    0370 cd 70 04        CALL         FUN_0470
+    0373 cd fc 02        CALL         FUN_02fc
+    ...
+</code></pre></div></div>
+
+<p>If we check those three functions, their functionality is as follows:</p>
+
+<p>Starting from the top:</p>
+<ul>
+  <li>copy our input buffer from <code class="language-plaintext highlighter-rouge">0xc052</code> to <code class="language-plaintext highlighter-rouge">0xc029</code> and transform it</li>
+  <li>copy the transform data from <code class="language-plaintext highlighter-rouge">0xc052</code> to <code class="language-plaintext highlighter-rouge">0x99e1</code></li>
+  <li>compare the transformed data from <code class="language-plaintext highlighter-rouge">0xc029</code> with a predefined buffer located at <code class="language-plaintext highlighter-rouge">0x52b7</code></li>
+</ul>
+
+<p>We can start from the bottom.</p>
+
+<p>The compare function is quite straightforward:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>undefined FUN_02fc()
+    02fc f5              PUSH         AF
+    02fd c5              PUSH         BC
+    02fe d5              PUSH         DE
+    02ff e5              PUSH         HL
+    0300 21 29 c0        LD           HL,prepared_data_c029
+    0303 11 b7 52        LD           DE,final_data
+    0306 0e 28           LD           C,0x28
+LAB_0308
+    0308 1a              LD           A,(DE=&gt;final_data)
+    0309 47              LD           B,A
+    030a 2a              LD           A,(HL+)=&gt;prepared_data_c029
+    030b b8              CP           B
+    030c 20 18           JR           NZ,data_do_not_match
+    030e 13              INC          DE
+    030f 0d              DEC          cnt
+    0310 20 f6           JR           NZ,LAB_0308
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">final_data</code> is:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0x1c, 0x17, 0xc7, 0x11, 0xc0, 0xc6, 0xc5, 0x85, 0xa3, 0x57, 0x9d, 0xf1, 0xb2, 0xae, 0x01, 0x51,
+0xe0, 0xf5, 0x18, 0xb1, 0xaf, 0x7f, 0x13, 0x32, 0x39, 0xeb, 0xe6, 0x26, 0x96, 0x26, 0x8b, 0xaa,
+0x1f, 0x23, 0x00, 0x37, 0x86, 0x7a, 0x8d, 0xbc
+</code></pre></div></div>
+
+<p>and if all the bytes matches we do execute some more functions but for now we need to find out what would give us those final bytes.</p>
+
+<p>The middle function seems to be responsible for displaying our input to the screen so it will probably show the flag instead of the empty space we saw previously.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>undefined FUN_0470()
+  0470 f5              PUSH         AF
+  0471 c5              PUSH         BC
+  0472 d5              PUSH         DE
+  0473 e5              PUSH         HL
+  0474 21 e1 99        LD           HL,DAT_99e1
+  0477 11 52 c0        LD           DE,DAT_c052
+  047a 0e 28           LD           C,0x28
+LAB_047c
+  047c 1a              LD           A,(DE=&gt;DAT_c052)
+  047d cd 30 00        CALL         VRAM_accessible
+  0480 22              LD           (HL+),A
+  0481 13              INC          DE
+  0482 0d              DEC          C
+  0483 20 f7           JR           NZ,LAB_047c
+  0485 e1              POP          HL
+  0486 d1              POP          DE
+  0487 c1              POP          BC
+  0488 f1              POP          AF
+  0489 c9              RET
+</code></pre></div></div>
+
+<p>so that leaves us “only” with the first one. We need to understand how we get the correct bytes into our buffer so that later they are displayed on the screen by the <code class="language-plaintext highlighter-rouge">FUN_0470</code> routine and compared with the final ones inside <code class="language-plaintext highlighter-rouge">FUN_02fc</code>.</p>
+
+<h2 id="function-fun_02d3">Function FUN_02d3</h2>
+
+<p>This one is the most complex one from all of those before so it is justified to give it a separate chapter.</p>
+
+<p>The function starts with yet another data copy, and then we call another function on our buffer.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    02e3 21 29 c0        LD           HL,prepared_data_c029
+    02e6 11 7d c0        LD           DE,DAT_c07d
+    02e9 0e 00           LD           C,0x0
+LAB_02eb:
+    02eb cd 27 53        CALL         decode_flag
+    02ee 23              INC          HL
+    02ef 23              INC          HL
+    02f0 0c              INC          C
+    02f1 0c              INC          C
+    02f2 79              LD           A,C
+    02f3 fe 28           CP           0x28
+    02f5 20 f4           JR           NZ,LAB_02eb
+</code></pre></div></div>
+
+<p>We operate on 2 bytes and call the <code class="language-plaintext highlighter-rouge">decode_flag</code> function until we reach <code class="language-plaintext highlighter-rouge">0x28</code>. So what’s going on inside <code class="language-plaintext highlighter-rouge">decode_flag</code>?
+This part isn’t entirely clear to me, but it seems that we are loading some color values. First part of the function populates <code class="language-plaintext highlighter-rouge">0x99e1</code> with the values <code class="language-plaintext highlighter-rouge">07 01 00 05 04 03 06 02 07 00 01 05 03 04 02 06 00 07 05 01 03 04 06 02 07 00 05 01 03 04 02 06 07 00 01 05</code> (those are defined in <code class="language-plaintext highlighter-rouge">gbc_boot.2</code>) which seem to be palette numbers. Each number is shifted by 3 and used to load four color values associated with that palette.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    5349 cd 30 00        CALL         VRAM_accessible
+    534c fa 69 ff        LD           A,(BCPD_BGPD)
+    534f 12              LD           (DE),A
+    5350 13              INC          DE
+    5351 34              INC          (HL)
+    5352 0d              DEC          C
+    5353 20 f4           JR           NZ,load_4b
+</code></pre></div></div>
+
+<p>later we do the same but we pick next number from the list and we xor those values together. For example for the pair <code class="language-plaintext highlighter-rouge">(7,1)</code> we would get the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 0x13 0x78 0xF7 0x69 (7)
+ 0x7F 0x42 0x3D 0x0A (1)
+</code></pre></div></div>
+
+<p>and XOR-ing them together produces <code class="language-plaintext highlighter-rouge">0x6C 0x3A 0xCA 0x63</code>.</p>
+
+<p>This was only a preparation. Now the real work begins. Near the end of this function</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  5384 cd ef 52        CALL         FUN_52ef
+  5387 cd 00 53        CALL         FUN_5300
+  538a 0c              INC          C
+  538b 79              LD           A,C
+  538c fe 10           CP           0x10
+  538e 20 f4           JR           NZ,LAB_5384
+  5390 c1              POP          BC
+  5391 f1              POP          AF
+  5392 c9              RET
+</code></pre></div></div>
+
+<p>first we load the xored color value from the index stored in register C. We take it modulo 4.</p>
+
+<p>Next, we do some byte and bit manipulation:</p>
+
+<p>For each pair of input bytes (call them <code class="language-plaintext highlighter-rouge">A</code>, <code class="language-plaintext highlighter-rouge">B</code>), we perform the following 16 times:</p>
+<ul>
+  <li>we take the B and do the <code class="language-plaintext highlighter-rouge">RLCA</code> and <code class="language-plaintext highlighter-rouge">RRCA</code> based on the bits of the xored color value</li>
+  <li>we xor the output of that with <code class="language-plaintext highlighter-rouge">A</code> and store it in a <code class="language-plaintext highlighter-rouge">temp</code> variable</li>
+  <li>we store B as a new A</li>
+  <li>for the new B we put the calculated temp variable</li>
+</ul>
+
+<p>In Python, we could write it as:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">shuffle_bits</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="n">B</span> <span class="o">&amp;=</span> <span class="mh">0xFF</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">while</span> <span class="n">C</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">B</span> <span class="o">&amp;</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="p">((</span><span class="n">A</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">A</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="p">((</span><span class="n">A</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">A</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="n">B</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="n">C</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">A</span>
+
+<span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">ab_prim</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ab</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">ab_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">shuffle_bits</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">ab_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="n">a</span>
+        <span class="n">ab_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ab_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ab_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+    <span class="k">return</span> <span class="n">ab_prim</span>
+</code></pre></div></div>
+
+<p>and we store those shuffled values as our new input. We repeat this process until all bytes are processed. And that’s the input that is compared with our predefined buffer at <code class="language-plaintext highlighter-rouge">0x52b7</code>.</p>
+
+<p>Finding the input is trivial now. We can check all the possible 2 byte pairs and see which one, after shuffling will give us the correct values.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">idx</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span>
+    <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span>
+    <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x06</span>
+<span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">check_bits</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="n">B</span> <span class="o">&amp;=</span> <span class="mh">0xFF</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">while</span> <span class="n">C</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">B</span> <span class="o">&amp;</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="p">((</span><span class="n">A</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">A</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="p">((</span><span class="n">A</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">A</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="n">B</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+        <span class="n">C</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">A</span>
+
+<span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">ab_prim</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ab</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">ab_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">check_bits</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">ab_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="n">a</span>
+        <span class="n">ab_prim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ab_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ab_prim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+    <span class="k">return</span> <span class="n">ab_prim</span>
+
+<span class="n">vals</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x03</span><span class="p">,</span> <span class="mh">0x1c</span><span class="p">,</span> <span class="mh">0x37</span><span class="p">,</span> <span class="mh">0x5B</span><span class="p">],</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x7f</span><span class="p">,</span> <span class="mh">0x42</span><span class="p">,</span> <span class="mh">0x3d</span><span class="p">,</span> <span class="mh">0x0a</span><span class="p">],</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x76</span><span class="p">,</span> <span class="mh">0x5b</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x1c</span><span class="p">],</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x2e</span><span class="p">,</span> <span class="mh">0x79</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">,</span> <span class="mh">0x11</span><span class="p">],</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x33</span><span class="p">,</span> <span class="mh">0x58</span><span class="p">,</span> <span class="mh">0x35</span><span class="p">],</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x7a</span><span class="p">,</span> <span class="mh">0x7D</span><span class="p">,</span> <span class="mh">0x4c</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">],</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x0f</span><span class="p">,</span> <span class="mh">0x4a</span><span class="p">,</span> <span class="mh">0x56</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">],</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="p">[</span><span class="mh">0x13</span><span class="p">,</span> <span class="mh">0x78</span><span class="p">,</span> <span class="mh">0xf7</span><span class="p">,</span> <span class="mh">0x69</span><span class="p">]}</span>
+
+<span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">keys</span><span class="p">.</span><span class="n">append</span><span class="p">([(</span><span class="n">c1</span> <span class="o">^</span> <span class="n">c2</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span><span class="n">v2</span><span class="p">)])</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mh">0x1c</span><span class="p">,</span> <span class="mh">0x17</span><span class="p">,</span> <span class="mh">0xc7</span><span class="p">,</span> <span class="mh">0x11</span><span class="p">,</span> <span class="mh">0xc0</span><span class="p">,</span> <span class="mh">0xc6</span><span class="p">,</span> <span class="mh">0xc5</span><span class="p">,</span> <span class="mh">0x85</span><span class="p">,</span> <span class="mh">0xa3</span><span class="p">,</span> <span class="mh">0x57</span><span class="p">,</span> <span class="mh">0x9d</span><span class="p">,</span> <span class="mh">0xf1</span><span class="p">,</span> <span class="mh">0xb2</span><span class="p">,</span> <span class="mh">0xae</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x51</span><span class="p">,</span>
+    <span class="mh">0xe0</span><span class="p">,</span> <span class="mh">0xf5</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">,</span> <span class="mh">0xb1</span><span class="p">,</span> <span class="mh">0xaf</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0x32</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0xeb</span><span class="p">,</span> <span class="mh">0xe6</span><span class="p">,</span> <span class="mh">0x26</span><span class="p">,</span> <span class="mh">0x96</span><span class="p">,</span> <span class="mh">0x26</span><span class="p">,</span> <span class="mh">0x8b</span><span class="p">,</span> <span class="mh">0xaa</span><span class="p">,</span>
+    <span class="mh">0x1f</span><span class="p">,</span> <span class="mh">0x23</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x37</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0x7a</span><span class="p">,</span> <span class="mh">0x8d</span><span class="p">,</span> <span class="mh">0xbc</span> <span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">part_flag</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">255</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">255</span><span class="p">):</span>
+            <span class="n">candidate</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">l</span><span class="p">]</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="n">part_flag</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">final</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">part_flag</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">c</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">part_flag</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Res? </span><span class="si">{</span><span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="p">[</span><span class="si">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">part_flag</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="n">part_flag</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Correct? </span><span class="si">{</span><span class="nb">all</span><span class="p">([</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">final</span><span class="p">)])</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>What it does it to first calculate all the color XOR values and store them inside keys. And then later find an initial value of bytes that when shuffled produce the expected result.</p>
+
+<p>Running the script will give us the correct values <code class="language-plaintext highlighter-rouge">['0x4b', '0x4c', '0x37', '0x48', '0x44', '0x37', '0x3d', '0x0a', '0x47', '0x48', '0x39', '0x3d', '0x2a', '0x48', '0x0a', '0x0f', '0x25', '0x48', '0xf', '0x16', '0x2b', '0x30', '0x1a', '0x23', '0x40', '0x14', '0x48', '0x16', '0x37', '0x28', '0x48', '0x26', '0x47', '0x10', '0x48', '0x2b', '0x4a', '0x0e', '0x1c', '0x0b']</code>.</p>
+
+<p>But we’re still missing one piece: how do we input it, and where?</p>
+
+<p>If we go back to the function that read the joypad input (<code class="language-plaintext highlighter-rouge">0x228</code>) if we detect that there was an input we call a few function and one of them is at <code class="language-plaintext highlighter-rouge">0x457</code>. It’s not very lengthy, but it reads a value from <code class="language-plaintext highlighter-rouge">0xc07a</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>undefined store_key()
+    0457 f5              PUSH         AF
+    0458 c5              PUSH         BC
+    0459 d5              PUSH         DE
+    045a e5              PUSH         HL
+    045b 21 7b c0        LD           HL,cnt_00_ff
+    045e 4e              LD           C,(HL=&gt;cnt_00_ff)
+    045f cb 21           SLA          C
+    0461 fa 00 c0        LD           A,(input_key)
+    0464 3d              DEC          A
+    0465 46              LD           B,(HL=&gt;cnt_00_ff)
+    0466 a0              AND          B
+    0467 b1              OR           C
+    0468 ea 51 c0        LD           (DAT_c051),A
+    046b e1              POP          HL
+    046c d1              POP          DE
+    046d c1              POP          BC
+    046e f1              POP          AF
+    046f c9              RET
+</code></pre></div></div>
+
+<p>That value goes from <code class="language-plaintext highlighter-rouge">0x00</code> to <code class="language-plaintext highlighter-rouge">0xFF</code>, and the current value is shifted left by 1 and OR-ed with the provided key. The computed value is what’s used in the subsequent calculations.</p>
+
+<p>Now, I’m not sure if it’s possible to reliably input the correct values from within the game (since we don’t see the counter), but we can fake it. If we put a breakpoint at <code class="language-plaintext highlighter-rouge">0x468</code> we can set <code class="language-plaintext highlighter-rouge">A</code> to the correct value from our python script and it should be good.</p>
+
+<p>Note: I did try to automate that part but it seems MAME isn’t quite there yet in that regard so there’s a bit of manual work required.</p>
+
+<p>We can use <code class="language-plaintext highlighter-rouge">bpset 0x468</code>, press a key and then do <code class="language-plaintext highlighter-rouge">A=&lt;value from Python output&gt;</code>, and the flag should begin to appear.</p>
+
+<p><img src="/content/images/2025/07/cgb_final_flag.jpg" alt="" /></p>
+
+<p>Final flag: <code class="language-plaintext highlighter-rouge">CTF{i_H@d_fuN_L3aRniNG_cGB_h0w_@B0u7_u?}</code></p>
+
+<p>Challenge solved — and I definitely learned a lot about Game Boy Color internals along the way.</p>
+
+      </section>
+    </div>
+  </body>
+</html>

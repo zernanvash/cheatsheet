@@ -474,6 +474,128 @@ if s.check() == sat:
     print(bytes([m[c].as_long() for c in chars]))
 ```
 
+## Linear And Matrix Solvers
+
+Use when a checker computes repeated sums like `a0*flag[0] + a1*flag[1] + ... == target`, matrix products, or many modulo-byte equations.
+
+Z3 modulo 256 system:
+
+```python
+from z3 import BitVec, Solver, sat
+
+SIZE = 64
+matrix = [...]  # row-major SIZE * SIZE coefficients
+target = [...]  # SIZE target bytes
+
+flag = [BitVec(f"flag_{i}", 8) for i in range(SIZE)]
+s = Solver()
+
+for c in flag:
+    s.add(c >= 0x20, c <= 0x7e)
+
+for row in range(SIZE):
+    acc = 0
+    for col in range(SIZE):
+        acc += matrix[row * SIZE + col] * flag[col]
+    s.add((acc & 0xff) == target[row])
+
+if s.check() == sat:
+    m = s.model()
+    print(bytes(m[c].as_long() for c in flag))
+```
+
+Decode obfuscated constants before solving:
+
+```python
+def decode_byte(b):
+    return (13 * ((~b) & 0xff) + 223) & 0xff
+
+matrix = [decode_byte(b) for b in matrix_raw]
+target = [decode_byte(b) for b in target_raw]
+```
+
+NumPy quick solve for ordinary linear systems:
+
+```python
+import numpy as np
+
+A = np.array(coefficients, dtype=np.int64)
+b = np.array(targets, dtype=np.int64)
+x = np.linalg.lstsq(A, b, rcond=None)[0]
+print(bytes(round(v) & 0xff for v in x))
+```
+
+Try `np.linalg.solve(A, b)` for square invertible systems and `np.linalg.pinv(A) @ b` when a pseudoinverse is useful.
+
+## VM And State Machine Helpers
+
+Use when a program has a dispatcher loop, custom opcodes, state tables, or many tiny state functions.
+
+Trace record shape:
+
+```python
+trace = []
+
+def log(pc, op, *args):
+    trace.append((pc, op, args))
+
+log(pc, "LOAD_INPUT", idx)
+log(pc, "PUSH", value)
+log(pc, "MUL")
+log(pc, "STORE", addr)
+
+for pc, op, args in trace:
+    print(pc, op, args)
+```
+
+Translate trace comments into equations:
+
+```python
+rows = []
+current = []
+
+for line in open("operations.log", encoding="utf-8"):
+    line = line.strip()
+    if "Load from memory[" in line:
+        current.append(("load", int(line.split("[")[1].split("]")[0])))
+    elif "Push immediate" in line:
+        current.append(("imm", int(line.rsplit(" ", 1)[1])))
+    elif "Store to memory[" in line:
+        rows.append(current)
+        current = []
+```
+
+Graph/path validators:
+
+```python
+from collections import defaultdict
+
+edges = defaultdict(list)
+for src, dst, symbol in transitions:
+    edges[src].append((dst, symbol))
+
+path = []
+used = set()
+
+def dfs(node):
+    if len(path) == TARGET_EDGE_COUNT:
+        return True
+    for nxt, sym in sorted(edges[node], key=lambda e: len(edges[e[0]])):
+        key = (node, nxt, sym)
+        if key in used:
+            continue
+        used.add(key)
+        path.append(sym)
+        if dfs(nxt):
+            return True
+        path.pop()
+        used.remove(key)
+    return False
+
+dfs(0)
+print(bytes(path))
+```
+
 ## angr Skeleton
 
 ```python
@@ -561,7 +683,9 @@ with open("sample", "rb") as f:
 Common tools:
 
 - `pyinstxtractor.py` - extract PyInstaller bundles
+- `pyinstxtractor-ng` - newer PyInstaller extraction helper
 - `uncompyle6`, `decompyle3`, or PyLingual - decompile Python bytecode when supported
+- Pyarmor static unpackers - recover bytecode/disassembly from protected Python when safe and legal
 
 Flow:
 
@@ -570,6 +694,7 @@ Flow:
 3. Match Python version.
 4. Decompile `.pyc`.
 5. Read constants with `strings` or `dis` when decompile fails.
+6. Trust bytecode/disassembly over broken generated source.
 
 Python `dis`:
 
@@ -580,6 +705,93 @@ def check(x):
     return x[::-1] == "terces"
 
 dis.dis(check)
+```
+
+Marshal bytecode key brute force:
+
+```python
+import dis
+import marshal
+
+blob = bytes.fromhex("...")
+
+for key in range(256):
+    try:
+        code = marshal.loads(bytes(b ^ key for b in blob))
+        print("key", key)
+        dis.dis(code)
+        break
+    except (EOFError, TypeError, ValueError):
+        pass
+```
+
+Pyarmor cleanup clues:
+
+- ignore protector enter/exit wrapper markers
+- replace readable assert/runtime helper calls with their underlying value
+- split large disassembly into the function you care about first
+- reconstruct loops and checks one basic block at a time
+
+## Script And Payload Deobfuscation
+
+Useful for shell, zsh, bash, plist, mobileconfig, and staged payload challenges.
+
+```python
+from html import unescape
+
+script = open("document.wflow", encoding="utf-8", errors="ignore").read()
+script = unescape(script)
+print(script)
+```
+
+ROT/reverse/tr-like transforms:
+
+```python
+import codecs
+
+text = "gkg.erqvibeC"
+print(codecs.decode(text, "rot_13")[::-1])
+```
+
+Base64 and hex:
+
+```python
+import base64
+
+print(base64.b64decode("c2VjcmV0"))
+print(bytes.fromhex("68656c6c6f"))
+```
+
+When a script uses `${var:offset:length}`, `$0`, comments, filenames, or undefined variables, evaluate those expressions literally. Comments and script paths can be intentional key material.
+
+## PBM / Bitmap Bit Extraction
+
+Use when the program emits `P1`, `P2`, `P3`, or a simple visual grid.
+
+```python
+from pathlib import Path
+
+text = Path("out.pbm").read_text()
+parts = text.split(maxsplit=3)
+width = int(parts[1])
+body = "".join(ch for ch in parts[3] if ch in "01")
+rows = [body[i:i+width] for i in range(0, len(body), width)]
+
+for row in rows[:8]:
+    print(row)
+```
+
+Recover a packed value once margins and bit order are known:
+
+```python
+groups = []
+for row in rows:
+    useful = row[1:6]          # adjust after mapping
+    groups.append(useful[::-1])
+
+bits = "".join(reversed(groups))
+value = int(bits, 2)
+print(value.to_bytes((value.bit_length() + 7) // 8, "big"))
 ```
 
 ## picoCTF REV Patterns

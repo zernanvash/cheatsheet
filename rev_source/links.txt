@@ -1,0 +1,17 @@
+https://hackmd.io/@fsharp/Syncx2_Agx
+https://medium.com/@talal.ak/qnqsec-ctf-2025-reverse-engineering-writeups-30c9f8140e7f
+https://guiza.dev/writeups/qnqsec-2025/were-all-to-blame/
+https://allthingsreversed.io/20250725-cgb-google-ctf.html
+https://th3b0ywh0l1v3d.github.io/ctf/gpn-ctf-2026/reversing/leftovers/
+https://th3b0ywh0l1v3d.github.io/ctf/gpn-ctf-2026/reversing/leftover-leftovers/
+https://th3b0ywh0l1v3d.github.io/ctf/gpn-ctf-2026/reversing/konigsberg-delivery-problem/
+https://github.com/EmpireCTF/empirectf/tree/master/writeups/2025-06-14-smileyCTF#156-reversing--dna
+https://github.com/EmpireCTF/empirectf/tree/master/writeups/2025-06-14-smileyCTF#408-reversing--fruit-ninja
+https://github.com/EmpireCTF/empirectf/tree/master/writeups/2020-08-22-Google-CTF#94-reversing--android
+https://github.com/EmpireCTF/empirectf/tree/master/writeups/2020-08-22-Google-CTF#173-reversing--sprint
+https://github.com/toby-bro/Writeups/blob/main/smileyCTF2025/dna/README.md
+
+tools:
+https://github.com/masterwok/sohps
+https://github.com/worawit/blutter
+https://github.com/0x0hook/Scalpel

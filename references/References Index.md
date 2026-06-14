@@ -16,6 +16,7 @@ Long-form source and offline reference material.
 - [Learning Path Index](../learning/Learning%20Path%20Index.md)
 - [Web Exploitation PDF](Web%20Exploitation.pdf)
 - [REV references](refernces.txt)
+- [Reverse Engineering Source Inventory](../rev_source/README.md)
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)
 
@@ -36,6 +37,7 @@ These folders are retained for local source material and writeup mining, but the
 - `_source_temperance`
 - `_source_tryhackme_cajac`
 - `_source_0xb0b_tryhackme`
+- `rev_source`
 
 ## Notes
 
