@@ -1,329 +1,211 @@
-# GDB Cheat Sheet
+# GDB (gef) Cheat Sheet
 
-Command-focused GDB reference for CTF reversing, crackmes, register questions, anti-debug checks, and pwn triage.
+A comprehensive, production-grade GDB (GEF - GDB Enhanced Features) reference tailored for reverse engineers, malware analysts, and CTF players. Optimized for Linux ELF triaging, dynamic tracing, register inspection, and pwn/exploit development.
 
-## Start
+---
+
+## 1. Starting GDB & GEF
+GEF automatically colorizes and prints a multi-pane layout (Registers, Disassembly, Stack, Threads, Trace) on every stop.
 
 ```bash
-gdb ./challenge
-gdb -q ./challenge
-gdb -q --args ./challenge arg1 arg2
+gdb ./challenge                           # Start GDB
+gdb -q ./challenge                        # Start in quiet mode (no banner)
+gdb -q --args ./challenge arg1 arg2       # Start with command line arguments
 ```
 
-With input:
-
+### Passing Input inside GDB:
 ```gdb
-run
-run AAAA
-run < input.txt
-set args arg1 arg2
-show args
+run                                      # Run program
+run < input.txt                          # Run with file redirected to stdin
+run $(python -c 'print("A"*100)')        # Run with inline shell injection
+set args arg1 arg2                       # Set arguments before running
+show args                                # Display currently configured arguments
 ```
 
-## Breakpoints
+---
+
+## 2. GEF Context & Screen Layout
+GEF displays register values, disassembly around `RIP`, stack memory, and threads when execution halts.
+
+* **`context`**: Force-redraw the GEF context pane layout.
+* **`theme`**: Customize UI colors, symbols, and formatting.
+* **`context Layout`**: Change which panes are shown.
+  * *Example (hide trace & threads)*: `gef config context.layout "legend registers stack code source memory"`
+* **TUI Mode**: Classic GDB text user interface (Warning: can clash with GEF styling):
+  * `layout asm` / `layout regs`
+  * `focus cmd` (switch keyboard input focus to command prompt)
+  * `ctrl + x + a` (exit TUI mode)
+
+---
+
+## 3. Breakpoint Management
 
 ```gdb
-break main
-break *0x401234
-break strcmp
-break memcmp
-break puts
-info breakpoints
-delete 1
-disable 1
-enable 1
+break main                               # Break at main function symbol
+break *0x401234                          # Break at raw address
+break strcmp                             # Break at library import
+info breakpoints                         # List all active breakpoints (shorthand: i b)
+delete 1                                 # Delete breakpoint #1 (shorthand: d 1)
+disable 1                                # Temporarily disable breakpoint #1
+enable 1                                 # Enable breakpoint #1
 ```
 
-Conditional breakpoint:
-
+### Conditional Breakpoints:
 ```gdb
-break *0x401234 if $rax == 0x42
+break *0x401234 if $rax == 0x42          # Break only if RAX equals 0x42
+break strcmp if $rdi == $rsi             # Break strcmp if comparison inputs are identical
 ```
 
-Command block:
-
+### Command Hooks:
+Execute GDB/GEF commands automatically whenever a breakpoint is hit:
 ```gdb
-commands
+commands 1
   info registers
-  x/16xb $rsp
+  telescope $rsp
   continue
 end
 ```
 
-## Running And Stepping
+---
 
+## 4. Execution Flow Controls
+
+| Command | Shorthand | Action |
+|---|---|---|
+| `run` | `r` | Start execution from the beginning. |
+| `continue` | `c` | Continue running until next breakpoint or crash. |
+| `stepi` | `si` | Step exactly one assembly instruction (enters calls). |
+| `nexti` | `ni` | Step one assembly instruction (steps over/skips calls). |
+| `finish` | `fin` | Run until the current function returns to its caller. |
+| `until *0x401250`| | Run until execution reaches the specified address. |
+| `kill` | `k` | Terminate the active debugging process. |
+
+---
+
+## 5. Register & Memory Manipulation
+
+### Registers:
+GEF colors changed registers in red and identifies memory pointers automatically.
 ```gdb
-run
-continue
-stepi
-nexti
-finish
-until
-kill
-quit
+registers                                # Print all register values (GEF style)
+print/x $rax                             # Print RAX in Hex
+print/d $rax                             # Print RAX in Decimal
+print/s $rax                             # Print RAX as a string pointer
+set $rax = 0                             # Set register RAX to 0
+set $rip = 0x401234                      # Force program execution pointer to another address
 ```
 
-Use `stepi` to enter calls and `nexti` to step over calls.
-
-## Registers
-
+### Memory Patching:
 ```gdb
-info registers
-info registers rax rbx rcx rdx rsi rdi rsp rbp rip
-print/x $rax
-print/d $rax
-print/c $rax
-set $rax = 0
-set $rip = 0x401234
+set {unsigned char}0x401234 = 0x90       # Patch a byte to NOP at address
+set {unsigned char[2]}0x401234 = {0x90, 0x90} # Patch multiple bytes
+set *0x401230 = 0xdeadbeef               # Write 32-bit integer to address
 ```
 
-Common x86-64 Linux arguments:
+---
 
-| Argument | Register |
-|---|---|
-| 1 | `rdi` |
-| 2 | `rsi` |
-| 3 | `rdx` |
-| 4 | `rcx` |
-| 5 | `r8` |
-| 6 | `r9` |
-| return | `rax` |
+## 6. GEF-Specific Data Analysis Commands
 
-## Memory Inspection
-
+### Telescope:
+Recursively dereferences pointer chains at a target address (e.g., stack, registers).
 ```gdb
-x/s 0x404000
-x/s $rdi
-x/16xb 0x404000
-x/16xw 0x404000
-x/8gx $rsp
-x/20i $rip
-x/64cb $rsp
+telescope $rsp                           # Dump stack with resolved pointer chains
+telescope $rsp 20                        # Telescope stack 20 levels deep
+telescope &global_var                    # Telescope a global pointer
 ```
 
-Formats:
-
-| Format | Meaning |
-|---|---|
-| `x` | hex |
-| `d` | signed decimal |
-| `u` | unsigned decimal |
-| `c` | char |
-| `s` | string |
-| `i` | instruction |
-| `b` | byte |
-| `h` | halfword |
-| `w` | word |
-| `g` | giant word / 8 bytes |
-
-## Disassembly
-
+### VMMap:
+Lists virtual memory layout, section mappings, and permissions (Read/Write/Execute).
 ```gdb
-disassemble main
-disassemble /r main
-disassemble 0x401000,0x401080
-info functions
-info address main
+vmmap                                    # Display full process memory mapping
+vmmap libc                               # Filter map to libc allocations
 ```
 
-Intel syntax:
-
+### Pattern (Buffer Overflow Helper):
+Create and parse cyclic patterns to identify stack offset overwrites.
 ```gdb
-set disassembly-flavor intel
+pattern create 128                       # Create a unique 128-byte cyclic pattern
+pattern search 0x6161616c                # Find offset of value in pattern (e.g., from RIP)
+pattern search $rsp                      # Automatically search RSP register offset
 ```
 
-TUI:
-
+### Checksec:
 ```gdb
-layout asm
-layout regs
-layout split
-focus cmd
-refresh
+checksec                                 # Show binary protections (Canary, NX, PIE, ASLR)
 ```
 
-## Stack And Calls
-
+### Stack Canary & GOT:
 ```gdb
-bt
-frame 0
-info frame
-x/32gx $rsp
-x/gx $rbp+8
+canary                                   # Find stack canary location and current value
+got                                      # Dump the Global Offset Table entries and resolve links
+got strcmp                               # Check target resolved address for strcmp
 ```
 
-Use this to find saved return addresses, local buffers, and call flow.
-
-## Strings And Comparisons
-
-Break on common validation calls:
-
+### PIE (Position Independent Executables) helpers:
+GEF tracks relative offsets when ASLR/PIE is active.
 ```gdb
-break strcmp
-break strncmp
-break memcmp
-break strlen
-run
+pie breakpoint 0x1234                    # Set breakpoint at relative offset 0x1234
+pie run                                  # Run program and offset relative addresses automatically
 ```
 
-At a string compare on Linux x86-64:
+---
+
+## 7. Memory Examination (Classic GDB `x`)
+Format syntax: `x/[Count][Format][Size] [Address/Register]`
 
 ```gdb
-x/s $rdi
-x/s $rsi
+x/s $rdi                                 # Examine RDI pointer as Null-terminated String
+x/16xb 0x404000                          # Examine 16 hex bytes at address
+x/8gx $rsp                               # Examine 8 Giant words (64-bit values) in hex at RSP
+x/10i $rip                               # Examine 10 instructions starting at RIP
 ```
 
-At `memcmp`, inspect buffers and length:
+| Format Code | Meaning | Size Code | Meaning |
+|---|---|---|---|
+| **`x`** | Hexadecimal | **`b`** | Byte (8 bits) |
+| **`d`** | Decimal (Signed) | **`h`** | Halfword (16 bits) |
+| **`u`** | Decimal (Unsigned) | **`w`** | Word (32 bits) |
+| **`s`** | String (null-terminated)| **`g`** | Giant word (64 bits) |
+| **`i`** | Instruction | | |
 
-```gdb
-x/32xb $rdi
-x/32xb $rsi
-print/d $rdx
-```
+---
 
-## Patching Runtime State
-
-Patch register:
-
-```gdb
-set $eax = 0
-set $rip = 0x401234
-```
-
-Patch memory byte:
-
-```gdb
-set {unsigned char}0x401234 = 0x90
-```
-
-Patch multiple bytes:
-
-```gdb
-set {unsigned char[2]}0x401234 = {0x90, 0x90}
-```
-
-Save patched memory range:
-
-```gdb
-dump memory patched.bin 0x400000 0x405000
-```
-
-## Anti-Debug Checks
-
-Linux `TracerPid` / `ptrace` checks:
-
-```gdb
-catch syscall ptrace
-catch syscall openat
-catch syscall read
-```
-
-Common bypasses:
-
-- patch the branch after the check
-- force return value to success/failure as needed
-- skip the call with `set $rip = ADDRESS_AFTER_CALL`
-- use static patching for repeatability
-
-## Batch Mode
+## 8. Batch Mode Tracing (Automation)
+Run GDB headlessly to automate checking comparison values or dump states.
 
 ```bash
+# Break at strcmp and print comparison buffers
 gdb -q -batch \
-  -ex 'set disassembly-flavor intel' \
-  -ex 'break *0x401234' \
-  -ex 'run AAAA' \
-  -ex 'info registers' \
-  -ex 'x/16xb $rsp' \
+  -ex 'break strcmp' \
+  -ex 'run' \
+  -ex 'telescope $rdi' \
+  -ex 'telescope $rsi' \
   ./challenge
 ```
 
-Breakpoint hit counting:
+---
 
-```bash
-gdb -q -batch \
-  -ex 'break *0x401234' \
-  -ex 'run input' \
-  -ex 'continue' \
-  -ex 'continue' \
-  ./challenge
-```
+## 9. Dynamic Anti-Debug Bypasses
+If a program calls `ptrace` or checks `/proc/self/status` for `TracerPid`:
 
-## Core Dumps
+* **Catch Syscalls**:
+  ```gdb
+  catch syscall ptrace                   # Break when ptrace system call is invoked
+  catch syscall openat                   # Break when status files are opened
+  ```
+* **Bypass logic**:
+  1. Set breakpoint at the system call wrapper.
+  2. Run program until breakpoint is triggered.
+  3. Step out (`finish`) or query registers.
+  4. Modify RAX (the return value) to indicate success:
+     ```gdb
+     set $rax = 0                        # Fake successful trace check
+     ```
 
-```bash
-ulimit -c unlimited
-./challenge
-gdb ./challenge core
-info registers
-bt
-```
+---
 
-## Pwndbg / GEF Useful Commands
-
-Pwndbg:
-
-```gdb
-context
-checksec
-cyclic 200
-cyclic -l 0x6161616c
-vmmap
-telescope $rsp
-rop
-```
-
-GEF:
-
-```gdb
-context
-checksec
-pattern create 200
-pattern offset 0x6161616c
-vmmap
-dereference $rsp
-```
-
-## Quick Workflows
-
-Register question:
-
-```gdb
-break *0xADDRESS
-run
-info registers
-```
-
-Find expected string:
-
-```gdb
-break strcmp
-run
-x/s $rdi
-x/s $rsi
-```
-
-Patch fail branch:
-
-```gdb
-disassemble main
-break *0xFAIL_CHECK
-run
-set $rip = 0xSUCCESS_PATH
-continue
-```
-
-Buffer overflow offset:
-
-```bash
-pwn cyclic 300 > pattern.txt
-gdb ./vuln
-run < pattern.txt
-info registers
-pwn cyclic -l 0xOVERWRITTEN
-```
-
-## Related
-
-- [Reverse Engineering Playbook](../Reverse%20Engineering%20Playbook.md)
-- [Reversing CLI Tools Cheat Sheet](Reversing%20CLI%20Tools%20Cheat%20Sheet.md)
-- [REV Python Toolkit](REV%20Python%20Toolkit.md)
+## Related Links
+* [Reverse Engineering Playbook](../Reverse%20Engineering%20Playbook.md)
+* [IDA Pro Cheat Sheet](IDA%20Pro%20Cheat%20Sheet.md)
+* [Ghidra Cheat Sheet](Ghidra%20Cheat%20Sheet.md)
+* [x64dbg Cheat Sheet](x64dbg%20Cheat%20Sheet.md)

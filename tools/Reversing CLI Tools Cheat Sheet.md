@@ -95,7 +95,7 @@ gdb -q -batch -ex 'break main' -ex run -ex 'info registers' ./challenge
 
 Open the full local sheet:
 
-- [GDB Cheat Sheet](GDB%20Cheat%20Sheet.md)
+- [GDB (gef) Cheat Sheet](GDB%20Cheat%20Sheet.md)
 
 ## Radare2
 
@@ -261,6 +261,9 @@ Use Python to parse PBM/bitmap rows and recover bit order; see [REV Python Toolk
 ## Related
 
 - [Reverse Engineering Playbook](../Reverse%20Engineering%20Playbook.md)
-- [GDB Cheat Sheet](GDB%20Cheat%20Sheet.md)
+- [IDA Pro Cheat Sheet](IDA%20Pro%20Cheat%20Sheet.md)
+- [Ghidra Cheat Sheet](Ghidra%20Cheat%20Sheet.md)
+- [x64dbg Cheat Sheet](x64dbg%20Cheat%20Sheet.md)
+- [GDB (gef) Cheat Sheet](GDB%20Cheat%20Sheet.md)
 - [Vim For Reversing Cheat Sheet](Vim%20For%20Reversing%20Cheat%20Sheet.md)
 - [REV Python Toolkit](REV%20Python%20Toolkit.md)

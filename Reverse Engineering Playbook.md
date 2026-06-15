@@ -57,7 +57,7 @@ A standalone guide covering learning, triage, cheatsheet commands, solver script
   - [ROP Notes](#rop-notes)
   - [Remote Exploit Template](#remote-exploit-template)
 - **Tool Reference**
-  - [Local CLI Cheatsheets](#local-cli-cheatsheets)
+  - [Local Cheatsheets](#local-cheatsheets) (Includes [IDA Pro](tools/IDA%20Pro%20Cheat%20Sheet.md), [Ghidra](tools/Ghidra%20Cheat%20Sheet.md), [x64dbg](tools/x64dbg%20Cheat%20Sheet.md), [GDB (gef)](tools/GDB%20Cheat%20Sheet.md))
   - [Essential CLI Tools](#essential-cli-tools)
   - [Decompilers & Disassemblers](#decompilers--disassemblers)
   - [Debuggers](#debuggers)
@@ -75,14 +75,14 @@ Reverse engineering is reading a program or artifact to understand how it valida
 
 Common CTF reversing targets:
 
-| Target Type | Examples |
-|---|---|
-| Linux native binary | ELF crackme, SUID binary, pwn challenge |
-| Windows native binary | PE crackme, .NET app, DLL |
-| Scripted / bytecode | Python `.py`/`.pyc`, Java `.class`/`.jar`, APK |
-| Web binary | WebAssembly `.wasm` |
-| Payloads & scripts | Shell script, PowerShell, plist, batch dropper |
-| Visual / exotic | Blender, G-code, PBM image, CoreWars |
+| Target Type           | Examples                                       |
+| --------------------- | ---------------------------------------------- |
+| Linux native binary   | ELF crackme, SUID binary, pwn challenge        |
+| Windows native binary | PE crackme, .NET app, DLL                      |
+| Scripted / bytecode   | Python `.py`/`.pyc`, Java `.class`/`.jar`, APK |
+| Web binary            | WebAssembly `.wasm`                            |
+| Payloads & scripts    | Shell script, PowerShell, plist, batch dropper |
+| Visual / exotic       | Blender, G-code, PBM image, CoreWars           |
 
 ### Binary File Formats
 
@@ -1161,16 +1161,19 @@ p.interactive()
 
 ## Tool Reference
 
-### Local CLI Cheatsheets
+### Local Cheatsheets
 
-Use these when you need command syntax without scrolling through the full playbook:
+Use these when you need quick reference syntax, hotkeys, and workflows:
 
-| Need | Local sheet |
+| Tool / Category | Local Sheet |
 |---|---|
-| Debug ELF binaries, inspect registers, break on comparisons, patch runtime state | [GDB Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) |
-| Clean scripts, inspect dumps, edit notes, use Vim as a hex editor | [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) |
-| Use `file`, `strings`, `readelf`, `objdump`, `strace`, `ltrace`, `r2`, WABT, PyInstaller tools, and decoding commands | [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md) |
-| Build Python solvers for XOR, Z3, matrix systems, VM traces, graph paths, bytecode, and PBM extraction | [REV Python Toolkit](tools/REV%20Python%20Toolkit.md) |
+| Static analysis, XREFs, types, structures, and IDAPython scripting | [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md) |
+| Open-source static analysis, type refactoring, function graphing, and Jython scripts | [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md) |
+| Windows user-mode debugging, memory dumps, patching, and malware unpacking (Scylla) | [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) |
+| Linux ELF dynamic debugging, GEF context features, telescope, memory, and automation | [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) |
+| Hex editing, dump analysis, text processing, and command line helpers | [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) |
+| Common CLI utilities: `file`, `strings`, `readelf`, `strace`, `ltrace`, `r2` | [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md) |
+| Build Python solvers for XOR, Z3, matrix systems, VM traces, and bytecode parsing | [REV Python Toolkit](tools/REV%20Python%20Toolkit.md) |
 
 ### Essential CLI Tools
 
@@ -1197,8 +1200,8 @@ Open [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20S
 
 | Tool | Targets | Notes |
 |---|---|---|
-| **Ghidra** | ELF, PE, Mach-O, ARM, MIPS | Free, Java-based, excellent decompiler |
-| **IDA Free** | ELF, PE | Industry standard, limited free version |
+| **[Ghidra](tools/Ghidra%20Cheat%20Sheet.md)** | ELF, PE, Mach-O, ARM, MIPS | Free, Java-based, excellent decompiler |
+| **[IDA Pro / Free](tools/IDA%20Pro%20Cheat%20Sheet.md)** | ELF, PE, Mach-O, etc. | Industry standard static analysis |
 | **Cutter** | ELF, PE | GUI for Radare2, good decompiler |
 | **Radare2** | ELF, PE, many formats | CLI powerhouse, steep learning curve |
 | **jadx** | APK, JAR, .class | Java/Android decompiler |
@@ -1212,14 +1215,13 @@ Open [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20S
 
 | Tool | Platform | Best for |
 |---|---|---|
-| **GDB** | Linux | ELF binaries, pwn challenges |
+| **[GDB + GEF](tools/GDB%20Cheat%20Sheet.md)** | Linux | ELF binaries, pwn challenges, context views |
 | **GDB + pwndbg** | Linux | Enhanced GDB with CTF features |
-| **GDB + GEF** | Linux | Alternative GDB enhancement |
-| **x64dbg** | Windows | User-mode PE debugging |
+| **[x64dbg](tools/x64dbg%20Cheat%20Sheet.md)** | Windows | User-mode PE debugging and unpacking |
 | **WinDbg** | Windows | Kernel and low-level debugging |
 | **Process Monitor** | Windows | File/registry/process monitoring |
 
-Open [GDB Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) for command syntax, register inspection, memory examination, comparison breakpoints, anti-debug checks, and batch-mode scripts.
+Open [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) for GEF command syntax, memory examination, comparison breakpoints, and batch-mode scripts. See also [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md), [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md), and [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) for custom hotkeys and workflows.
 
 ### Python Libraries
 
@@ -1274,7 +1276,10 @@ These connect this playbook to the rest of the H4G Training Vault:
 - [Reverse Engineering Blueprint](blueprints/Reverse%20Engineering%20Blueprint.md) — detailed decision-tree workflow
 - [Buffer Overflow Blueprint](blueprints/Buffer%20Overflow%20Blueprint.md) — full pwn/bof guide
 - [REV Python Toolkit](tools/REV%20Python%20Toolkit.md) — extended Python helper library
-- [GDB Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) - local debugger command reference
+- [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md) - local IDA Pro command and navigation reference
+- [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md) - local Ghidra UI and scripting reference
+- [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) - local x64dbg dynamic debugger reference
+- [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) - local GDB (gef) context debugger reference
 - [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) - local editing and hex workflow reference
 - [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md) - local CLI command reference
 - [picoCTF Web and REV Patterns](guides/picoCTF%20Web%20and%20REV%20Patterns.md) — CTF-specific patterns
