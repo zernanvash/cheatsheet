@@ -31,6 +31,17 @@ hashcat -m <MODE> hash.txt /usr/share/wordlists/rockyou.txt
 hashcat -m <MODE> hash.txt /usr/share/wordlists/rockyou.txt --show
 ```
 
+- **Common Modes:**
+  - `3200` = bcrypt (Blowfish)
+  - `1000` = NTLM
+  - `1800` = sha512crypt
+  - `5600` = NetNTLMv2
+  - `13100` = Kerberoast (TGS-REP)
+- **Example (bcrypt):**
+  ```bash
+  hashcat -m 3200 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt
+  ```
+
 ### 9.3 John the Ripper
 
 ```bash
@@ -38,14 +49,29 @@ john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
 john hash.txt --show
 ```
 
-### 9.4 Hydra
+- **Extracting Non-Standard Hashes (Pre-processors):**
+  - **ZIP Archives:** `zip2john archive.zip > zip.hash`
+  - **SSH Keys:** `ssh2john id_rsa > ssh.hash`
+  - **PDF Files:** `pdf2john document.pdf > pdf.hash`
 
+### 9.4 Hydra & Medusa (Online Brute Force)
+
+#### Hydra
 ```bash
+# SSH brute force
 hydra -l user -P /usr/share/wordlists/rockyou.txt ssh://$TARGET
-hydra -L users.txt -P passwords.txt ftp://$TARGET
+
+# FTP brute force with thread throttling (-t 8)
+hydra -l user -P /usr/share/wordlists/rockyou.txt ftp://$TARGET -t 8
 ```
 
-> **What to watch out for:** Prefer offline cracking when possible. For online attacks, confirm scope and watch for lockouts, throttling, and false positives.
+#### Medusa
+```bash
+# SSH brute force with thread speed (-t 4)
+medusa -h $TARGET -U users.txt -P /usr/share/wordlists/rockyou.txt -M ssh -t 4
+```
+
+> **What to watch out for:** Prefer offline cracking when possible. For online attacks, confirm scope and watch for lockouts, throttling, and false positives. Limit threads (`-t`) to prevent crash/denial of service on target ports.
 
 ### 9.5 Wordlists
 

