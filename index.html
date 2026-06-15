@@ -3,18 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>H4G Training Vault</title>
+  <title>H4G CTF Training Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0f1115;
-      --panel: #171b22;
-      --panel-2: #202633;
-      --text: #eef2f7;
-      --muted: #a9b3c4;
-      --line: #303847;
-      --accent: #72d6a3;
-      --accent-2: #79b8ff;
+      --bg: #07090e;
+      --panel: rgba(17, 20, 28, 0.7);
+      --panel-hover: rgba(26, 32, 44, 0.85);
+      --panel-elevated: #161b26;
+      --text: #f0f4f8;
+      --muted: #8e9bb0;
+      --line: rgba(48, 56, 71, 0.5);
+      --accent: #5cf2a9;
+      --accent-glow: rgba(92, 242, 169, 0.15);
+      
+      /* Category Colors */
+      --color-rev: #a855f7;
+      --color-machine: #f97316;
+      --color-web: #0ea5e9;
+      --color-pwn: #ef4444;
+      --color-steg: #10b981;
+      --color-crypto: #6366f1;
+      --color-osint: #eab308;
+      --color-forensics: #14b8a6;
+      --color-reporting: #64748b;
     }
 
     * {
@@ -24,175 +39,1471 @@
     body {
       margin: 0;
       background: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(92, 242, 169, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(249, 115, 22, 0.02) 0px, transparent 50%);
+      background-attachment: fixed;
       color: var(--text);
-      font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
-    main {
-      width: min(1120px, calc(100% - 32px));
+    /* Container */
+    .app-container {
+      max-width: 1440px;
       margin: 0 auto;
-      padding: 40px 0 56px;
+      padding: 32px 24px 72px;
     }
 
+    /* Top Header */
     header {
-      margin-bottom: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-left {
+      flex: 1;
+      min-width: 320px;
     }
 
     h1 {
       margin: 0 0 8px;
-      font-size: clamp(2rem, 5vw, 4rem);
-      line-height: 1;
-      letter-spacing: 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    h2 {
-      margin: 0 0 14px;
-      font-size: 1.15rem;
-      letter-spacing: 0;
-    }
-
-    p {
+    .subtitle {
       margin: 0;
       color: var(--muted);
-      max-width: 760px;
+      font-size: 1.05rem;
+      max-width: 680px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      margin: 20px 0 30px;
-    }
-
-    .card {
-      display: block;
-      min-height: 132px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
+    /* Progress Widget */
+    .progress-widget {
       background: var(--panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 20px;
+      min-width: 280px;
+      max-width: 340px;
+      flex: 0 0 auto;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress-widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-widget-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .progress-widget-stats {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent) 0%, #4f46e5 100%);
+      border-radius: 99px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-widget-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* Main Dashboard Layout */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Sidebar category switcher */
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 4px 0 12px 10px;
+    }
+
+    .category-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .category-btn:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+    }
+
+    .category-btn.active {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--line);
+    }
+
+    /* Active Indicator Indicators */
+    .category-btn::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+
+    .category-btn.active::before {
+      opacity: 1;
+    }
+
+    /* Specific category accents on dot */
+    .category-btn[data-cat="all"] { color: var(--text); }
+    .category-btn[data-cat="rev"]::before { background: var(--color-rev); }
+    .category-btn[data-cat="machine"]::before { background: var(--color-machine); }
+    .category-btn[data-cat="web"]::before { background: var(--color-web); }
+    .category-btn[data-cat="pwn"]::before { background: var(--color-pwn); }
+    .category-btn[data-cat="steg"]::before { background: var(--color-steg); }
+    .category-btn[data-cat="crypto"]::before { background: var(--color-crypto); }
+    .category-btn[data-cat="osint"]::before { background: var(--color-osint); }
+    .category-btn[data-cat="forensics"]::before { background: var(--color-forensics); }
+    .category-btn[data-cat="reporting"]::before { background: var(--color-reporting); }
+
+    /* Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* Category Section */
+    .category-section {
+      scroll-margin-top: 24px;
+      transition: opacity 0.3s;
+    }
+
+    .category-section.hidden {
+      display: none;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .category-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+    }
+
+    .category-title-wrap {
+      flex: 1;
+    }
+
+    .category-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 0 2px;
+    }
+
+    .category-desc {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Sub-Topic Groups */
+    .subtopic-group {
+      margin-bottom: 28px;
+    }
+
+    .subtopic-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subtopic-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(48, 56, 71, 0.3);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* Premium card design */
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 152px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       color: var(--text);
       text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
     }
 
-    .card:hover,
-    .card:focus-visible {
-      border-color: var(--accent);
-      background: var(--panel-2);
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-gradient, var(--line));
+      opacity: 0.8;
+      transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--hover-border-color, var(--accent));
+      background: var(--panel-hover);
+      box-shadow: 0 8px 30px var(--hover-glow, rgba(0, 0, 0, 0.3));
       outline: none;
     }
 
-    .card strong {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--accent);
-      font-size: 1.05rem;
+    .card:hover::before {
+      width: 6px;
     }
 
-    .card span {
+    .card-content {
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      display: block;
+      margin-bottom: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+      transition: color 0.2s;
+    }
+
+    .card:hover .card-title {
+      color: var(--hover-title-color, var(--accent));
+    }
+
+    .card-desc {
       display: block;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
     }
 
-    .section {
-      margin-top: 28px;
+    /* Badges */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+    }
+
+    .badge-highlight {
+      background: var(--hover-badge-bg, rgba(92, 242, 169, 0.05));
+      border-color: var(--hover-border-color, rgba(92, 242, 169, 0.2));
+      color: var(--hover-title-color, var(--accent));
+    }
+
+    .badge-progress {
+      background: rgba(92, 242, 169, 0.08);
+      border-color: rgba(92, 242, 169, 0.3);
+      color: var(--accent);
+      font-weight: bold;
+      display: none;
+    }
+
+    /* Category Specific Colors */
+    .section-rev {
+      --hover-border-color: var(--color-rev);
+      --hover-title-color: #d8b4fe;
+      --hover-glow: rgba(168, 85, 247, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #c084fc, #a855f7);
+      --hover-badge-bg: rgba(168, 85, 247, 0.08);
+    }
+    .section-machine {
+      --hover-border-color: var(--color-machine);
+      --hover-title-color: #fed7aa;
+      --hover-glow: rgba(249, 115, 22, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #fb923c, #f97316);
+      --hover-badge-bg: rgba(249, 115, 22, 0.08);
+    }
+    .section-web {
+      --hover-border-color: var(--color-web);
+      --hover-title-color: #bae6fd;
+      --hover-glow: rgba(14, 165, 233, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #38bdf8, #0ea5e9);
+      --hover-badge-bg: rgba(14, 165, 233, 0.08);
+    }
+    .section-pwn {
+      --hover-border-color: var(--color-pwn);
+      --hover-title-color: #fca5a5;
+      --hover-glow: rgba(239, 68, 68, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #f87171, #ef4444);
+      --hover-badge-bg: rgba(239, 68, 68, 0.08);
+    }
+    .section-steg {
+      --hover-border-color: var(--color-steg);
+      --hover-title-color: #a7f3d0;
+      --hover-glow: rgba(16, 185, 129, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #34d399, #10b981);
+      --hover-badge-bg: rgba(16, 185, 129, 0.08);
+    }
+    .section-crypto {
+      --hover-border-color: var(--color-crypto);
+      --hover-title-color: #c7d2fe;
+      --hover-glow: rgba(99, 102, 241, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #818cf8, #6366f1);
+      --hover-badge-bg: rgba(99, 102, 241, 0.08);
+    }
+    .section-osint {
+      --hover-border-color: var(--color-osint);
+      --hover-title-color: #fef08a;
+      --hover-glow: rgba(234, 179, 8, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #facc15, #eab308);
+      --hover-badge-bg: rgba(234, 179, 8, 0.08);
+    }
+    .section-forensics {
+      --hover-border-color: var(--color-forensics);
+      --hover-title-color: #99f6e4;
+      --hover-glow: rgba(20, 184, 166, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #2dd4bf, #14b8a6);
+      --hover-badge-bg: rgba(20, 184, 166, 0.08);
+    }
+    .section-reporting {
+      --hover-border-color: var(--color-reporting);
+      --hover-title-color: #cbd5e1;
+      --hover-glow: rgba(100, 116, 139, 0.15);
+      --accent-gradient: linear-gradient(to bottom, #94a3b8, #64748b);
+      --hover-badge-bg: rgba(100, 116, 139, 0.08);
+    }
+
+    /* Footer styling */
+    footer {
+      margin-top: 80px;
       padding-top: 24px;
       border-top: 1px solid var(--line);
-    }
-
-    .links {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-      padding: 0;
-      list-style: none;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
     }
 
-    .links a {
-      display: inline-block;
-      padding: 8px 10px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      color: var(--accent-2);
+    footer a {
+      color: var(--muted);
       text-decoration: none;
-      background: var(--panel);
+      transition: color 0.2s;
     }
 
-    .links a:hover,
-    .links a:focus-visible {
-      border-color: var(--accent-2);
-      outline: none;
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 6px;
+      }
+      .sidebar-title {
+        display: none;
+      }
+      .category-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
+  <div class="app-container">
     <header>
-      <h1>H4G Training Vault</h1>
-      <p>Pick the challenge type first, then jump into the smallest guide that matches what you are doing.</p>
+      <div class="header-left">
+        <h1>H4G CTF Training Hub</h1>
+        <p class="subtitle">Your localized training vault. Select a CTF challenge type to filter playbooks, specific cheatsheets, and solver tools.</p>
+      </div>
+      <!-- Live Practice Progress Tracker -->
+      <div class="progress-widget">
+        <div class="progress-widget-header">
+          <span class="progress-widget-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Practice progress
+          </span>
+          <span class="progress-widget-stats" id="progress-text">Loading...</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+        <span class="progress-widget-desc">Syncs dynamically with your checkboxes in REV Practice.md</span>
+      </div>
     </header>
 
-    <section aria-labelledby="selector-title">
-      <h2 id="selector-title">Challenge Selector</h2>
-      <div class="grid">
-        <a class="card" href="viewer.html?file=guides%2FMachine%20Exploitation%20Playbook.md">
-          <strong>Machine Exploitation</strong>
-          <span>Scans, initial access, shell stabilization, post-exploitation discovery, Linux/Windows privilege escalation, pivoting, and file transfers.</span>
-        </a>
-        <a class="card" href="viewer.html?file=guides%2FWeb%20Exploitation%20Playbook.md">
-          <strong>Web Exploitation</strong>
-          <span>Checklists and syntax for SQL Injection (manual & SQLMap), Command Injection, LFI/RFI, Traversal, Upload Bypass, Auth Bypass, and API Testing.</span>
-        </a>
-        <a class="card" href="viewer.html?file=Reverse%20Engineering%20Playbook.md">
-          <strong>Reverse Engineering</strong>
-          <span>Assembly primer, CPU registers, static/dynamic analysis, disassembler workflows, and reverse tooling.</span>
-        </a>
-        <a class="card" href="viewer.html?file=blueprints%2FBuffer%20Overflow%20Blueprint.md">
-          <strong>Pwn / Buffer Overflow</strong>
-          <span>Native binary crashes, stack overflows, ret2win, ret2libc, and ROP chain compilation.</span>
-        </a>
-        <a class="card" href="viewer.html?file=blueprints%2FSteganography%20Blueprint.md">
-          <strong>Steganography</strong>
-          <span>Hidden data, color channels, spectrograms, metadata extraction, and nested archives.</span>
-        </a>
-        <a class="card" href="viewer.html?file=blueprints%2FCryptography%20Blueprint.md">
-          <strong>Cryptography</strong>
-          <span>Encodings, ciphers, hashes, public/private keys, and custom script solves.</span>
-        </a>
-        <a class="card" href="viewer.html?file=guides%2FPassword%20Attacks%20Playbook.md">
-          <strong>Password Attacks</strong>
-          <span>Identifying and cracking hashes with hashcat and john, and custom wordlist mutation rules.</span>
-        </a>
-        <a class="card" href="viewer.html?file=guides%2FForensics%20and%20Blue%20Team%20Playbook.md">
-          <strong>Forensics & Blue Team</strong>
-          <span>PCAP traffic analysis with tshark, log parsing with awk, and Windows event tracking via Sysmon.</span>
-        </a>
-        <a class="card" href="viewer.html?file=learning%2FLearning%20Path%20Index.md">
-          <strong>Learn Fundamentals</strong>
-          <span>Core concepts, networking basics, Linux/Windows fundamentals, and study routes.</span>
-        </a>
-        <a class="card" href="0xrefs.html" style="border-color: var(--accent); background: rgba(114, 214, 163, 0.035);">
-          <strong>Interactive Commands (0xrefs)</strong>
-          <span>Interactive command sheets with dynamic variables parameterization, filters, and shell history installers.</span>
-        </a>
-      </div>
-    </section>
+    <div class="dashboard-layout">
+      <!-- Sidebar navigation/filters -->
+      <aside class="sidebar">
+        <div class="sidebar-title">Categories</div>
+        <button class="category-btn active" data-cat="all">All Categories</button>
+        <button class="category-btn" data-cat="rev">Reverse Engineering</button>
+        <button class="category-btn" data-cat="machine">Machine Exploit</button>
+        <button class="category-btn" data-cat="web">Web Exploitation</button>
+        <button class="category-btn" data-cat="pwn">PWN / Binary Exploit</button>
+        <button class="category-btn" data-cat="steg">Steganography</button>
+        <button class="category-btn" data-cat="crypto">Cryptography</button>
+        <button class="category-btn" data-cat="osint">OSINT</button>
+        <button class="category-btn" data-cat="forensics">Forensics</button>
+        <button class="category-btn" data-cat="reporting">Reporting & Hubs</button>
+      </aside>
 
-    <section class="section" aria-labelledby="indexes-title">
-      <h2 id="indexes-title">Indexes</h2>
-      <ul class="links">
-        <li><a href="viewer.html?file=H4G%20Training.md">Markdown Home</a></li>
-        <li><a href="viewer.html?file=Reverse%20Engineering%20Playbook.md">RE Playbook</a></li>
-        <li><a href="0xrefs.html" style="color: var(--accent);">Interactive Commands Index</a></li>
-        <li><a href="viewer.html?file=blueprints%2FBlueprint%20Index.md">Blueprint Index</a></li>
-        <li><a href="viewer.html?file=learning%2FLearning%20Path%20Index.md">Learning Index</a></li>
-        <li><a href="viewer.html?file=tools%2FTools%20Index.md">Tools Index</a></li>
-        <li><a href="viewer.html?file=references%2FReferences%20Index.md">References Index</a></li>
-        <li><a href="viewer.html?file=references%2FChallenge%20Use%20Cases.md">Challenge Use Cases</a></li>
-      </ul>
-    </section>
-  </main>
+      <!-- Content sections -->
+      <main class="content-area">
+        
+        <!-- ================= REVERSE ENGINEERING ================= -->
+        <section class="category-section section-rev" id="section-rev">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-rev);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="15" x2="23" y2="15"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="15" x2="4" y2="15"></line>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Reverse Engineering (REV)</h2>
+              <p class="category-desc">Static/dynamic analysis of compiled binaries, custom VMs, obfuscated code, and decompilers.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=Reverse%20Engineering%20Playbook.md">
+                <div class="card-content">
+                  <span class="card-title">Reverse Engineering Playbook</span>
+                  <span class="card-desc">Assembly reference, registers, solvers (XOR, Z3, Matrix), and workflow structure.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Core Playbook</span>
+                  <span class="badge">Markdown</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=blueprints%2FReverse%20Engineering%20Blueprint.md">
+                <div class="card-content">
+                  <span class="card-title">RE Blueprint & Decision Tree</span>
+                  <span class="card-desc">Triage steps and action checklists based on file types (ELF, PE, APK, WASM, Python).</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Decision Tree</span>
+                  <span class="badge">Blueprint</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Cheatsheets & Disassemblers</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FIDA%20Pro%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">IDA Pro Cheat Sheet</span>
+                  <span class="card-desc">Keyboard shortcuts, cross-references, type casting, and IDAPython automation scripting.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">IDA Pro</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FGhidra%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Ghidra Cheat Sheet</span>
+                  <span class="card-desc">Equivalent workflows, commented structures, Data Type Manager, and Jython scripting.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Ghidra</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FReversing%20CLI%20Tools%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Reversing CLI Tools</span>
+                  <span class="card-desc">Quick guide on file, strings, ltrace, strace, objdump, and unpacked extraction tools.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">CLI / Linux</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FGDB%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">GDB (gef) Cheat Sheet</span>
+                  <span class="card-desc">GEF context, telescope, registers inspection, and bypassing basic anti-debug checks.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">GDB / gef</span>
+                  <span class="badge">Debugger</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2Fx64dbg%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">x64dbg Cheat Sheet</span>
+                  <span class="card-desc">Windows dynamic debugging, setting memory patches, hardware breakpoints, and Scylla unpacking.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">x64dbg</span>
+                  <span class="badge">Debugger</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Solvers & Scripting</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FREV%20Python%20Toolkit.md">
+                <div class="card-content">
+                  <span class="card-title">REV Python Toolkit</span>
+                  <span class="card-desc">Python template scripts for XOR, Z3 constraint solver, matrix math, and VM bytecode traces.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Python</span>
+                  <span class="badge">Templates</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FVim%20For%20Reversing%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Vim for Reversing</span>
+                  <span class="card-desc">Fast editing setups, hex editing mode, clean dump formatting shortcuts.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Vim</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Practice & Progression</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=REV%20Practice.md" style="border-color: var(--accent); background: rgba(92, 242, 169, 0.02);">
+                <div class="card-content">
+                  <span class="card-title">REV Practice (crackmes.one)</span>
+                  <span class="card-desc">A 12-challenge progression syllabus with descriptions, checklist targets, and hints.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Target Practice</span>
+                  <span class="badge badge-progress" id="rev-practice-badge">0% Complete</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Fundamentals</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=learning%2FReverse%20Engineering%20Fundamentals.md">
+                <div class="card-content">
+                  <span class="card-title">RE Fundamentals</span>
+                  <span class="card-desc">Basic concepts of executable layouts, stack operations, and CPU instruction flows.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Theoretical</span>
+                  <span class="badge">Learning</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MACHINE EXPLOITATION ================= -->
+        <section class="category-section section-machine" id="section-machine">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-machine);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Machine Exploitation</h2>
+              <p class="category-desc">Network scanning, privilege escalation, Windows/Linux environments, Active Directory, and lateral pivoting.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=guides%2FMachine%20Exploitation%20Playbook.md">
+                <div class="card-content">
+                  <span class="card-title">Machine Exploitation Playbook</span>
+                  <span class="card-desc">Port scanning, shell stabilization, privilege escalation methods, and file transfers.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Core Playbook</span>
+                  <span class="badge">Playbook</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=blueprints%2FMachine%20Exploitation%20Databank.md">
+                <div class="card-content">
+                  <span class="card-title">Exploitation Databank</span>
+                  <span class="card-desc">Exploit references, payloads, and mapping guides for compromised target pathways.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Reference Data</span>
+                  <span class="badge">Blueprint</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=blueprints%2Fmachine-attacks%2FMachine%20Attack%20Blueprint%20Index.md">
+                <div class="card-content">
+                  <span class="card-title">Machine Attack Blueprint Index</span>
+                  <span class="card-desc">40+ detailed attack blueprints spanning SMB, Kerberoasting, MSSQL, Docker escapes, and NFS.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">40+ Blueprints</span>
+                  <span class="badge">Index</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Enumeration & Recon</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FNmap%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Nmap Cheat Sheet</span>
+                  <span class="card-desc">Scanning styles, service detection, and NSE script flags.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Nmap</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FFootprinting%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Footprinting Cheatsheet</span>
+                  <span class="card-desc">OS detection and network enumeration strategies.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Recon</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FDig%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Dig (DNS) Cheat Sheet</span>
+                  <span class="card-desc">DNS record queries, reverse lookups, and zone transfer commands.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">dig</span>
+                  <span class="badge">DNS</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FSMBClient%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">SMBClient Cheat Sheet</span>
+                  <span class="card-desc">SMB share connections, file downloads, and listing commands.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">smbclient</span>
+                  <span class="badge">SMB</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FFTP%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">FTP Cheat Sheet</span>
+                  <span class="card-desc">FTP authentication, mirroring directories, and recursive downloads.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">ftp</span>
+                  <span class="badge">FTP</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FSMTP.md">
+                <div class="card-content">
+                  <span class="card-title">SMTP Mail Enumeration</span>
+                  <span class="card-desc">SMTP commands (VRFY/EXPN) and user enumeration.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">smtp</span>
+                  <span class="badge">Recon</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FNetworking.md">
+                <div class="card-content">
+                  <span class="card-title">Networking & Tunneling</span>
+                  <span class="card-desc">Port forwarding, proxychains, SSH tunneling, and networking diagnostics.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Pivoting</span>
+                  <span class="badge">Commands</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Exploitation & PrivEsc</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FMetasploit.md">
+                <div class="card-content">
+                  <span class="card-title">Metasploit Cheat Sheet</span>
+                  <span class="card-desc">Module configurations, payloads selection, and multi-handler setup.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">MSF</span>
+                  <span class="badge">Framework</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FEternalBlue%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">EternalBlue (MS17-010)</span>
+                  <span class="card-desc">Testing SMB vulnerabilities and executing exploit script commands.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Exploit</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=guides%2FLinux%20Attack%20Path%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Linux Attack Path & PrivEsc</span>
+                  <span class="card-desc">SUID binaries, capabilities, cronjobs, kernel exploits, and Sudo abuses.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">PrivEsc</span>
+                  <span class="badge">Linux</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FWindows%20Privilege%20Escalation%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Windows Privilege Escalation</span>
+                  <span class="card-desc">Token impersonation, registry exploits, service path hijacks, and UAC bypasses.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">PrivEsc</span>
+                  <span class="badge">Windows</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=guides%2FWindows%20Attack%20Path%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Windows Attack Paths</span>
+                  <span class="card-desc">Windows specific lateral movement, credential harvesting, and attack vectors.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Attack Path</span>
+                  <span class="badge">Windows</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Active Directory</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FActive%20Directory%20Attack%20Path%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Active Directory Attack Paths</span>
+                  <span class="card-desc">BloodHound usage, LLMNR/NBT-NS poisoning, Kerberoasting, and pass-the-hash.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">AD Attack</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FKerberoasting%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Kerberoasting Cheat Sheet</span>
+                  <span class="card-desc">Requesting SPN tickets and cracking service account credentials.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Kerberos</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FMimikatz%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Mimikatz Cheat Sheet</span>
+                  <span class="card-desc">LSASS credential dumping, Golden Tickets, LSA secrets, and SAM cracking.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">mimikatz</span>
+                  <span class="badge">AD / Windows</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= WEB EXPLOITATION ================= -->
+        <section class="category-section section-web" id="section-web">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-web);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Web Exploitation</h2>
+              <p class="category-desc">Vulnerability analysis of web apps. SQL Injection, Command Injection, LFI/RFI, SSRF, XSS, and directory fuzzing.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=guides%2FWeb%20Exploitation%20Playbook.md">
+                <div class="card-content">
+                  <span class="card-title">Web Exploitation Playbook</span>
+                  <span class="card-desc">Checklists and syntax for SQLi, Command Injection, LFI, Upload bypasses, and API fuzzing.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Core Playbook</span>
+                  <span class="badge">Playbook</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=blueprints%2FWeb%20Exploit%20Blueprint.md">
+                <div class="card-content">
+                  <span class="card-title">Web Exploit Blueprint</span>
+                  <span class="card-desc">Source code audit patterns, logic flow mapping, and application vulnerability catalog.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Audit Checklist</span>
+                  <span class="badge">Blueprint</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Cheatsheets & Tools</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FWeb%20Testing.md">
+                <div class="card-content">
+                  <span class="card-title">Web Testing & Fuzzing</span>
+                  <span class="card-desc">Burp Suite proxies, Gobuster/ffuf directory busting, and parameter wordlists.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">ffuf / Gobuster</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FWeb%20Attack%20Alternatives.md">
+                <div class="card-content">
+                  <span class="card-title">Web Attack Alternatives</span>
+                  <span class="card-desc">Advanced payload options, bypass syntax variations, and niche exploit configurations.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Advanced</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=guides%2FpicoCTF%20Web%20and%20REV%20Patterns.md">
+                <div class="card-content">
+                  <span class="card-title">picoCTF Web & REV Patterns</span>
+                  <span class="card-desc">Common CTF-specific web challenge patterns, cookie tempers, and basic solutions.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">CTF Patterns</span>
+                  <span class="badge">Guide</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PWN / BINARY EXPLOIT ================= -->
+        <section class="category-section section-pwn" id="section-pwn">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-pwn);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">PWN (Binary Exploitation)</h2>
+              <p class="category-desc">Compromising native binaries. Buffer overflows, format string vulnerabilities, shellcode injection, and ROP chain exploitation.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=blueprints%2FBuffer%20Overflow%20Blueprint.md">
+                <div class="card-content">
+                  <span class="card-title">Buffer Overflow Blueprint</span>
+                  <span class="card-desc">Step-by-step stack smash walkthrough, finding offsets, ret2win, ret2libc, and pwntools setup.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Core Blueprint</span>
+                  <span class="badge">Pwn</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Cheatsheets & Solvers</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FGDB%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">GDB (gef) for Exploit Dev</span>
+                  <span class="card-desc">Inspecting stack arrays, using pattern creator/searcher, finding canary offsets, and GOT tables.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">GDB / gef</span>
+                  <span class="badge">Debugger</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FReversing%20CLI%20Tools%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Pwn CLI Verification Tools</span>
+                  <span class="card-desc">Quick guide for checksec, ROPgadget, ropper, one_gadget, and pwntools command hooks.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">CLI Helper</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FREV%20Python%20Toolkit.md">
+                <div class="card-content">
+                  <span class="card-title">Pwntools Script Templates</span>
+                  <span class="card-desc">Template configurations for remote socket exploits, local process forks, ELF symbol lookups.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Python / Pwntools</span>
+                  <span class="badge">Templates</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= STEGANOGRAPHY ================= -->
+        <section class="category-section section-steg" id="section-steg">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-steg);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Steganography</h2>
+              <p class="category-desc">Extracting hidden payloads from files. Analyzing metadata, color-plane channels, and embedded zip files.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=blueprints%2FSteganography%20Blueprint.md">
+                <div class="card-content">
+                  <span class="card-title">Steganography Blueprint</span>
+                  <span class="card-desc">ExifTool, steghide, outguess, spectrograms, zsteg, and binary extraction formulas.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Core Blueprint</span>
+                  <span class="badge">Stego</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FSteganography%20And%20Cryptography%20Fundamentals.md">
+                <div class="card-content">
+                  <span class="card-title">Stego & Cryptography Basics</span>
+                  <span class="card-desc">Theoretical framework for file encodings, hex analysis, and byte alignment.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Theoretical</span>
+                  <span class="badge">Learning</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= CRYPTOGRAPHY ================= -->
+        <section class="category-section section-crypto" id="section-crypto">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-crypto);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Cryptography</h2>
+              <p class="category-desc">Analyzing and breaking ciphers. Custom XOR solves, RSA public key recovery, ciphers, and hash cracking.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=blueprints%2FCryptography%20Blueprint.md">
+                <div class="card-content">
+                  <span class="card-title">Cryptography Blueprint</span>
+                  <span class="card-desc">Decrypting repeating-key XORs, RSA factorization, and base encoding/decoding matrices.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Core Blueprint</span>
+                  <span class="badge">Crypto</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=guides%2FPassword%20Attacks%20Playbook.md">
+                <div class="card-content">
+                  <span class="card-title">Hash Cracking & Password Attacks</span>
+                  <span class="card-desc">Syntax mapping for hashcat rules, John the Ripper wordlist mutations.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">hashcat / john</span>
+                  <span class="badge">Playbook</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= OSINT ================= -->
+        <section class="category-section section-osint" id="section-osint">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-osint);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="2" x2="12" y2="22"></line>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">OSINT</h2>
+              <p class="category-desc">Open-source intelligence. Domain reconnaissance, public lookup registries, and passive fingerprinting.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Cheatsheets & Tools</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FPassive%20Recon.md">
+                <div class="card-content">
+                  <span class="card-title">Passive Reconnaissance</span>
+                  <span class="card-desc">Google dorks, Shodan APIs, Whois registries, and public footprint databases.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Passive</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FDig%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">DNS Lookup and Dig</span>
+                  <span class="card-desc">Record lookup queries, nameserver mappings, MX records, and zone transfers.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">dig</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= FORENSICS ================= -->
+        <section class="category-section section-forensics" id="section-forensics">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-forensics);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <line x1="9" y1="11" x2="15" y2="11"></line>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Forensics</h2>
+              <p class="category-desc">Incident response analysis. Network traffic packets, event system logs, and shell trace analysis.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Playbooks & Tools</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=guides%2FForensics%20and%20Blue%20Team%20Playbook.md">
+                <div class="card-content">
+                  <span class="card-title">Forensics & Blue Team Playbook</span>
+                  <span class="card-desc">tshark filters, log parsing, Sysmon rules, and host artifacts analysis.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Blue Team</span>
+                  <span class="badge">Playbook</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FLinux%20Text%20Processing.md">
+                <div class="card-content">
+                  <span class="card-title">Log File Processing</span>
+                  <span class="card-desc">Grep filters, awk formatting, sed injections, and uniq sorting workflows.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">awk / grep</span>
+                  <span class="badge">Cheatsheet</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= REPORTING & CROSS-CUTTING ================= -->
+        <section class="category-section section-reporting" id="section-reporting">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-reporting);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Reporting & Vault Hubs</h2>
+              <p class="category-desc">Cross-cutting indices, documentation templates, interactive panels, and overall indices.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Reporting & Methodologies</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=guides%2FReporting%20and%20Remediation%20Playbook.md">
+                <div class="card-content">
+                  <span class="card-title">Reporting & Remediation Playbook</span>
+                  <span class="card-desc">Standardizing severities, outlining vulnerabilities, and formulating remediation steps.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Templates</span>
+                  <span class="badge">Playbook</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Interactive Commands Panel</h3>
+            <div class="cards-grid">
+              <a class="card" href="0xrefs.html" style="border: 1px solid var(--accent); background: rgba(92, 242, 169, 0.02);">
+                <div class="card-content">
+                  <span class="card-title" style="color: var(--accent);">0xrefs Command Reference</span>
+                  <span class="card-desc">Interactive command panel with filter chips, searchable commands, and live shell variables.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Interactive App</span>
+                  <span class="badge">0xrefs.html</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Vault Indices</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=H4G%20Training.md">
+                <div class="card-content">
+                  <span class="card-title">Markdown Vault Hub</span>
+                  <span class="card-desc">Static markdown homepage linking the training guides.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">TOC Home</span>
+                  <span class="badge">Markdown</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=blueprints%2FBlueprint%20Index.md">
+                <div class="card-content">
+                  <span class="card-title">Blueprints Index</span>
+                  <span class="card-desc">Direct links to vulnerability and compromise blueprint pages.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Blueprints</span>
+                  <span class="badge">Index</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FLearning%20Path%20Index.md">
+                <div class="card-content">
+                  <span class="card-title">Learning Path Index</span>
+                  <span class="card-desc">Structured routes for learning basic network/host theory.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Basics</span>
+                  <span class="badge">Index</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FTools%20Index.md">
+                <div class="card-content">
+                  <span class="card-title">Tools & Cheatsheets Index</span>
+                  <span class="card-desc">Consolidated index of all command-line and graphic analysis sheets.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Tools</span>
+                  <span class="badge">Index</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=references%2FReferences%20Index.md">
+                <div class="card-content">
+                  <span class="card-title">References Index</span>
+                  <span class="card-desc">Deep external links, system calls mapping, and resource inventory sheets.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">External Refs</span>
+                  <span class="badge">Index</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=references%2FChallenge%20Use%20Cases.md">
+                <div class="card-content">
+                  <span class="card-title">Challenge Use Cases</span>
+                  <span class="card-desc">Exemplar case writeups and walkthrough references.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Writeups</span>
+                  <span class="badge">Guide</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <footer>
+      <span>H4G Vault &copy; 2026. Made for Security Analysts & CTF Players.</span>
+      <div>
+        <a href="viewer.html?file=H4G%20Training.md">Markdown Home</a> &bull;
+        <a href="0xrefs.html">0xrefs Interactive</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Live Progress Calculator
+    async function calculateProgress() {
+      const progressText = document.getElementById("progress-text");
+      const progressBarFill = document.getElementById("progress-bar-fill");
+      const revPracticeBadge = document.getElementById("rev-practice-badge");
+
+      try {
+        // Fetch the local practice markdown file
+        const response = await fetch("REV Practice.md");
+        if (!response.ok) {
+          progressText.textContent = "Error loading syllabus";
+          return;
+        }
+        
+        const markdown = await response.text();
+        
+        // Find checkboxes in format - [ ] and - [x]
+        const uncheckedMatches = markdown.match(/- \[\s*\]/g) || [];
+        const checkedMatches = markdown.match(/- \[[xX]\]/g) || [];
+        
+        const total = uncheckedMatches.length + checkedMatches.length;
+        const solved = checkedMatches.length;
+        
+        if (total > 0) {
+          const percentage = Math.round((solved / total) * 100);
+          progressBarFill.style.width = `${percentage}%`;
+          progressText.textContent = `${solved} / ${total} Solved (${percentage}%)`;
+          
+          if (revPracticeBadge) {
+            revPracticeBadge.textContent = `${percentage}% Solved`;
+            revPracticeBadge.style.display = "inline-flex";
+          }
+        } else {
+          progressText.textContent = "No checklists found";
+        }
+      } catch (error) {
+        console.error("Error calculating progress:", error);
+        progressText.textContent = "Sync error";
+      }
+    }
+
+    // Sidebar Category Switcher Logic
+    const categoryBtns = document.querySelectorAll(".category-btn");
+    const sections = document.querySelectorAll(".category-section");
+
+    categoryBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        // Update active class on buttons
+        categoryBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const targetCat = btn.getAttribute("data-cat");
+
+        if (targetCat === "all") {
+          // Show all sections
+          sections.forEach(sec => {
+            sec.classList.remove("hidden");
+          });
+        } else {
+          // Hide all and show target
+          sections.forEach(sec => {
+            if (sec.id === `section-${targetCat}`) {
+              sec.classList.remove("hidden");
+            } else {
+              sec.classList.add("hidden");
+            }
+          });
+        }
+
+        // Scroll back to top of main or container smoothly on mobile
+        if (window.innerWidth <= 992) {
+          document.querySelector("main").scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Run on boot
+    calculateProgress();
+  </script>
 </body>
 </html>
