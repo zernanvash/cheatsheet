@@ -33,6 +33,36 @@ These challenges introduce core RE concepts: basic string analysis, patching, an
 
 ---
 
+## Z3 Python Practice
+
+Use this track when decompiled validation logic becomes a system of equations, bit constraints, checksums, or symbolic conditions. The goal is to translate pseudo-C into Python `z3-solver` constraints, solve for valid input, then verify the answer against the original checker.
+
+### Easy - IDA Decompiler Z3 Crackme Challenges
+- [ ] **Solved**
+- **Source:** [IDA Decompiler Z3 Crackme Challenges](rev_source/gemini-code-1781600452949.html)
+- **Difficulty:** Easy
+- **Description:** Browser-based set of 10 small pseudo-code checks from a simulated Hex-Rays view. Practice converting simple integer equations, bounds, 8-bit overflow/sign behavior, checksum logic, bit masks, array swaps, modulo relations, shifts, multiplier systems, and tiny transforms into Python Z3 constraints.
+- **Skills:** `z3-solver`, `Int`, `BitVec`, signed/unsigned reasoning, modulo constraints, model extraction, validating solver output.
+- [Show Hint](#hint-z3-python-easy)
+
+### Medium - Z3 Python Placeholder
+- [ ] **Solved**
+- **Source:** Placeholder to fill later.
+- **Difficulty:** Medium
+- **Description:** Add a future practice set for multi-stage validation, mixed string/integer constraints, rolling checksums, lookup tables, or branch-dependent constraints.
+- **Skills:** Constraint decomposition, byte arrays, table lookups, path constraints, solver-assisted scripting.
+- [Show Hint](#hint-z3-python-medium)
+
+### Hard - Z3 Python Placeholder
+- [ ] **Solved**
+- **Source:** Placeholder to fill later.
+- **Difficulty:** Hard
+- **Description:** Add a future practice set for VM bytecode constraints, nonlinear transforms, custom crypto preimage recovery, symbolic execution handoff, or hybrid brute force plus Z3 solving.
+- **Skills:** Bit-vector modeling, solver performance tuning, constraint simplification, hybrid search, validating candidates dynamically.
+- [Show Hint](#hint-z3-python-hard)
+
+---
+
 ## 🟡 Tier 2 — Intermediate
 
 Encrypted flags, anti-analysis tricks, obfuscation layers, and multi-file challenges.
@@ -119,10 +149,11 @@ Custom virtual machines, custom crypto, and network protocol reversing.
 | Tier | Solved | Total |
 |---|---|---|
 | 🟢 Warm-Up | ☐☐☐ | 3 |
+| Z3 Python Practice | ☐☐☐ | 3 |
 | 🟡 Intermediate | ☐☐☐☐ | 4 |
 | 🟠 Advanced | ☐☐☐ | 3 |
 | 🔴 Expert | ☐☐ | 2 |
-| **Total** | **0** | **12** |
+| **Total** | **0** | **15** |
 
 ---
 
@@ -153,6 +184,30 @@ Scroll down only when you need them. Each hint gives you a starting direction wi
 > Open in x64dbg. Search for string references to find UI-related code. Locate the play button's click handler. You're looking for two `mov dl, 1` instructions right before specific function calls — patching both to `mov dl, 0` fixes the player.
 
 [↑ Back to challenge](#3-fatmike_02-recordplayer)
+
+---
+
+<a id="hint-z3-python-easy"></a>
+### Z3 Python Easy
+> Start by defining one symbolic variable per input field. Use `Int()` for normal arithmetic and `BitVec()` when the pseudo-code depends on fixed-width overflow, masks, shifts, or signed/unsigned casts. Add every `if (... != expected) return 0` condition as a solver constraint, then print the model and test the answer in the HTML checker.
+
+[Back to challenge](#easy---ida-decompiler-z3-crackme-challenges)
+
+---
+
+<a id="hint-z3-python-medium"></a>
+### Z3 Python Medium
+> Placeholder. Use this slot later for constraints that need arrays, byte strings, lookup tables, or several validation stages.
+
+[Back to challenge](#medium---z3-python-placeholder)
+
+---
+
+<a id="hint-z3-python-hard"></a>
+### Z3 Python Hard
+> Placeholder. Use this slot later for problems where pure solving is too slow and you need simplification, partial brute force, dynamic traces, or a custom lifter.
+
+[Back to challenge](#hard---z3-python-placeholder)
 
 ---
 

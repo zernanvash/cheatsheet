@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDA Decompiler Z3 Crackme Challenges</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #252526;
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #3c3c3c;
+        }
+        h1 {
+            color: #569cd6;
+            font-size: 24px;
+            border-bottom: 1px solid #3c3c3c;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .ida-banner {
+            color: #6a9955;
+            margin-bottom: 25px;
+            font-size: 0.9em;
+        }
+        .challenge {
+            background: #1e1e1e;
+            border-left: 4px solid #007acc;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-radius: 0 4px 4px 0;
+        }
+        .challenge h3 {
+            margin-top: 0;
+            color: #4ec9b0;
+            font-size: 16px;
+        }
+        pre {
+            background: #181818;
+            color: #dcdcaa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #2d2d2d;
+            font-size: 13px;
+        }
+        /* IDA pseudo-C syntax highlighting elements syntax emulation */
+        .comment { color: #6a9955; }
+        .keyword { color: #569cd6; }
+        .type { color: #4ec9b0; }
+        .number { color: #b5cea8; }
+        
+        .input-group {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="text"] {
+            background: #3c3c3c;
+            border: 1px solid #6b6b6b;
+            color: #fff;
+            padding: 6px 10px;
+            font-family: inherit;
+            border-radius: 2px;
+            width: 200px;
+        }
+        button {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 7px 15px;
+            cursor: pointer;
+            font-family: inherit;
+            border-radius: 2px;
+        }
+        button:hover {
+            background: #1177bb;
+        }
+        .result {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .success { color: #4ec9b0; }
+        .error { color: #f44747; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Hex-Rays Decompiler v8.3 - SMT Solver Verification Panel</h1>
+    <div class="ida-banner">
+        // Automatically generated pseudo-code from binary analysis.<br>
+        // Task: Extract constraints, write a Python Z3 script to reverse them, and feed the correct input.
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 1: sub_140001010 (Basic Check)</h3>
+        <pre>
+<span class="type">__int64</span> <span class="keyword">__fastcall</span> verify_key(<span class="type">unsigned int</span> a1, <span class="type">unsigned int</span> a2)
+{
+  <span class="keyword">if</span> ( (<span class="number">3</span> * a1 + <span class="number">2</span> * a2 != <span class="number">180</span>) )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( (a1 - a2 != <span class="number">10</span>) )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> <span class="number">1LL</span>;
+}
+<span class="comment">// Format flag: a1,a2 (e.g. 10,20)</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans1" placeholder="a1,a2">
+            <button onclick="checkAns(1)">Check Key</button>
+            <span class="result" id="res1"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 2: sub_1400011C0 (Integer Bounds)</h3>
+        <pre>
+<span class="type">bool</span> <span class="keyword">__fastcall</span> validate_serial(<span class="type">int</span> input_val)
+{
+  <span class="type">int</span> calculated; <span class="comment">// [rsp+18h] [rbp-4h]</span>
+
+  calculated = input_val * input_val - <span class="number">40</span> * input_val;
+  <span class="keyword">return</span> input_val > <span class="number">0</span> && calculated == <span class="number">1200</span>;
+}
+<span class="comment">// Format flag: input_val integer</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans2" placeholder="e.g. 50">
+            <button onclick="checkAns(2)">Check Key</button>
+            <span class="result" id="res2"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 3: sub_1400012A0 (8-bit Overflow / Sign Extension)</h3>
+        <pre>
+<span class="type">__int64</span> <span class="keyword">__fastcall</span> check_byte(<span class="type">__int8</span> key)
+{
+  <span class="type">__int8</span> temporary; 
+
+  temporary = <span class="number">7</span> * key + <span class="number">12</span>;
+  <span class="keyword">return</span> temporary == <span class="number">-46</span>; <span class="comment">// Watch out for signed 8-bit wrap around!</span>
+}
+<span class="comment">// Format flag: unsigned representation of key (0-255)</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans3" placeholder="0-255 value">
+            <button onclick="checkAns(3)">Check Key</button>
+            <span class="result" id="res3"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 4: sub_140001350 (String Checksum)</h3>
+        <pre>
+<span class="type">bool</span> <span class="keyword">__fastcall</span> verify_str(<span class="type">char</span> *str)
+{
+  <span class="keyword">if</span> ( str[<span class="number">0</span>] != <span class="number">'c'</span> )
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( str[<span class="number">1</span>] + str[<span class="number">0</span>] != <span class="number">210</span> )
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (str[<span class="number">2</span>] ^ str[<span class="number">1</span>]) != <span class="number">13</span> )
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> str[<span class="number">3</span>] == <span class="number">0</span>; <span class="comment">// Null-terminated 3 letter string</span>
+}
+<span class="comment">// Format flag: 3 letter string (e.g. cat)</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans4" placeholder="3-char string">
+            <button onclick="checkAns(4)">Check Key</button>
+            <span class="result" id="res4"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 5: sub_1400015F0 (Bit Manipulation Mask)</h3>
+        <pre>
+<span class="type">__int64</span> <span class="keyword">__fastcall</span> bit_kernel(<span class="type">unsigned __int16</span> input)
+{
+  <span class="keyword">if</span> ( (input & <span class="number">0xFF00</span>) != <span class="number">0xDE00</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( (input ^ <span class="number">0x00FF</span>) != <span class="number">0xDEAD</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> <span class="number">1LL</span>;
+}
+<span class="comment">// Format flag: Decimal integer value of input</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans5" placeholder="Base 10 integer">
+            <button onclick="checkAns(5)">Check Key</button>
+            <span class="result" id="res5"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 6: sub_140001700 (The Swapped Array)</h3>
+        <pre>
+<span class="type">bool</span> <span class="keyword">__fastcall</span> array_checker(<span class="type">unsigned int</span> *arr)
+{
+  <span class="comment">// arr contains 3 elements: arr[0], arr[1], arr[2]</span>
+  <span class="keyword">if</span> ( arr[<span class="number">0</span>] + arr[<span class="number">1</span>] != <span class="number">100</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( arr[<span class="number">1</span>] * arr[<span class="number">2</span>] != <span class="number">1200</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( arr[<span class="number">2</span>] - arr[<span class="number">0</span>] != <span class="number">10</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+<span class="comment">// Format flag: arr[0],arr[1],arr[2]</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans6" placeholder="x,y,z">
+            <button onclick="checkAns(6)">Check Key</button>
+            <span class="result" id="res6"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 7: sub_140001850 (Modulo Relations)</h3>
+        <pre>
+<span class="type">__int64</span> <span class="keyword">__fastcall</span> modulo_lock(<span class="type">int</span> secret)
+{
+  <span class="keyword">if</span> ( secret <= <span class="number">1000</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( secret % <span class="number">11</span> != <span class="number">5</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( secret % <span class="number">13</span> != <span class="number">3</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> secret < <span class="number">1150</span>; <span class="comment">// Find the value within bounds</span>
+}
+<span class="comment">// Format flag: secret integer value</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans7" placeholder="Integer value">
+            <button onclick="checkAns(7)">Check Key</button>
+            <span class="result" id="res7"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 8: sub_1400019C0 (Bit shifting Operations)</h3>
+        <pre>
+<span class="type">bool</span> <span class="keyword">__fastcall</span> shift_check(<span class="type">unsigned int</span> flag)
+{
+  <span class="type">unsigned int</span> v1;
+  <span class="type">unsigned int</span> v2;
+
+  v1 = flag >> <span class="number">4</span>;
+  v2 = flag << <span class="number">3</span>;
+  <span class="keyword">return</span> (v1 == <span class="number">0x123</span>) && ((v2 & <span class="number">0xFF</span>) == <span class="number">0x28</span>);
+}
+<span class="comment">// Format flag: Decimal integer value of flag</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans8" placeholder="Base 10 integer">
+            <button onclick="checkAns(8)">Check Key</button>
+            <span class="result" id="res8"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 9: sub_140001AF0 (Simultaneous Multipliers)</h3>
+        <pre>
+<span class="type">__int64</span> <span class="keyword">__fastcall</span> multi_check(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> z)
+{
+  <span class="keyword">if</span> ( <span class="number">5</span> * x - <span class="number">3</span> * y + <span class="number">2</span> * z != <span class="number">29</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( <span class="number">2</span> * x + <span class="number">4</span> * y - <span class="number">5</span> * z != <span class="number">5</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( <span class="number">3</span> * x - <span class="number">2</span> * y + <span class="number">4</span> * z != <span class="number">34</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> <span class="number">1LL</span>;
+}
+<span class="comment">// Format flag: x,y,z</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans9" placeholder="x,y,z">
+            <button onclick="checkAns(9)">Check Key</button>
+            <span class="result" id="res9"></span>
+        </div>
+    </div>
+
+    <div class="challenge">
+        <h3>Challenge 10: sub_140001C50 (Murmur-ish Tiny Transform)</h3>
+        <pre>
+<span class="type">bool</span> <span class="keyword">__fastcall</span> final_boss(<span class="type">unsigned int</span> key)
+{
+  <span class="type">unsigned int</span> transform;
+
+  transform = key ^ <span class="number">0x55555555</span>;
+  transform = (transform >> <span class="number">16</span>) | (transform << <span class="number">16</span>); <span class="comment">// ROR/ROL 16</span>
+  transform += <span class="number">0x1337</span>;
+  <span class="keyword">return</span> transform == <span class="number">0xDEADBEEF</span>;
+}
+<span class="comment">// Format flag: Decimal integer value of key</span></pre>
+        <div class="input-group">
+            <input type="text" id="ans10" placeholder="Base 10 integer">
+            <button onclick="checkAns(10)">Check Key</button>
+            <span class="result" id="res10"></span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Hidden internal verification keys
+    const solutions = {
+        1: "40,30",
+        2: "60",
+        3: "32",
+        4: "cux",
+        5: "57002",
+        6: "30,70,40",
+        7: "1116",
+        8: "4661",
+        9: "6,5,7",
+        10: "3740114006"
+    };
+
+    function checkAns(id) {
+        const userAns = document.getElementById('ans' + id).value.trim().toLowerCase();
+        const resSpan = document.getElementById('res' + id);
+        
+        if (userAns === solutions[id]) {
+            resSpan.innerHTML = "STATUS: SUCCESS (Correct Flag Matrix)";
+            resSpan.className = "result success";
+        } else {
+            resSpan.innerHTML = "STATUS: ACCESS_DENIED (SIGSEGV / Check constraints)";
+            resSpan.className = "result error";
+        }
+    }
+</script>
+</body>
+</html>
