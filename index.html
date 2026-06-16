@@ -154,6 +154,105 @@
       display: block;
     }
 
+    /* Vault Search */
+    .search-panel {
+      margin: -12px 0 32px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.16);
+    }
+
+    .search-shell {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-shell input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 10px;
+      background: rgba(7, 9, 14, 0.72);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    .search-shell input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .search-shell button {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+    }
+
+    .search-shell button:hover,
+    .search-shell button:focus-visible {
+      border-color: var(--accent);
+      color: var(--text);
+      outline: none;
+    }
+
+    .search-meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .search-results {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .search-result {
+      display: grid;
+      gap: 4px;
+      padding: 12px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .search-result:hover,
+    .search-result:focus-visible {
+      border-color: var(--accent);
+      background: rgba(92, 242, 169, 0.06);
+      outline: none;
+    }
+
+    .search-result-title {
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+    }
+
+    .search-result-path {
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .search-result-snippet,
+    .search-empty {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
     /* Main Dashboard Layout */
     .dashboard-layout {
       display: grid;
@@ -545,6 +644,15 @@
         border-radius: 8px;
         white-space: nowrap;
       }
+      .search-panel {
+        margin-top: -16px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .search-shell {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -573,6 +681,17 @@
         <span class="progress-widget-desc">Syncs dynamically with your checkboxes in REV Practice.md</span>
       </div>
     </header>
+
+    <section class="search-panel" aria-label="Vault search">
+      <div class="search-shell">
+        <input id="vault-search" data-search-input type="search" placeholder="Search playbooks, blueprints, tools, commands..." autocomplete="off">
+        <button data-search-clear type="button">Clear</button>
+      </div>
+      <div class="search-meta">
+        <span data-search-count>Type at least 2 characters.</span>
+      </div>
+      <div class="search-results" data-search-results hidden></div>
+    </section>
 
     <div class="dashboard-layout">
       <!-- Sidebar navigation/filters -->
@@ -1425,6 +1544,7 @@
     </footer>
   </div>
 
+  <script src="search.js"></script>
   <script>
     // Live Progress Calculator
     async function calculateProgress() {

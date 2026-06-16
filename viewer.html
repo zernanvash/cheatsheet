@@ -243,6 +243,99 @@
       color: var(--muted);
     }
 
+    .viewer-search {
+      width: min(1120px, calc(100% - 32px));
+      margin: 14px auto 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .search-shell {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-shell input {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--code);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    .search-shell input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-shell button {
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel-2);
+      color: var(--accent-2);
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .search-shell button:hover,
+    .search-shell button:focus-visible {
+      border-color: var(--accent-2);
+      outline: none;
+    }
+
+    .search-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .search-results {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .search-result {
+      display: grid;
+      gap: 3px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .search-result:hover,
+    .search-result:focus-visible {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .search-result-title {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .search-result-path {
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .search-result-snippet,
+    .search-empty {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
     /* Checkbox Styling */
     input[type="checkbox"] {
       appearance: none;
@@ -268,7 +361,7 @@
     }
 
     input[type="checkbox"]:checked::after {
-      content: '✓';
+      content: "\2713";
       color: var(--accent);
       font-size: 13px;
       font-weight: bold;
@@ -286,6 +379,10 @@
 
       main {
         display: block;
+      }
+
+      .search-shell {
+        flex-direction: column;
       }
 
       aside {
@@ -313,6 +410,17 @@
     </div>
   </header>
 
+  <section class="viewer-search" aria-label="Vault search">
+    <div class="search-shell">
+      <input data-search-input type="search" placeholder="Search vault pages..." autocomplete="off">
+      <button data-search-clear type="button">Clear</button>
+    </div>
+    <div class="search-meta">
+      <span data-search-count>Type at least 2 characters.</span>
+    </div>
+    <div class="search-results" data-search-results hidden></div>
+  </section>
+
   <main>
     <article id="content" class="status">Loading Markdown...</article>
     <aside aria-label="Table of contents">
@@ -323,6 +431,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+  <script src="search.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const requestedFile = params.get("file") || "H4G Training.md";
