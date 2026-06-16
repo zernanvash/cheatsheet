@@ -39,26 +39,26 @@ Use this track when decompiled validation logic becomes a system of equations, b
 
 ### Easy - IDA Decompiler Z3 Crackme Challenges
 - [ ] **Solved**
-- **Source:** [IDA Decompiler Z3 Crackme Challenges](rev_source/gemini-code-1781600452949.html)
+- **Source:** [IDA Decompiler Z3 Crackme Challenges (Easy Tier)](rev_source/z3_practice.html)
 - **Difficulty:** Easy
 - **Description:** Browser-based set of 10 small pseudo-code checks from a simulated Hex-Rays view. Practice converting simple integer equations, bounds, 8-bit overflow/sign behavior, checksum logic, bit masks, array swaps, modulo relations, shifts, multiplier systems, and tiny transforms into Python Z3 constraints.
 - **Skills:** `z3-solver`, `Int`, `BitVec`, signed/unsigned reasoning, modulo constraints, model extraction, validating solver output.
 - [Show Hint](#hint-z3-python-easy)
 
-### Medium - Z3 Python Placeholder
+### Medium - Z3 Python practice
 - [ ] **Solved**
-- **Source:** Placeholder to fill later.
+- **Source:** [IDA Decompiler Z3 Crackme Challenges (Medium Tier)](rev_source/z3_practice.html)
 - **Difficulty:** Medium
-- **Description:** Add a future practice set for multi-stage validation, mixed string/integer constraints, rolling checksums, lookup tables, or branch-dependent constraints.
-- **Skills:** Constraint decomposition, byte arrays, table lookups, path constraints, solver-assisted scripting.
+- **Description:** Browser-based set of 5 advanced decompiler checks. Practice solving modular matrix systems, mixed arithmetic (addition) and bitwise XOR equations, rolling hashes (djb2 collision preimages), non-linear modulo-multiplications, and array permutation dependencies.
+- **Skills:** Constraint decomposition, byte arrays, hash collisions, modular matrix math, solver-assisted scripting.
 - [Show Hint](#hint-z3-python-medium)
 
-### Hard - Z3 Python Placeholder
+### Hard - Z3 Python practice
 - [ ] **Solved**
-- **Source:** Placeholder to fill later.
+- **Source:** [IDA Decompiler Z3 Crackme Challenges (Hard Tier)](rev_source/z3_practice.html)
 - **Difficulty:** Hard
-- **Description:** Add a future practice set for VM bytecode constraints, nonlinear transforms, custom crypto preimage recovery, symbolic execution handoff, or hybrid brute force plus Z3 solving.
-- **Skills:** Bit-vector modeling, solver performance tuning, constraint simplification, hybrid search, validating candidates dynamically.
+- **Description:** Browser-based set of 5 complex decompiler checks. Practice modeling register mixer state transitions, substitution-permutation network lookup tables (S-Boxes) and diffusion mixers, bit-level linear feedback shift registers (LFSR) loops, diophantine division and remainder systems, and single-round Tiny Encryption Algorithm (TEA) decryption.
+- **Skills:** Bit-vector modeling, lookup table simulation, custom LFSR logic, diophantine equations, TEA round solver.
 - [Show Hint](#hint-z3-python-hard)
 
 ---
@@ -197,17 +197,17 @@ Scroll down only when you need them. Each hint gives you a starting direction wi
 
 <a id="hint-z3-python-medium"></a>
 ### Z3 Python Medium
-> Placeholder. Use this slot later for constraints that need arrays, byte strings, lookup tables, or several validation stages.
+> For Challenge 11, define 8-bit bitvectors for each byte and represent the modular equations. For Challenge 12, use `BitVec` to let Z3 handle carry bits automatically. For Challenge 13 (djb2 hash), represent the characters as `Int` with a loop constraint `h = (h * 33 + char) % (2**32)` to keep solving extremely fast.
 
-[Back to challenge](#medium---z3-python-placeholder)
+[Back to challenge](#medium---z3-python-practice)
 
 ---
 
 <a id="hint-z3-python-hard"></a>
 ### Z3 Python Hard
-> Placeholder. Use this slot later for problems where pure solving is too slow and you need simplification, partial brute force, dynamic traces, or a custom lifter.
+> For Challenge 17 (S-box), define a function using nested `If`s to map inputs to S-box lookup outputs. For Challenge 18 (LFSR), define a list of state variables to prevent exponential symbolic growth across loops. For Challenge 19, use `Int` division (`/` and `%` in Z3) to let Z3's integer solver resolve diophantine systems instantly.
 
-[Back to challenge](#hard---z3-python-placeholder)
+[Back to challenge](#hard---z3-python-practice)
 
 ---
 

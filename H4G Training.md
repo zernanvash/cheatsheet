@@ -109,7 +109,7 @@ Static and dynamic analysis of compiled binaries, bytecode, managed code, and ob
 ### 🎯 Practice
 * **[Exercises & Practice Hub](Exercises.md)** — All hands-on exercises across every category in one place.
 * **[REV Practice — crackmes.one CTF 2026](REV%20Practice.md)** — 12 challenges arranged by difficulty (Warm-Up → Expert) with descriptions, checklist, and optional hints.
-* **[IDA Z3 Crackmes (Browser)](rev_source/gemini-code-1781600452949.html)** — 10 interactive pseudo-C constraint-solving challenges.
+* **[IDA Z3 Crackmes Hub (Browser)](rev_source/z3_practice.html)** — 20 interactive pseudo-C constraint-solving challenges spanning Easy, Medium, and Hard tiers.
 
 ### Learning
 * [Reverse Engineering Fundamentals](learning/Reverse%20Engineering%20Fundamentals.md)

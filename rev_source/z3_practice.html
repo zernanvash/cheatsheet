@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Z3 SMT Solver Practice Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07090e;
+      --panel: rgba(17, 20, 28, 0.7);
+      --panel-hover: rgba(26, 32, 44, 0.85);
+      --panel-elevated: #161b26;
+      --text: #f0f4f8;
+      --muted: #8e9bb0;
+      --line: rgba(48, 56, 71, 0.5);
+      --accent: #5cf2a9;
+      --accent-glow: rgba(92, 242, 169, 0.15);
+      --color-rev: #a855f7;
+      
+      /* Level Colors */
+      --color-easy: #10b981;
+      --color-medium: #f59e0b;
+      --color-hard: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(92, 242, 169, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.04) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(249, 115, 22, 0.02) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 24px 72px;
+    }
+
+    /* Top Header */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-left {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 680px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--color-rev);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #c084fc;
+    }
+
+    /* Progress Widget */
+    .progress-widget {
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 20px;
+      min-width: 280px;
+      max-width: 340px;
+      flex: 0 0 auto;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress-widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-widget-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .progress-widget-stats {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--color-rev) 100%);
+      border-radius: 99px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-widget-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* Main Dashboard Layout */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Sidebar category switcher */
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 4px 0 12px 10px;
+    }
+
+    .category-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .category-btn:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+    }
+
+    .category-btn.active {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--line);
+    }
+
+    .category-btn::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+
+    .category-btn.active::before {
+      opacity: 1;
+    }
+
+    .category-btn[data-tier="all"] { color: var(--text); }
+    .category-btn[data-tier="easy"]::before { background: var(--color-easy); }
+    .category-btn[data-tier="medium"]::before { background: var(--color-medium); }
+    .category-btn[data-tier="hard"]::before { background: var(--color-hard); }
+
+    /* Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Challenge Card */
+    .challenge-card {
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+    }
+
+    .challenge-card.solved-card {
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .challenge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .challenge-title-wrap {
+      flex: 1;
+    }
+
+    .challenge-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+      color: #fff;
+    }
+
+    .challenge-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+    }
+
+    .badge-easy {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.2);
+      color: var(--color-easy);
+    }
+
+    .badge-medium {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.2);
+      color: var(--color-medium);
+    }
+
+    .badge-hard {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.2);
+      color: var(--color-hard);
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--color-easy);
+      color: var(--color-easy);
+    }
+
+    pre {
+      background: #0b0e14;
+      color: #d4d4d4;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13.5px;
+      line-height: 1.55;
+      margin: 16px 0;
+    }
+
+    /* IDA Pseudo-C Highlighting */
+    .keyword { color: #569cd6; font-weight: 600; }
+    .type { color: #4ec9b0; }
+    .number { color: #b5cea8; }
+    .comment { color: #6a9955; font-style: italic; }
+    .string { color: #ce9178; }
+
+    .skills-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .skills-desc strong {
+      color: var(--text);
+    }
+
+    /* Input & Verify Actions */
+    .action-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(48, 56, 71, 0.3);
+    }
+
+    .input-shell {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+      max-width: 320px;
+    }
+
+    .input-shell input {
+      width: 100%;
+      height: 38px;
+      padding: 8px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 8px;
+      background: rgba(7, 9, 14, 0.72);
+      color: var(--text);
+      font-family: 'Consolas', monospace;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-shell input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    button {
+      height: 38px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+      background: rgba(92, 242, 169, 0.05);
+      color: var(--accent);
+    }
+
+    .btn-verify {
+      background: var(--color-rev);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .btn-verify:hover {
+      background: #b55fe6;
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+    }
+
+    .status-msg {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .status-msg.success { color: var(--color-easy); }
+    .status-msg.error { color: var(--color-hard); }
+    .status-msg.unsolved { color: var(--muted); }
+
+    /* Hints Dropdown */
+    .hint-container {
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(148, 163, 184, 0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: none;
+    }
+
+    .hint-container.visible {
+      display: block;
+    }
+
+    .hint-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-medium);
+      margin-bottom: 6px;
+    }
+
+    .hint-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .hidden-card {
+      display: none !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 6px;
+      }
+      .sidebar-title {
+        display: none;
+      }
+      .category-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <a href="../index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Training Hub
+    </a>
+
+    <header>
+      <div class="header-left">
+        <h1>Z3 SMT Solver Verification Panel</h1>
+        <p class="subtitle">Hex-Rays Decompiler pseudo-code constraint verification. Reverse-engineer decompiler equations and write Z3 scripts to solve for keys.</p>
+      </div>
+
+      <!-- Live Practice Progress Tracker -->
+      <div class="progress-widget">
+        <div class="progress-widget-header">
+          <span class="progress-widget-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Practice progress
+          </span>
+          <span class="progress-widget-stats" id="progress-text">0 / 20 (0%)</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+        <span class="progress-widget-desc">Syncs locally based on correct keys verified</span>
+      </div>
+    </header>
+
+    <div class="dashboard-layout">
+      <!-- Sidebar navigation/filters -->
+      <aside class="sidebar">
+        <div class="sidebar-title">Difficulty Tiers</div>
+        <button class="category-btn active" data-tier="all">All Challenges</button>
+        <button class="category-btn" data-tier="easy">Easy Tier (1-10)</button>
+        <button class="category-btn" data-tier="medium">Medium Tier (11-15)</button>
+        <button class="category-btn" data-tier="hard">Hard Tier (16-20)</button>
+      </aside>
+
+      <!-- Content sections -->
+      <main class="content-area" id="challenges-list">
+
+        <!-- ================= EASY CHALLENGES ================= -->
+
+        <!-- Challenge 1 -->
+        <div class="challenge-card" data-tier="easy" id="card-1">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 1: sub_140001010</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Basic Linear Math</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">__int64</span> <span class="keyword">__fastcall</span> verify_key(<span class="type">unsigned int</span> a1, <span class="type">unsigned int</span> a2)
+{
+  <span class="keyword">if</span> ( (<span class="number">3</span> * a1 + <span class="number">2</span> * a2 != <span class="number">180</span>) )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( (a1 - a2 != <span class="number">10</span>) )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> <span class="number">1LL</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Systems of linear equations. Model `a1` and `a2` as Z3 integers.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-1" placeholder="a1,a2 (e.g. 10,20)">
+            </div>
+            <button class="btn-verify" onclick="checkAns(1)">Check Key</button>
+            <button onclick="toggleHint(1)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-1">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-1">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Use `a1, a2 = Ints('a1 a2')` in Python Z3, add the two equations, and output the model results.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 2 -->
+        <div class="challenge-card" data-tier="easy" id="card-2">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 2: sub_1400011C0</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Quadratic bounds</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> validate_serial(<span class="type">int</span> input_val)
+{
+  <span class="type">int</span> calculated; <span class="comment">// [rsp+18h] [rbp-4h]</span>
+
+  calculated = input_val * input_val - <span class="number">40</span> * input_val;
+  <span class="keyword">return</span> input_val > <span class="number">0</span> && calculated == <span class="number">1200</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Quadratic equations and inequalities in Z3.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-2" placeholder="e.g. 50">
+            </div>
+            <button class="btn-verify" onclick="checkAns(2)">Check Key</button>
+            <button onclick="toggleHint(2)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-2">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-2">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Define a single variable `x = Int('x')`. Add constraints `x > 0` and `x * x - 40 * x == 1200`.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 3 -->
+        <div class="challenge-card" data-tier="easy" id="card-3">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 3: sub_1400012A0</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Signed 8-bit Overflow</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">__int64</span> <span class="keyword">__fastcall</span> check_byte(<span class="type">__int8</span> key)
+{
+  <span class="type">__int8</span> temporary; 
+
+  temporary = <span class="number">7</span> * key + <span class="number">12</span>;
+  <span class="keyword">return</span> temporary == <span class="number">-46</span>; <span class="comment">// Watch out for signed 8-bit wrap around!</span>
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Modeling overflow using Bit-Vectors in Z3. Return the unsigned value (0-255).</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-3" placeholder="0-255 value">
+            </div>
+            <button class="btn-verify" onclick="checkAns(3)">Check Key</button>
+            <button onclick="toggleHint(3)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-3">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-3">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model `key` as an 8-bit Bit-Vector: `key = BitVec('key', 8)`. Use equation `7 * key + 12 == -46`. Retrieve the integer output in Python.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 4 -->
+        <div class="challenge-card" data-tier="easy" id="card-4">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 4: sub_140001350</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">String Character math</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> verify_str(<span class="type">char</span> *str)
+{
+  <span class="keyword">if</span> ( str[<span class="number">0</span>] != <span class="number">'c'</span> )
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( str[<span class="number">1</span>] + str[<span class="number">0</span>] != <span class="number">210</span> )
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (str[<span class="number">2</span>] ^ str[<span class="number">1</span>]) != <span class="number">13</span> )
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> str[<span class="number">3</span>] == <span class="number">0</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Character calculations. Solve for a 3-character string.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-4" placeholder="3-char string">
+            </div>
+            <button class="btn-verify" onclick="checkAns(4)">Check Key</button>
+            <button onclick="toggleHint(4)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-4">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-4">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model indices `str[0]`, `str[1]`, `str[2]` as 8-bit bitvectors or integers. Convert solved values back to ASCII characters.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 5 -->
+        <div class="challenge-card" data-tier="easy" id="card-5">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 5: sub_1400015F0</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Bitwise Masking</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">__int64</span> <span class="keyword">__fastcall</span> bit_kernel(<span class="type">unsigned __int16</span> input)
+{
+  <span class="keyword">if</span> ( (input & <span class="number">0xFF00</span>) != <span class="number">0xDE00</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( (input ^ <span class="number">0x00FF</span>) != <span class="number">0xDEAD</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> <span class="number">1LL</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> 16-bit Bit-Vector constraints (AND, XOR).</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-5" placeholder="Base 10 integer">
+            </div>
+            <button class="btn-verify" onclick="checkAns(5)">Check Key</button>
+            <button onclick="toggleHint(5)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-5">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-5">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Create `input = BitVec('input', 16)`. Add the two constraints and solve. Output the base-10 representation.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 6 -->
+        <div class="challenge-card" data-tier="easy" id="card-6">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 6: sub_140001700</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Array index relation</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> array_checker(<span class="type">unsigned int</span> *arr)
+{
+  <span class="comment">// arr contains 3 elements</span>
+  <span class="keyword">if</span> ( arr[<span class="number">0</span>] + arr[<span class="number">1</span>] != <span class="number">100</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( arr[<span class="number">1</span>] * arr[<span class="number">2</span>] != <span class="number">1200</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( arr[<span class="number">2</span>] - arr[<span class="number">0</span>] != <span class="number">10</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Modeling arrays of integers. Format: `x,y,z` for `arr[0],arr[1],arr[2]`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-6" placeholder="x,y,z">
+            </div>
+            <button class="btn-verify" onclick="checkAns(6)">Check Key</button>
+            <button onclick="toggleHint(6)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-6">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-6">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model three Z3 variables: `x, y, z = Ints('x y z')`. Solve and input as comma-separated integers.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 7 -->
+        <div class="challenge-card" data-tier="easy" id="card-7">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 7: sub_140001850</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Modulo constraints</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">__int64</span> <span class="keyword">__fastcall</span> modulo_lock(<span class="type">int</span> secret)
+{
+  <span class="keyword">if</span> ( secret &lt;= <span class="number">1000</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( secret % <span class="number">11</span> != <span class="number">5</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( secret % <span class="number">13</span> != <span class="number">3</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> secret &lt; <span class="number">1150</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Multi-modulo boundary constraints.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-7" placeholder="Integer value">
+            </div>
+            <button class="btn-verify" onclick="checkAns(7)">Check Key</button>
+            <button onclick="toggleHint(7)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-7">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-7">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Create `secret = Int('secret')`. Add constraints: `secret > 1000`, `secret < 1150`, `secret % 11 == 5`, `secret % 13 == 3`.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 8 -->
+        <div class="challenge-card" data-tier="easy" id="card-8">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 8: sub_1400019C0</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Bit Shifting</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> shift_check(<span class="type">unsigned int</span> flag)
+{
+  <span class="type">unsigned int</span> v1;
+  <span class="type">unsigned int</span> v2;
+
+  v1 = flag &gt;&gt; <span class="number">4</span>;
+  v2 = flag &lt;&lt; <span class="number">3</span>;
+  <span class="keyword">return</span> (v1 == <span class="number">0x123</span>) && ((v2 & <span class="number">0xFF</span>) == <span class="number">0x28</span>);
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Left and right shift simulation in Z3 Bit-Vectors.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-8" placeholder="Base 10 integer">
+            </div>
+            <button class="btn-verify" onclick="checkAns(8)">Check Key</button>
+            <button onclick="toggleHint(8)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-8">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-8">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model `flag` as a 32-bit Bit-Vector: `flag = BitVec('flag', 32)`. Add constraints using Z3 shift operators `>>` and `<<`.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 9 -->
+        <div class="challenge-card" data-tier="easy" id="card-9">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 9: sub_140001AF0</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Multi-variable linear equations</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">__int64</span> <span class="keyword">__fastcall</span> multi_check(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> z)
+{
+  <span class="keyword">if</span> ( <span class="number">5</span> * x - <span class="number">3</span> * y + <span class="number">2</span> * z != <span class="number">29</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( <span class="number">2</span> * x + <span class="number">4</span> * y - <span class="number">5</span> * z != <span class="number">5</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">if</span> ( <span class="number">3</span> * x - <span class="number">2</span> * y + <span class="number">4</span> * z != <span class="number">34</span> )
+    <span class="keyword">return</span> <span class="number">0LL</span>;
+  <span class="keyword">return</span> <span class="number">1LL</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> 3-variable system of linear equations. Format: `x,y,z`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-9" placeholder="x,y,z">
+            </div>
+            <button class="btn-verify" onclick="checkAns(9)">Check Key</button>
+            <button onclick="toggleHint(9)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-9">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-9">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Define `x, y, z = Ints('x y z')`. Add the 3 linear checks, check status, and retrieve values.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 10 -->
+        <div class="challenge-card" data-tier="easy" id="card-10">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 10: sub_140001C50</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-easy">Easy</span>
+                <span class="badge">Murmur-ish transform</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> final_boss(<span class="type">unsigned int</span> key)
+{
+  <span class="type">unsigned int</span> transform;
+
+  transform = key ^ <span class="number">0x55555555</span>;
+  transform = (transform &gt;&gt; <span class="number">16</span>) | (transform &lt;&lt; <span class="number">16</span>); <span class="comment">// 16-bit block rotate</span>
+  transform += <span class="number">0x1337</span>;
+  <span class="keyword">return</span> transform == <span class="number">0xDEADBEEF</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Mixed bitwise rotations, XOR, and arithmetic additions.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-10" placeholder="Base 10 integer">
+            </div>
+            <button class="btn-verify" onclick="checkAns(10)">Check Key</button>
+            <button onclick="toggleHint(10)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-10">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-10">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Create `key = BitVec('key', 32)`. Replicate the rotate operation using `((transform >> 16) | (transform << 16))` inside Z3. Beware of shift boundaries in 32-bit.</p>
+          </div>
+        </div>
+
+
+        <!-- ================= MEDIUM CHALLENGES ================= -->
+
+        <!-- Challenge 11 -->
+        <div class="challenge-card" data-tier="medium" id="card-11">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 11: sub_140002100</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-medium">Medium</span>
+                <span class="badge">Matrix Modulo 256</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> check_matrix(<span class="type">unsigned char</span> *a)
+{
+  <span class="keyword">if</span> ( (<span class="number">5</span>*a[<span class="number">0</span>] + <span class="number">3</span>*a[<span class="number">1</span>] + <span class="number">8</span>*a[<span class="number">2</span>] + <span class="number">2</span>*a[<span class="number">3</span>]) % <span class="number">256</span> != <span class="number">189</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (<span class="number">2</span>*a[<span class="number">0</span>] + <span class="number">9</span>*a[<span class="number">1</span>] +   a[<span class="number">2</span>] + <span class="number">4</span>*a[<span class="number">3</span>]) % <span class="number">256</span> != <span class="number">23</span> )  <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (  a[<span class="number">0</span>] + <span class="number">4</span>*a[<span class="number">1</span>] + <span class="number">7</span>*a[<span class="number">2</span>] + <span class="number">5</span>*a[<span class="number">3</span>]) % <span class="number">256</span> != <span class="number">107</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (<span class="number">8</span>*a[<span class="number">0</span>] + <span class="number">6</span>*a[<span class="number">1</span>] + <span class="number">3</span>*a[<span class="number">2</span>] + <span class="number">9</span>*a[<span class="number">3</span>]) % <span class="number">256</span> != <span class="number">148</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Linear systems over modular algebra. Model bytes using `BitVec(..., 8)` or `Int` with modulo constraints. Format: `a[0],a[1],a[2],a[3]`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-11" placeholder="a0,a1,a2,a3">
+            </div>
+            <button class="btn-verify" onclick="checkAns(11)">Check Key</button>
+            <button onclick="toggleHint(11)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-11">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-11">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Define 4 variables as `BitVecs('a b c d', 8)`. Set up equations using `+` and `*` operators. Note: the third equation is `4*a + b + 7*c + 5*d == 107` (IDA decompiler optimization details: `4 * a[0] + a[1]` is optimized as `a[1] + 4 * a[0]`).</p>
+          </div>
+        </div>
+
+        <!-- Challenge 12 -->
+        <div class="challenge-card" data-tier="medium" id="card-12">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 12: sub_140002200</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-medium">Medium</span>
+                <span class="badge">Mixed Addition & XOR</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> validate_keys(<span class="type">unsigned int</span> x, <span class="type">unsigned int</span> y)
+{
+  <span class="type">unsigned int</span> combined_xor = x ^ y;
+  <span class="type">unsigned int</span> combined_sum = x + y;
+
+  <span class="keyword">return</span> (combined_xor == <span class="number">0x5599B9F9</span>) 
+      && (combined_sum == <span class="number">0x9999BE01</span>) 
+      && ((x & <span class="number">0xFFFF0000</span>) == <span class="number">0x32100000</span>);
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Reversing mixed arithmetic (addition) and bitwise (XOR) operators. Hand analysis is highly difficult due to carry propagation. Format: `x,y`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-12" placeholder="x,y (base-10)">
+            </div>
+            <button class="btn-verify" onclick="checkAns(12)">Check Key</button>
+            <button onclick="toggleHint(12)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-12">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-12">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model `x` and `y` as 32-bit Bit-Vectors (`BitVec('x', 32)`). Add the three constraints. The carry bits will be solved automatically by Z3's bit-blasting engine.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 13 -->
+        <div class="challenge-card" data-tier="medium" id="card-13">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 13: sub_140002300</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-medium">Medium</span>
+                <span class="badge">djb2 Hash Collision</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> verify_hash(<span class="keyword">const char</span> *str)
+{
+  <span class="type">unsigned int</span> hash = <span class="number">5381</span>;
+  <span class="type">int</span> i;
+
+  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="number">6</span>; ++i )
+  {
+    <span class="keyword">if</span> ( str[i] &lt; <span class="number">32</span> || str[i] &gt; <span class="number">126</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+    hash = <span class="number">33</span> * hash + str[i];
+  }
+  <span class="keyword">return</span> hash == <span class="number">0x284FC66A</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Loop modeling, hash preimages, character boundaries. Find a 6-character printable string. (Multiple inputs may collide and be valid!)</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-13" placeholder="6-char string">
+            </div>
+            <button class="btn-verify" onclick="checkAns(13)">Check Key</button>
+            <button onclick="toggleHint(13)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-13">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-13">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Use Z3 `Int` for each of the 6 characters to prevent slow bitvector division. Model the hash step as: `hash = (hash * 33 + chars[i]) % 4294967296`. Add bounds `chars[i] >= 32` and `chars[i] <= 126`. One solution is `'z3rule'`.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 14 -->
+        <div class="challenge-card" data-tier="medium" id="card-14">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 14: sub_140002400</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-medium">Medium</span>
+                <span class="badge">Non-linear Modulo</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> check_nonlinear(<span class="type">unsigned __int16</span> a, <span class="type">unsigned __int16</span> b, <span class="type">unsigned __int16</span> c)
+{
+  <span class="keyword">if</span> ( a &lt;= <span class="number">1000</span> || b &lt;= <span class="number">1000</span> || c &lt;= <span class="number">1000</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  
+  <span class="keyword">if</span> ( (a * b + c) % <span class="number">65536</span> != <span class="number">3312</span> )   <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (b * c + a) % <span class="number">65536</span> != <span class="number">53290</span> )  <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( ((a ^ b) &lt;&lt; <span class="number">4</span>) % <span class="number">65536</span> != <span class="number">0x2FC0</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Non-linear multiplication mixed with bitwise XOR on 16-bit ranges. Format: `a,b,c`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-14" placeholder="a,b,c">
+            </div>
+            <button class="btn-verify" onclick="checkAns(14)">Check Key</button>
+            <button onclick="toggleHint(14)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-14">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-14">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model variables as 16-bit Bit-Vectors (`BitVec('a', 16)`). Let multiplication wrap around naturally as it does in 16-bit arithmetic. Z3 can solve non-linear multiplication over finite fields very quickly.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 15 -->
+        <div class="challenge-card" data-tier="medium" id="card-15">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 15: sub_140002500</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-medium">Medium</span>
+                <span class="badge">Array Permutation & Sum</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> verify_array(<span class="type">unsigned int</span> *arr)
+{
+  <span class="type">unsigned int</span> temp[<span class="number">4</span>];
+  
+  temp[<span class="number">0</span>] = arr[<span class="number">2</span>] + <span class="number">15</span>;
+  temp[<span class="number">1</span>] = arr[<span class="number">0</span>] ^ arr[<span class="number">3</span>];
+  temp[<span class="number">2</span>] = arr[<span class="number">1</span>] * <span class="number">3</span>;
+  temp[<span class="number">3</span>] = arr[<span class="number">3</span>] - arr[<span class="number">2</span>];
+
+  <span class="keyword">return</span> (temp[<span class="number">0</span>] == <span class="number">100</span>) 
+      && (temp[<span class="number">1</span>] == <span class="number">1337</span>) 
+      && (temp[<span class="number">2</span>] == <span class="number">999</span>) 
+      && (temp[<span class="number">3</span>] == <span class="number">500</span>)
+      && (arr[<span class="number">0</span>] + arr[<span class="number">1</span>] + arr[<span class="number">2</span>] + arr[<span class="number">3</span>] == <span class="number">2843</span>);
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Tracking shuffled variables and multi-variable dependencies. Format: `arr[0],arr[1],arr[2],arr[3]`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-15" placeholder="w,x,y,z">
+            </div>
+            <button class="btn-verify" onclick="checkAns(15)">Check Key</button>
+            <button onclick="toggleHint(15)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-15">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-15">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Create 4 variables `arr = [BitVec(f'a_{i}', 32) for i in range(4)]`. Set up the temporary variables exactly as shown, add the constraints, and output the results.</p>
+          </div>
+        </div>
+
+
+        <!-- ================= HARD CHALLENGES ================= -->
+
+        <!-- Challenge 16 -->
+        <div class="challenge-card" data-tier="hard" id="card-16">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 16: sub_140003100</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-hard">Hard</span>
+                <span class="badge">VM Register Mixer</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> mix_registers(<span class="type">unsigned int</span> k1, <span class="type">unsigned int</span> k2, <span class="type">unsigned int</span> k3)
+{
+  <span class="type">unsigned int</span> r0 = k1;
+  <span class="type">unsigned int</span> r1 = k2;
+  <span class="type">unsigned int</span> r2 = k3;
+
+  r0 = (r0 ^ r1) + r2;
+  r1 = (r1 + r2) ^ r0;
+  r2 = (r2 ^ r0) + r1;
+
+  r0 = (r0 &lt;&lt; <span class="number">5</span>) | (r0 &gt;&gt; <span class="number">27</span>); <span class="comment">// ROL 5</span>
+  r1 = (r1 &gt;&gt; <span class="number">3</span>) | (r1 &lt;&lt; <span class="number">29</span>); <span class="comment">// ROR 3</span>
+  r2 ^= <span class="number">0x90ABCDEF</span>;
+
+  <span class="keyword">return</span> (r0 == <span class="number">0x12345678</span>) 
+      && (r1 == <span class="number">0x87654321</span>) 
+      && (r2 == <span class="number">0xABCDEF01</span>);
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Modeling state transitions, bitwise rotations, and mixed addition/XOR diffusion. Format: `k1,k2,k3`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-16" placeholder="k1,k2,k3">
+            </div>
+            <button class="btn-verify" onclick="checkAns(16)">Check Key</button>
+            <button onclick="toggleHint(16)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-16">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-16">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Use 32-bit Bit-Vectors. Replicate rotations using `RotateLeft(r0, 5)` and `RotateRight(r1, 3)` from the `z3` Python library. Add the final equality checks and output the base-10 values.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 17 -->
+        <div class="challenge-card" data-tier="hard" id="card-17">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 17: sub_140003200</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-hard">Hard</span>
+                <span class="badge">S-Box substitution & Diffusion</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> sbox_layer(<span class="type">unsigned char</span> *key)
+{
+  <span class="keyword">const unsigned char</span> sbox[<span class="number">16</span>] = { 
+    <span class="number">0xC</span>, <span class="number">0x5</span>, <span class="number">0x6</span>, <span class="number">0xB</span>, <span class="number">0x9</span>, <span class="number">0x0</span>, <span class="number">0xA</span>, <span class="number">0xD</span>, 
+    <span class="number">0x3</span>, <span class="number">0xE</span>, <span class="number">0xF</span>, <span class="number">0x8</span>, <span class="number">0x4</span>, <span class="number">0x7</span>, <span class="number">0x1</span>, <span class="number">0x2</span> 
+  };
+  <span class="type">unsigned char</span> a, b, c, d;
+
+  a = (sbox[key[<span class="number">0</span>] &gt;&gt; <span class="number">4</span>] &lt;&lt; <span class="number">4</span>) | sbox[key[<span class="number">0</span>] & <span class="number">0xF</span>];
+  b = (sbox[key[<span class="number">1</span>] &gt;&gt; <span class="number">4</span>] &lt;&lt; <span class="number">4</span>) | sbox[key[<span class="number">1</span>] & <span class="number">0xF</span>];
+  c = (sbox[key[<span class="number">2</span>] &gt;&gt; <span class="number">4</span>] &lt;&lt; <span class="number">4</span>) | sbox[key[<span class="number">2</span>] & <span class="number">0xF</span>];
+  d = (sbox[key[<span class="number">3</span>] &gt;&gt; <span class="number">4</span>] &lt;&lt; <span class="number">4</span>) | sbox[key[<span class="number">3</span>] & <span class="number">0xF</span>];
+
+  <span class="keyword">return</span> (a ^ b ^ c == <span class="number">0xAA</span>) 
+      && (b ^ c ^ d == <span class="number">0xBB</span>) 
+      && (c ^ d ^ a == <span class="number">0xCC</span>) 
+      && (d ^ a ^ b == <span class="number">0xDD</span>);
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Modeling lookup tables and substitution layers in Z3. Format: `key[0],key[1],key[2],key[3]`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-17" placeholder="k0,k1,k2,k3">
+            </div>
+            <button class="btn-verify" onclick="checkAns(17)">Check Key</button>
+            <button onclick="toggleHint(17)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-17">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-17">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Model lookup using Z3 nested `If` constraints. For a 4-bit value `val`, do `res = If(val == 0, 12, If(val == 1, 5, ...))`. Perform this lookup on both high and low nibbles of each key byte, then enforce the diffusion XOR equations.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 18 -->
+        <div class="challenge-card" data-tier="hard" id="card-18">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 18: sub_140003300</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-hard">Hard</span>
+                <span class="badge">Custom LFSR</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> lfsr_check(<span class="type">unsigned int</span> seed)
+{
+  <span class="type">unsigned int</span> state = seed;
+  <span class="type">unsigned int</span> bit;
+  <span class="type">int</span> i;
+
+  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; <span class="number">16</span>; ++i )
+  {
+    bit = (state ^ (state &gt;&gt; <span class="number">2</span>) ^ (state &gt;&gt; <span class="number">3</span>) ^ (state &gt;&gt; <span class="number">5</span>)) & <span class="number">1</span>;
+    state = (state &gt;&gt; <span class="number">1</span>) | (bit &lt;&lt; <span class="number">31</span>);
+  }
+  <span class="keyword">return</span> state == <span class="number">0x1B7E1337</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Modeling loops and bit-level feedback structures. Hand-reversing is highly tedious due to shifting overlaps.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-18" placeholder="Seed (base-10 integer)">
+            </div>
+            <button class="btn-verify" onclick="checkAns(18)">Check Key</button>
+            <button onclick="toggleHint(18)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-18">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-18">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Define an array of 17 variables `states = [BitVec(f'state_{i}', 32) for i in range(17)]` to prevent exponential growth in symbolic expressions. Enforce `states[i+1] == (states[i] >> 1) | (ZeroExt(31, bit) << 31)` with the appropriate XOR taps extracted using `Extract(bit_pos, bit_pos, states[i])`.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 19 -->
+        <div class="challenge-card" data-tier="hard" id="card-19">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 19: sub_140003400</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-hard">Hard</span>
+                <span class="badge">Division & Remainder System</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> diophantine_check(<span class="type">unsigned int</span> x, <span class="type">unsigned int</span> y)
+{
+  <span class="keyword">if</span> ( x + y != <span class="number">500000</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+
+  <span class="keyword">if</span> ( (x / <span class="number">1337</span>) + (y % <span class="number">999</span>) != <span class="number">301</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">if</span> ( (y / <span class="number">1337</span>) + (x % <span class="number">999</span>) != <span class="number">572</span> ) <span class="keyword">return</span> <span class="keyword">false</span>;
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Modeling integer division and modulus operations. SMT solvers solve this via arithmetic domain reductions. Format: `x,y`.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-19" placeholder="x,y">
+            </div>
+            <button class="btn-verify" onclick="checkAns(19)">Check Key</button>
+            <button onclick="toggleHint(19)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-19">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-19">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Use mathematical integers `x, y = Ints('x y')` in Z3 rather than Bit-Vectors. Division `/` and remainder `%` on Z3 `Int` are extremely optimized compared to `BitVec` divisions, solving in milliseconds.</p>
+          </div>
+        </div>
+
+        <!-- Challenge 20 -->
+        <div class="challenge-card" data-tier="hard" id="card-20">
+          <div class="challenge-header">
+            <div class="challenge-title-wrap">
+              <h3 class="challenge-title">Challenge 20: sub_140003500</h3>
+              <div class="challenge-meta">
+                <span class="badge badge-hard">Hard</span>
+                <span class="badge">Single Round TEA Decryption</span>
+              </div>
+            </div>
+          </div>
+          <pre><span class="type">bool</span> <span class="keyword">__fastcall</span> tea_round(<span class="type">unsigned int</span> *k)
+{
+  <span class="type">unsigned int</span> v0 = <span class="number">0x01234567</span>;
+  <span class="type">unsigned int</span> v1 = <span class="number">0x89ABCDEF</span>;
+  <span class="type">unsigned int</span> sum = <span class="number">0x9E3779B9</span>;
+
+  v0 += ((v1 &lt;&lt; <span class="number">4</span>) + k[<span class="number">0</span>]) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k[<span class="number">1</span>]);
+  v1 += ((v0 &lt;&lt; <span class="number">4</span>) + k[<span class="number">2</span>]) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k[<span class="number">3</span>]);
+
+  <span class="keyword">return</span> (v0 == <span class="number">0xDEADBEEF</span>) && (v1 == <span class="number">0xCAFEBABE</span>);
+}</pre>
+          <p class="skills-desc"><strong>Skills:</strong> Decrypting cipher schedules. Solve for the 4-word key `k[0],k[1],k[2],k[3]`. Z3 handles cryptographic constraint systems cleanly.</p>
+          <div class="action-panel">
+            <div class="input-shell">
+              <input type="text" id="ans-20" placeholder="k0,k1,k2,k3">
+            </div>
+            <button class="btn-verify" onclick="checkAns(20)">Check Key</button>
+            <button onclick="toggleHint(20)">Show Hint</button>
+            <span class="status-msg unsolved" id="status-20">STATUS: NOT_SOLVED</span>
+          </div>
+          <div class="hint-container" id="hint-box-20">
+            <div class="hint-title">Hint</div>
+            <p class="hint-text">Define 4 variables as 32-bit Bit-Vectors. Substitute constants `v0, v1, sum` exactly as they are defined. Set the final constraints and print the values in decimal.</p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Solutions verification functions
+    const solutions = {
+      1: (val) => val.trim().replace(/\s+/g, '') === "40,30",
+      2: (val) => val.trim() === "60",
+      3: (val) => val.trim() === "32",
+      4: (val) => val.trim().toLowerCase() === "cux",
+      5: (val) => val.trim() === "57002",
+      6: (val) => val.trim().replace(/\s+/g, '') === "30,70,40",
+      7: (val) => val.trim() === "1116",
+      8: (val) => val.trim() === "4661",
+      9: (val) => val.trim().replace(/\s+/g, '') === "6,5,7",
+      10: (val) => val.trim() === "3740114006",
+      11: (val) => val.trim().replace(/\s+/g, '') === "206,165,254,236",
+      12: (val) => val.trim().replace(/\s+/g, '') === "839918324,1737071373",
+      13: (val) => {
+        const input = val.trim();
+        if (input.length !== 6) return false;
+        let h = 5381;
+        for (let i = 0; i < input.length; i++) {
+          h = (((h * 33) >>> 0) + input.charCodeAt(i)) >>> 0;
+        }
+        return h === 0x284fc66a;
+      },
+      14: (val) => val.trim().replace(/\s+/g, '') === "1234,30254,25396",
+      15: (val) => val.trim().replace(/\s+/g, '') === "1840,333,85,585",
+      16: (val) => val.trim().replace(/\s+/g, '') === "3303925516,990777454,3232607057",
+      17: (val) => val.trim().replace(/\s+/g, '') === "51,0,119,102",
+      18: (val) => val.trim() === "322420463",
+      19: (val) => val.trim().replace(/\s+/g, '') === "403097,96903",
+      20: (val) => val.trim().replace(/\s+/g, '') === "1605132080,62038417,1390142839,17469961"
+    };
+
+    // Load solved progress from localStorage on boot
+    let solvedList = [];
+    try {
+      const stored = localStorage.getItem('z3_solved_challenges');
+      if (stored) {
+        solvedList = JSON.parse(stored);
+      }
+    } catch(e) {
+      console.error("Local storage error:", e);
+    }
+
+    function checkAns(id) {
+      const inputEl = document.getElementById('ans-' + id);
+      const statusEl = document.getElementById('status-' + id);
+      const cardEl = document.getElementById('card-' + id);
+      
+      const isCorrect = solutions[id](inputEl.value);
+      
+      if (isCorrect) {
+        statusEl.innerHTML = "STATUS: SUCCESS (Correct Flag Matrix)";
+        statusEl.className = "status-msg success";
+        cardEl.classList.add('solved-card');
+        
+        if (!solvedList.includes(id)) {
+          solvedList.push(id);
+          saveProgress();
+        }
+      } else {
+        statusEl.innerHTML = "STATUS: ACCESS_DENIED (SIGSEGV / Check constraints)";
+        statusEl.className = "status-msg error";
+        cardEl.classList.remove('solved-card');
+      }
+      calculateProgress();
+    }
+
+    function toggleHint(id) {
+      const hintBox = document.getElementById('hint-box-' + id);
+      hintBox.classList.toggle('visible');
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem('z3_solved_challenges', JSON.stringify(solvedList));
+      } catch(e) {
+        console.error("Could not save to local storage:", e);
+      }
+    }
+
+    function calculateProgress() {
+      const total = 20;
+      const solved = solvedList.length;
+      const percentage = Math.round((solved / total) * 100);
+      
+      document.getElementById('progress-text').textContent = `${solved} / ${total} Solved (${percentage}%)`;
+      document.getElementById('progress-bar-fill').style.width = `${percentage}%`;
+    }
+
+    // Apply solved styles to cards on boot
+    function initProgressStyles() {
+      solvedList.forEach(id => {
+        const card = document.getElementById('card-' + id);
+        const status = document.getElementById('status-' + id);
+        if (card && status) {
+          card.classList.add('solved-card');
+          status.innerHTML = "STATUS: SUCCESS (Correct Flag Matrix)";
+          status.className = "status-msg success";
+          
+          const input = document.getElementById('ans-' + id);
+          if (input) {
+            input.placeholder = "Solved";
+          }
+        }
+      });
+      calculateProgress();
+    }
+
+    // Sidebar Category Switcher Logic
+    const categoryBtns = document.querySelectorAll(".category-btn");
+    const cards = document.querySelectorAll(".challenge-card");
+
+    categoryBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        categoryBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const targetTier = btn.getAttribute("data-tier");
+
+        cards.forEach(card => {
+          if (targetTier === "all" || card.getAttribute("data-tier") === targetTier) {
+            card.classList.remove("hidden-card");
+          } else {
+            card.classList.add("hidden-card");
+          }
+        });
+      });
+    });
+
+    // Boot
+    initProgressStyles();
+  </script>
+</body>
+</html>

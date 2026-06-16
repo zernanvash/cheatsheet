@@ -9,26 +9,19 @@ Central hub for all hands-on exercises, interactive crackmes, and CTF practice s
 ### Interactive Crackmes
 
 #### IDA Decompiler Z3 Crackme Challenges (Browser-based)
-- **Source:** [Open in Browser](rev_source/gemini-code-1781600452949.html)
-- **Difficulty:** 🟢 Easy
-- **Format:** 10 interactive pseudo-C checks presented as a simulated Hex-Rays decompiler view. Enter your solution and get instant feedback.
-- **Skills practiced:** Z3 solver scripting, `Int`/`BitVec` modeling, signed/unsigned reasoning, bit masking, modulo constraints, shift operations, XOR transforms.
+- **Source:** [Open in Browser](rev_source/z3_practice.html)
+- **Difficulty:** 🟢 Easy / 🟡 Medium / 🔴 Hard
+- **Format:** 20 interactive pseudo-C checks (Easy, Medium, and Hard tiers) presented as a simulated Hex-Rays decompiler view. Enter your solution and get instant feedback.
+- **Skills practiced:** Z3 solver scripting, `Int`/`BitVec` modeling, signed/unsigned reasoning, bit masking, modulo constraints, shift operations, XOR transforms, linear matrix modulo algebra, carry propagation, hash preimage collisions, non-linear multiplication, state machine register mixers, S-Boxes, custom LFSR state tracking, and TEA round decryption.
 
 | # | Function | Concept | Difficulty |
 |---|---|---|---|
-| 1 | `verify_key` | Basic simultaneous equations (3a + 2b = 180, a - b = 10) | 🟢 |
-| 2 | `validate_serial` | Quadratic integer bounds (x² - 40x = 1200, x > 0) | 🟢 |
-| 3 | `check_byte` | 8-bit signed overflow / sign extension (7k + 12 ≡ -46 mod 256) | 🟡 |
-| 4 | `verify_str` | String checksum — character-by-character constraints with XOR | 🟡 |
-| 5 | `bit_kernel` | Bit manipulation with AND/XOR masks (0xFF00, 0x00FF) | 🟡 |
-| 6 | `array_checker` | 3-element array with sum/product/difference constraints | 🟡 |
-| 7 | `modulo_lock` | Modulo relations with bounded search (mod 11 = 5, mod 13 = 3) | 🟡 |
-| 8 | `shift_check` | Bit shifting — right shift and left shift with mask comparison | 🟠 |
-| 9 | `multi_check` | Simultaneous 3-variable linear system (5x-3y+2z=29, etc.) | 🟠 |
-| 10 | `final_boss` | Murmur-ish transform — XOR + rotate + add → target constant | 🟠 |
+| 1-10 | Easy Tier | Basic linear math, signed overflows, checksums, masking, modulo, shifts | 🟢 |
+| 11-15 | Medium Tier | Modular matrices, mixed XOR/sum, djb2 preimage, nonlinear mod, arrays | 🟡 |
+| 16-20 | Hard Tier | VM mixers, S-box substitution networks, LFSRs, diophantine equations, TEA | 🔴 |
 
 **How to practice:**
-1. Open the [HTML challenge page](rev_source/gemini-code-1781600452949.html) in your browser.
+1. Open the [HTML challenge page](rev_source/z3_practice.html) in your browser.
 2. Read the decompiled pseudo-C for each challenge.
 3. Write a Python Z3 script to model the constraints and solve for valid input.
 4. Enter the solution and verify with the built-in checker.
