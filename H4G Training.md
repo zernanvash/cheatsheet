@@ -107,7 +107,9 @@ Static and dynamic analysis of compiled binaries, bytecode, managed code, and ob
 * [picoCTF Web and REV Patterns](guides/picoCTF%20Web%20and%20REV%20Patterns.md) — Common CTF reversing patterns and solve strategies.
 
 ### 🎯 Practice
+* **[Exercises & Practice Hub](Exercises.md)** — All hands-on exercises across every category in one place.
 * **[REV Practice — crackmes.one CTF 2026](REV%20Practice.md)** — 12 challenges arranged by difficulty (Warm-Up → Expert) with descriptions, checklist, and optional hints.
+* **[IDA Z3 Crackmes (Browser)](rev_source/gemini-code-1781600452949.html)** — 10 interactive pseudo-C constraint-solving challenges.
 
 ### Learning
 * [Reverse Engineering Fundamentals](learning/Reverse%20Engineering%20Fundamentals.md)
@@ -191,6 +193,7 @@ Documenting findings professionally.
 
 ## 🛠️ Cross-Cutting Resources
 
+* **[Exercises & Practice Hub](Exercises.md)** — All hands-on exercises, interactive crackmes, and CTF practice sets.
 * **[0xrefs Interactive Reference](0xrefs.html)** — Dynamic parameter cheatsheet with search, filter, and offline compatibility.
 * **[Tools Index](tools/Tools%20Index.md)** — All cheatsheets organized by CTF category.
 * **[References Index](references/References%20Index.md)** — Long-form source links, syscall tables, and external documentation.

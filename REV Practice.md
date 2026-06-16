@@ -285,9 +285,11 @@ Scroll down only when you need them. Each hint gives you a starting direction wi
 
 ## Related
 
+- [Exercises & Practice Hub](Exercises.md)
 - [Reverse Engineering Playbook](Reverse%20Engineering%20Playbook.md)
 - [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md)
 - [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md)
 - [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md)
 - [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md)
 - [REV Python Toolkit](tools/REV%20Python%20Toolkit.md)
+
