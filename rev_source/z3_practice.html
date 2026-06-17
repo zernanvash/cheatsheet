@@ -365,15 +365,21 @@
       color: var(--text);
     }
 
-    /* New Concept Explanation Section */
+    /* Concept Explanation Section (Hiding until solved) */
     .explanation-box {
       margin: 16px 0;
       padding: 12px 16px;
-      background: rgba(168, 85, 247, 0.03);
-      border-left: 3px solid var(--color-rev);
+      background: rgba(16, 185, 129, 0.03);
+      border-left: 3px solid var(--color-easy);
       border-radius: 0 8px 8px 0;
       font-size: 0.88rem;
       line-height: 1.5;
+      display: none; /* Hidden by default */
+    }
+
+    /* Display explanation only when card is solved */
+    .challenge-card.solved-card .explanation-box {
+      display: block;
     }
 
     .explanation-box strong {
@@ -424,6 +430,37 @@
       border-color: var(--accent);
       color: var(--accent);
       background: rgba(92, 242, 169, 0.08);
+    }
+
+    /* Answer python code container styles */
+    .answer-container {
+      margin-top: 16px;
+      background: #0b0e14;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 10px;
+      padding: 16px;
+      display: none; /* Hidden by default */
+    }
+
+    .answer-container.visible {
+      display: block;
+    }
+
+    .answer-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-rev);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .answer-container pre {
+      margin: 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: #05070a;
     }
 
     /* Input & Verify Actions */
@@ -659,11 +696,26 @@
             </div>
             <button class="btn-verify" onclick="checkAns(1)">Check Key</button>
             <button onclick="toggleHint(1)">Show Hint</button>
+            <button onclick="toggleAnswer(1)">Show Answer</button>
             <span class="status-msg unsolved" id="status-1">STATUS: NOT_SOLVED</span>
           </div>
+          
           <div class="hint-container" id="hint-box-1">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Use `a1, a2 = Ints('a1 a2')` in Python Z3, add the two equations, and output the model results.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-1">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+a1, a2 = Ints(<span class="string">'a1 a2'</span>)
+s = Solver()
+s.add(<span class="number">3</span> * a1 + <span class="number">2</span> * a2 == <span class="number">180</span>)
+s.add(a1 - a2 == <span class="number">10</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -707,11 +759,26 @@
             </div>
             <button class="btn-verify" onclick="checkAns(2)">Check Key</button>
             <button onclick="toggleHint(2)">Show Hint</button>
+            <button onclick="toggleAnswer(2)">Show Answer</button>
             <span class="status-msg unsolved" id="status-2">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-2">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Define a single variable `x = Int('x')`. Add constraints `x > 0` and `x * x - 40 * x == 1200`.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-2">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+x = Int(<span class="string">'x'</span>)
+s = Solver()
+s.add(x &gt; <span class="number">0</span>)
+s.add(x * x - <span class="number">40</span> * x == <span class="number">1200</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -755,11 +822,25 @@
             </div>
             <button class="btn-verify" onclick="checkAns(3)">Check Key</button>
             <button onclick="toggleHint(3)">Show Hint</button>
+            <button onclick="toggleAnswer(3)">Show Answer</button>
             <span class="status-msg unsolved" id="status-3">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-3">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model `key` as an 8-bit Bit-Vector: `key = BitVec('key', 8)`. Use equation `7 * key + 12 == -46`. Retrieve the integer output in Python.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-3">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+key = BitVec(<span class="string">'key'</span>, <span class="number">8</span>)
+s = Solver()
+s.add(<span class="number">7</span> * key + <span class="number">12</span> == -<span class="number">46</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model()[key].as_long())</pre>
           </div>
         </div>
 
@@ -806,11 +887,28 @@
             </div>
             <button class="btn-verify" onclick="checkAns(4)">Check Key</button>
             <button onclick="toggleHint(4)">Show Hint</button>
+            <button onclick="toggleAnswer(4)">Show Answer</button>
             <span class="status-msg unsolved" id="status-4">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-4">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model indices `str[0]`, `str[1]`, `str[2]` as 8-bit bitvectors or integers. Convert solved values back to ASCII characters.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-4">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+chars = [BitVec(f<span class="string">'c_{i}'</span>, <span class="number">8</span>) for i in range(<span class="number">3</span>)]
+s = Solver()
+s.add(chars[<span class="number">0</span>] == ord(<span class="string">'c'</span>))
+s.add(chars[<span class="number">1</span>] + chars[<span class="number">0</span>] == <span class="number">210</span>)
+s.add(chars[<span class="number">2</span>] ^ chars[<span class="number">1</span>] == <span class="number">13</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    m = s.model()
+    print(<span class="string">""</span>.join(chr(m[c].as_long()) for c in chars))</pre>
           </div>
         </div>
 
@@ -855,11 +953,26 @@
             </div>
             <button class="btn-verify" onclick="checkAns(5)">Check Key</button>
             <button onclick="toggleHint(5)">Show Hint</button>
+            <button onclick="toggleAnswer(5)">Show Answer</button>
             <span class="status-msg unsolved" id="status-5">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-5">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Create `input = BitVec('input', 16)`. Add the two constraints and solve. Output the base-10 representation.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-5">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+input_val = BitVec(<span class="string">'input_val'</span>, <span class="number">16</span>)
+s = Solver()
+s.add(input_val & <span class="number">0xFF00</span> == <span class="number">0xDE00</span>)
+s.add(input_val ^ <span class="number">0x00FF</span> == <span class="number">0xDEAD</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model()[input_val].as_long())</pre>
           </div>
         </div>
 
@@ -904,11 +1017,27 @@
             </div>
             <button class="btn-verify" onclick="checkAns(6)">Check Key</button>
             <button onclick="toggleHint(6)">Show Hint</button>
+            <button onclick="toggleAnswer(6)">Show Answer</button>
             <span class="status-msg unsolved" id="status-6">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-6">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model three Z3 variables: `x, y, z = Ints('x y z')`. Solve and input as comma-separated integers.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-6">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+arr = [Int(f<span class="string">'arr_{i}'</span>) for i in range(<span class="number">3</span>)]
+s = Solver()
+s.add(arr[<span class="number">0</span>] + arr[<span class="number">1</span>] == <span class="number">100</span>)
+s.add(arr[<span class="number">1</span>] * arr[<span class="number">2</span>] == <span class="number">1200</span>)
+s.add(arr[<span class="number">2</span>] - arr[<span class="number">0</span>] == <span class="number">10</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -955,11 +1084,28 @@
             </div>
             <button class="btn-verify" onclick="checkAns(7)">Check Key</button>
             <button onclick="toggleHint(7)">Show Hint</button>
+            <button onclick="toggleAnswer(7)">Show Answer</button>
             <span class="status-msg unsolved" id="status-7">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-7">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Create `secret = Int('secret')`. Add constraints: `secret > 1000`, `secret < 1150`, `secret % 11 == 5`, `secret % 13 == 3`.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-7">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+secret = Int(<span class="string">'secret'</span>)
+s = Solver()
+s.add(secret &gt; <span class="number">1000</span>)
+s.add(secret &lt; <span class="number">1150</span>)
+s.add(secret % <span class="number">11</span> == <span class="number">5</span>)
+s.add(secret % <span class="number">13</span> == <span class="number">3</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1005,11 +1151,28 @@
             </div>
             <button class="btn-verify" onclick="checkAns(8)">Check Key</button>
             <button onclick="toggleHint(8)">Show Hint</button>
+            <button onclick="toggleAnswer(8)">Show Answer</button>
             <span class="status-msg unsolved" id="status-8">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-8">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model `flag` as a 32-bit Bit-Vector: `flag = BitVec('flag', 32)`. Add constraints using Z3 shift operators `>>` and `<<`.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-8">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+flag = BitVec(<span class="string">'flag'</span>, <span class="number">32</span>)
+s = Solver()
+v1 = flag &gt;&gt; <span class="number">4</span>;
+v2 = flag &lt;&lt; <span class="number">3</span>;
+s.add(v1 == <span class="number">0x123</span>)
+s.add((v2 & <span class="number">0xFF</span>) == <span class="number">0x28</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model()[flag].as_long())</pre>
           </div>
         </div>
 
@@ -1056,11 +1219,27 @@
             </div>
             <button class="btn-verify" onclick="checkAns(9)">Check Key</button>
             <button onclick="toggleHint(9)">Show Hint</button>
+            <button onclick="toggleAnswer(9)">Show Answer</button>
             <span class="status-msg unsolved" id="status-9">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-9">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Define `x, y, z = Ints('x y z')`. Add the 3 linear checks, check status, and retrieve values.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-9">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+x, y, z = Ints(<span class="string">'x y z'</span>)
+s = Solver()
+s.add(<span class="number">5</span> * x - <span class="number">3</span> * y + <span class="number">2</span> * z == <span class="number">29</span>)
+s.add(<span class="number">2</span> * x + <span class="number">4</span> * y - <span class="number">5</span> * z == <span class="number">5</span>)
+s.add(<span class="number">3</span> * x - <span class="number">2</span> * y + <span class="number">4</span> * z == <span class="number">34</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1106,11 +1285,27 @@
             </div>
             <button class="btn-verify" onclick="checkAns(10)">Check Key</button>
             <button onclick="toggleHint(10)">Show Hint</button>
+            <button onclick="toggleAnswer(10)">Show Answer</button>
             <span class="status-msg unsolved" id="status-10">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-10">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Create `key = BitVec('key', 32)`. Replicate the rotate operation using `((transform >> 16) | (transform << 16))` inside Z3. Beware of shift boundaries in 32-bit.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-10">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+key = BitVec(<span class="string">'key'</span>, <span class="number">32</span>)
+s = Solver()
+transform = key ^ <span class="number">0x55555555</span>
+transform = RotateRight(transform, <span class="number">16</span>)
+s.add(transform + <span class="number">0x1337</span> == <span class="number">0xDEADBEEF</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model()[key].as_long())</pre>
           </div>
         </div>
 
@@ -1158,11 +1353,28 @@
             </div>
             <button class="btn-verify" onclick="checkAns(11)">Check Key</button>
             <button onclick="toggleHint(11)">Show Hint</button>
+            <button onclick="toggleAnswer(11)">Show Answer</button>
             <span class="status-msg unsolved" id="status-11">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-11">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Define 4 variables as `BitVecs('a b c d', 8)`. Set up equations using `+` and `*` operators. Note: the third equation is `4*a + b + 7*c + 5*d == 107` (IDA decompiler optimization details: `4 * a[0] + a[1]` is optimized as `a[1] + 4 * a[0]`).</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-11">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+a = [BitVec(f<span class="string">'a_{i}'</span>, <span class="number">8</span>) for i in range(<span class="number">4</span>)]
+s = Solver()
+s.add((<span class="number">5</span>*a[<span class="number">0</span>] + <span class="number">3</span>*a[<span class="number">1</span>] + <span class="number">8</span>*a[<span class="number">2</span>] + <span class="number">2</span>*a[<span class="number">3</span>]) == <span class="number">189</span>)
+s.add((<span class="number">2</span>*a[<span class="number">0</span>] + <span class="number">9</span>*a[<span class="number">1</span>] + a[<span class="number">2</span>] + <span class="number">4</span>*a[<span class="number">3</span>]) == <span class="number">23</span>)
+s.add((<span class="number">4</span>*a[<span class="number">0</span>] + a[<span class="number">1</span>] + <span class="number">7</span>*a[<span class="number">2</span>] + <span class="number">5</span>*a[<span class="number">3</span>]) == <span class="number">107</span>)
+s.add((<span class="number">8</span>*a[<span class="number">0</span>] + <span class="number">6</span>*a[<span class="number">1</span>] + <span class="number">3</span>*a[<span class="number">2</span>] + <span class="number">9</span>*a[<span class="number">3</span>]) == <span class="number">148</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1208,11 +1420,27 @@
             </div>
             <button class="btn-verify" onclick="checkAns(12)">Check Key</button>
             <button onclick="toggleHint(12)">Show Hint</button>
+            <button onclick="toggleAnswer(12)">Show Answer</button>
             <span class="status-msg unsolved" id="status-12">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-12">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model `x` and `y` as 32-bit Bit-Vectors (`BitVec('x', 32)`). Add the three constraints. The carry bits will be solved automatically by Z3's bit-blasting engine.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-12">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+x, y = BitVecs(<span class="string">'x y'</span>, <span class="number">32</span>)
+s = Solver()
+s.add(x ^ y == <span class="number">0x5599B9F9</span>)
+s.add(x + y == <span class="number">0x9999BE01</span>)
+s.add(x & <span class="number">0xFFFF0000</span> == <span class="number">0x32100000</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1261,11 +1489,33 @@
             </div>
             <button class="btn-verify" onclick="checkAns(13)">Check Key</button>
             <button onclick="toggleHint(13)">Show Hint</button>
+            <button onclick="toggleAnswer(13)">Show Answer</button>
             <span class="status-msg unsolved" id="status-13">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-13">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Use Z3 `Int` for each of the 6 characters to prevent slow bitvector division. Model the hash step as: `hash = (hash * 33 + chars[i]) % 4294967296`. Add bounds `chars[i] >= 32` and `chars[i] <= 126`. One solution is `'z3rule'`.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-13">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+chars = [Int(f<span class="string">'c_{i}'</span>) for i in range(<span class="number">6</span>)]
+s = Solver()
+<span class="keyword">for</span> c <span class="keyword">in</span> chars:
+    s.add(c &gt;= <span class="number">32</span>, c &lt;= <span class="number">126</span>)
+
+h = <span class="number">5381</span>
+<span class="keyword">for</span> c <span class="keyword">in</span> chars:
+    h = (h * <span class="number">33</span> + c) % <span class="number">4294967296</span>
+
+s.add(h == <span class="number">0x284FC66A</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    m = s.model()
+    print(<span class="string">""</span>.join(chr(m[c].as_long()) <span class="keyword">for</span> c <span class="keyword">in</span> chars))</pre>
           </div>
         </div>
 
@@ -1311,11 +1561,28 @@
             </div>
             <button class="btn-verify" onclick="checkAns(14)">Check Key</button>
             <button onclick="toggleHint(14)">Show Hint</button>
+            <button onclick="toggleAnswer(14)">Show Answer</button>
             <span class="status-msg unsolved" id="status-14">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-14">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model variables as 16-bit Bit-Vectors (`BitVec('a', 16)`). Let multiplication wrap around naturally as it does in 16-bit arithmetic. Z3 can solve non-linear multiplication over finite fields very quickly.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-14">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+a, b, c = BitVecs(<span class="string">'a b c'</span>, <span class="number">16</span>)
+s = Solver()
+s.add(a &gt; <span class="number">1000</span>, b &gt; <span class="number">1000</span>, c &gt; <span class="number">1000</span>)
+s.add(a * b + c == <span class="number">3312</span>)
+s.add(b * c + a == <span class="number">53290</span>)
+s.add(((a ^ b) &lt;&lt; <span class="number">4</span>) == <span class="number">0x2FC0</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1367,11 +1634,35 @@
             </div>
             <button class="btn-verify" onclick="checkAns(15)">Check Key</button>
             <button onclick="toggleHint(15)">Show Hint</button>
+            <button onclick="toggleAnswer(15)">Show Answer</button>
             <span class="status-msg unsolved" id="status-15">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-15">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Create 4 variables `arr = [BitVec(f'a_{i}', 32) for i in range(4)]`. Set up the temporary variables exactly as shown, add the constraints, and output the results.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-15">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+arr = [BitVec(f<span class="string">'arr_{i}'</span>, <span class="number">32</span>) for i in range(<span class="number">4</span>)]
+s = Solver()
+
+temp0 = arr[<span class="number">2</span>] + <span class="number">15</span>
+temp1 = arr[<span class="number">0</span>] ^ arr[<span class="number">3</span>]
+temp2 = arr[<span class="number">1</span>] * <span class="number">3</span>
+temp3 = arr[<span class="number">3</span>] - arr[<span class="number">2</span>]
+
+s.add(temp0 == <span class="number">100</span>)
+s.add(temp1 == <span class="number">1337</span>)
+s.add(temp2 == <span class="number">999</span>)
+s.add(temp3 == <span class="number">500</span>)
+s.add(arr[<span class="number">0</span>] + arr[<span class="number">1</span>] + arr[<span class="number">2</span>] + arr[<span class="number">3</span>] == <span class="number">2843</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1429,11 +1720,36 @@
             </div>
             <button class="btn-verify" onclick="checkAns(16)">Check Key</button>
             <button onclick="toggleHint(16)">Show Hint</button>
+            <button onclick="toggleAnswer(16)">Show Answer</button>
             <span class="status-msg unsolved" id="status-16">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-16">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Use 32-bit Bit-Vectors. Replicate rotations using `RotateLeft(r0, 5)` and `RotateRight(r1, 3)` from the `z3` Python library. Add the final equality checks and output the base-10 values.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-16">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+k1, k2, k3 = BitVecs(<span class="string">'k1 k2 k3'</span>, <span class="number">32</span>)
+s = Solver()
+
+r0 = (k1 ^ k2) + k3
+r1 = (k2 + k3) ^ r0
+r2 = (k3 ^ r0) + r1
+
+r0 = RotateLeft(r0, <span class="number">5</span>)
+r1 = RotateRight(r1, <span class="number">3</span>)
+r2 ^= <span class="number">0x90ABCDEF</span>
+
+s.add(r0 == <span class="number">0x12345678</span>)
+s.add(r1 == <span class="number">0x87654321</span>)
+s.add(r2 == <span class="number">0xABCDEF01</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1488,11 +1804,45 @@
             </div>
             <button class="btn-verify" onclick="checkAns(17)">Check Key</button>
             <button onclick="toggleHint(17)">Show Hint</button>
+            <button onclick="toggleAnswer(17)">Show Answer</button>
             <span class="status-msg unsolved" id="status-17">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-17">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Model lookup using Z3 nested `If` constraints. For a 4-bit value `val`, do `res = If(val == 0, 12, If(val == 1, 5, ...))`. Perform this lookup on both high and low nibbles of each key byte, then enforce the diffusion XOR equations.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-17">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+key = [BitVec(f<span class="string">'key_{i}'</span>, <span class="number">8</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]
+s = Solver()
+
+sbox_vals = [<span class="number">0xC</span>, <span class="number">0x5</span>, <span class="number">0x6</span>, <span class="number">0xB</span>, <span class="number">0x9</span>, <span class="number">0x0</span>, <span class="number">0xA</span>, <span class="number">0xD</span>, <span class="number">0x3</span>, <span class="number">0xE</span>, <span class="number">0xF</span>, <span class="number">0x8</span>, <span class="number">0x4</span>, <span class="number">0x7</span>, <span class="number">0x1</span>, <span class="number">0x2</span>]
+
+<span class="keyword">def</span> sbox_lookup(val):
+    res = BitVecVal(<span class="number">0</span>, <span class="number">4</span>)
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>):
+        res = If(val == i, BitVecVal(sbox_vals[i], <span class="number">4</span>), res)
+    <span class="keyword">return</span> res
+
+<span class="keyword">def</span> sbox_byte(b):
+    <span class="keyword">return</span> Concat(sbox_lookup((b &gt;&gt; <span class="number">4</span>) & <span class="number">0xF</span>), sbox_lookup(b & <span class="number">0xF</span>))
+
+a = sbox_byte(key[<span class="number">0</span>])
+b = sbox_byte(key[<span class="number">1</span>])
+c = sbox_byte(key[<span class="number">2</span>])
+d = sbox_byte(key[<span class="number">3</span>])
+
+s.add(a ^ b ^ c == <span class="number">0xAA</span>)
+s.add(b ^ c ^ d == <span class="number">0xBB</span>)
+s.add(c ^ d ^ a == <span class="number">0xCC</span>)
+s.add(d ^ a ^ b == <span class="number">0xDD</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1542,11 +1892,32 @@
             </div>
             <button class="btn-verify" onclick="checkAns(18)">Check Key</button>
             <button onclick="toggleHint(18)">Show Hint</button>
+            <button onclick="toggleAnswer(18)">Show Answer</button>
             <span class="status-msg unsolved" id="status-18">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-18">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Define an array of 17 variables `states = [BitVec(f'state_{i}', 32) for i in range(17)]` to prevent exponential growth in symbolic expressions. Enforce `states[i+1] == (states[i] >> 1) | (ZeroExt(31, bit) << 31)` with the appropriate XOR taps extracted using `Extract(bit_pos, bit_pos, states[i])`.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-18">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+seed = BitVec(<span class="string">'seed'</span>, <span class="number">32</span>)
+states = [BitVec(f<span class="string">'state_{i}'</span>, <span class="number">32</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">17</span>)]
+s = Solver()
+
+s.add(states[<span class="number">0</span>] == seed)
+<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>):
+    bit = (Extract(<span class="number">0</span>, <span class="number">0</span>, states[i]) ^ Extract(<span class="number">2</span>, <span class="number">2</span>, states[i]) ^ Extract(<span class="number">3</span>, <span class="number">3</span>, states[i]) ^ Extract(<span class="number">5</span>, <span class="number">5</span>, states[i]))
+    s.add(states[i+<span class="number">1</span>] == (states[i] &gt;&gt; <span class="number">1</span>) | (ZeroExt(<span class="number">31</span>, bit) &lt;&lt; <span class="number">31</span>))
+
+s.add(states[<span class="number">16</span>] == <span class="number">0x1B7E1337</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model()[seed].as_long())</pre>
           </div>
         </div>
 
@@ -1591,11 +1962,28 @@
             </div>
             <button class="btn-verify" onclick="checkAns(19)">Check Key</button>
             <button onclick="toggleHint(19)">Show Hint</button>
+            <button onclick="toggleAnswer(19)">Show Answer</button>
             <span class="status-msg unsolved" id="status-19">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-19">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Use mathematical integers `x, y = Ints('x y')` in Z3 rather than Bit-Vectors. Division `/` and remainder `%` on Z3 `Int` are extremely optimized compared to `BitVec` divisions, solving in milliseconds.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-19">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+x, y = Ints(<span class="string">'x y'</span>)
+s = Solver()
+s.add(x &gt;= <span class="number">0</span>, y &gt;= <span class="number">0</span>)
+s.add(x + y == <span class="number">500000</span>)
+s.add(x / <span class="number">1337</span> + y % <span class="number">999</span> == <span class="number">301</span>)
+s.add(y / <span class="number">1337</span> + x % <span class="number">999</span> == <span class="number">572</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1643,11 +2031,34 @@
             </div>
             <button class="btn-verify" onclick="checkAns(20)">Check Key</button>
             <button onclick="toggleHint(20)">Show Hint</button>
+            <button onclick="toggleAnswer(20)">Show Answer</button>
             <span class="status-msg unsolved" id="status-20">STATUS: NOT_SOLVED</span>
           </div>
+
           <div class="hint-container" id="hint-box-20">
             <div class="hint-title">Hint</div>
             <p class="hint-text">Define 4 variables as 32-bit Bit-Vectors. Substitute constants `v0, v1, sum` exactly as they are defined. Set the final constraints and print the values in decimal.</p>
+          </div>
+
+          <div class="answer-container" id="answer-box-20">
+            <div class="answer-title">Python Z3 Solver Script</div>
+            <pre><span class="keyword">from</span> z3 <span class="keyword">import</span> *
+
+k = [BitVec(f<span class="string">'k_{i}'</span>, <span class="number">32</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)]
+s = Solver()
+
+v0 = BitVecVal(<span class="number">0x01234567</span>, <span class="number">32</span>)
+v1 = BitVecVal(<span class="number">0x89ABCDEF</span>, <span class="number">32</span>)
+sum_val = BitVecVal(<span class="number">0x9E3779B9</span>, <span class="number">32</span>)
+
+v0 += ((v1 &lt;&lt; <span class="number">4</span>) + k[<span class="number">0</span>]) ^ (v1 + sum_val) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k[<span class="number">1</span>])
+v1 += ((v0 &lt;&lt; <span class="number">4</span>) + k[<span class="number">2</span>]) ^ (v0 + sum_val) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k[<span class="number">3</span>])
+
+s.add(v0 == <span class="number">0xDEADBEEF</span>)
+s.add(v1 == <span class="number">0xCAFEBABE</span>)
+
+<span class="keyword">if</span> s.check() == sat:
+    print(s.model())</pre>
           </div>
         </div>
 
@@ -1744,6 +2155,11 @@
     function toggleHint(id) {
       const hintBox = document.getElementById('hint-box-' + id);
       hintBox.classList.toggle('visible');
+    }
+
+    function toggleAnswer(id) {
+      const answerBox = document.getElementById('answer-box-' + id);
+      answerBox.classList.toggle('visible');
     }
 
     function saveProgress() {
