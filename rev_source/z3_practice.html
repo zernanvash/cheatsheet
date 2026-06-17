@@ -358,11 +358,72 @@
     .skills-desc {
       font-size: 0.88rem;
       color: var(--muted);
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .skills-desc strong {
       color: var(--text);
+    }
+
+    /* New Concept Explanation Section */
+    .explanation-box {
+      margin: 16px 0;
+      padding: 12px 16px;
+      background: rgba(168, 85, 247, 0.03);
+      border-left: 3px solid var(--color-rev);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .explanation-box strong {
+      color: #fff;
+    }
+
+    /* Multiple Choice Options Grid */
+    .options-container {
+      margin: 18px 0;
+    }
+
+    .options-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .option-btn {
+      height: 32px;
+      padding: 0 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-family: 'Consolas', monospace;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: var(--color-rev);
+      color: #fff;
+      background: rgba(168, 85, 247, 0.05);
+    }
+
+    .option-btn.selected {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(92, 242, 169, 0.08);
     }
 
     /* Input & Verify Actions */
@@ -577,6 +638,21 @@
   <span class="keyword">return</span> <span class="number">1LL</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Systems of linear equations. Model `a1` and `a2` as Z3 integers.</p>
+          
+          <div class="explanation-box">
+            <strong>Concept — SMT Solving & Systems of Equations:</strong> SMT (Satisfiability Modulo Theories) solvers decide if logical/arithmetic formulas are satisfiable. Instead of solving equations by hand (using substitution or elimination), you declare variables and add constraints. Z3 automatically resolves them.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(1, '30,40', this)">30,40</button>
+              <button class="option-btn" onclick="selectOption(1, '40,30', this)">40,30</button>
+              <button class="option-btn" onclick="selectOption(1, '50,20', this)">50,20</button>
+              <button class="option-btn" onclick="selectOption(1, '45,15', this)">45,15</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-1" placeholder="a1,a2 (e.g. 10,20)">
@@ -610,6 +686,21 @@
   <span class="keyword">return</span> input_val > <span class="number">0</span> && calculated == <span class="number">1200</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Quadratic equations and inequalities in Z3.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Nonlinear Constraints & Quadratic Bounds:</strong> Reversing polynomial expressions (like quadratic equations \(x^2 - 40x = 1200\)) manually requires factoring or the quadratic formula. SMT solvers handle these nonlinear equations and range bounds (e.g. \(x > 0\)) by representing them as mathematical intervals and searching for valid integers.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(2, '20', this)">20</button>
+              <button class="option-btn" onclick="selectOption(2, '40', this)">40</button>
+              <button class="option-btn" onclick="selectOption(2, '60', this)">60</button>
+              <button class="option-btn" onclick="selectOption(2, '80', this)">80</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-2" placeholder="e.g. 50">
@@ -643,6 +734,21 @@
   <span class="keyword">return</span> temporary == <span class="number">-46</span>; <span class="comment">// Watch out for signed 8-bit wrap around!</span>
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Modeling overflow using Bit-Vectors in Z3. Return the unsigned value (0-255).</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Bit-Vector Arithmetic & Signed Overflow:</strong> CPU registers have a fixed width (like 8-bit `__int8`). Arithmetic overflows (e.g., \(127 + 1 = -128\)) and sign extensions are common in compiled code. Z3's `BitVec` types simulate this exact machine-level overflow behavior, whereas mathematical `Int` types do not wrap around.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(3, '32', this)">32</button>
+              <button class="option-btn" onclick="selectOption(3, '64', this)">64</button>
+              <button class="option-btn" onclick="selectOption(3, '128', this)">128</button>
+              <button class="option-btn" onclick="selectOption(3, '224', this)">224</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-3" placeholder="0-255 value">
@@ -679,6 +785,21 @@
   <span class="keyword">return</span> str[<span class="number">3</span>] == <span class="number">0</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Character calculations. Solve for a 3-character string.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — ASCII Boundary Constraints:</strong> When reversing string validations, bytes represent ASCII characters. To restrict Z3 from giving unprintable or negative solutions, you must constrain the variables to the printable ASCII range (\(32 \le \text{char} \le 126\)) to ensure a valid text output.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(4, 'cat', this)">cat</button>
+              <button class="option-btn" onclick="selectOption(4, 'cop', this)">cop</button>
+              <button class="option-btn" onclick="selectOption(4, 'cut', this)">cut</button>
+              <button class="option-btn" onclick="selectOption(4, 'cux', this)">cux</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-4" placeholder="3-char string">
@@ -713,6 +834,21 @@
   <span class="keyword">return</span> <span class="number">1LL</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> 16-bit Bit-Vector constraints (AND, XOR).</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Bitwise Masking (AND/XOR):</strong> Decompilers use bitwise `&` (AND) to mask off specific byte sections, and `^` (XOR) for basic encryption. SMT solvers analyze these bitwise relations at the individual bit level by "bit-blasting" the constraints into boolean SAT gates.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(5, '48879', this)">48879</button>
+              <button class="option-btn" onclick="selectOption(5, '57002', this)">57002</button>
+              <button class="option-btn" onclick="selectOption(5, '57343', this)">57343</button>
+              <button class="option-btn" onclick="selectOption(5, '65280', this)">65280</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-5" placeholder="Base 10 integer">
@@ -747,6 +883,21 @@
   <span class="keyword">return</span> <span class="keyword">true</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Modeling arrays of integers. Format: `x,y,z` for `arr[0],arr[1],arr[2]`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Array Modeling:</strong> In decompiler output, static buffers or arrays are often indexed directly. SMT solvers can model arrays by declaring individual variables for each offset or using Z3's formal `Array` type to represent memory reads and writes.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(6, '20,80,30', this)">20,80,30</button>
+              <button class="option-btn" onclick="selectOption(6, '30,70,40', this)">30,70,40</button>
+              <button class="option-btn" onclick="selectOption(6, '40,60,50', this)">40,60,50</button>
+              <button class="option-btn" onclick="selectOption(6, '50,50,60', this)">50,50,60</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-6" placeholder="x,y,z">
@@ -783,6 +934,21 @@
   <span class="keyword">return</span> secret &lt; <span class="number">1150</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Multi-modulo boundary constraints.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Modulo Constraints & Diophantine Equations:</strong> The modulo operator `%` creates cyclical groups. Equations involving modular residues are called Diophantine equations. Z3 uses advanced congruence heuristics to find integer solutions satisfying multiple modulo constraints simultaneously.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(7, '1038', this)">1038</button>
+              <button class="option-btn" onclick="selectOption(7, '1083', this)">1083</button>
+              <button class="option-btn" onclick="selectOption(7, '1116', this)">1116</button>
+              <button class="option-btn" onclick="selectOption(7, '1148', this)">1148</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-7" placeholder="Integer value">
@@ -818,6 +984,21 @@
   <span class="keyword">return</span> (v1 == <span class="number">0x123</span>) && ((v2 & <span class="number">0xFF</span>) == <span class="number">0x28</span>);
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Left and right shift simulation in Z3 Bit-Vectors.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Bit Shifting (Logical vs. Arithmetic):</strong> Bit shifts (`<<`, `>>`) translate bits left or right, introducing zeros or propagating sign bits. Since shifting discards bits, Z3 models shifts as bitvector operations to resolve the original values based on the remaining bits.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(8, '4125', this)">4125</button>
+              <button class="option-btn" onclick="selectOption(8, '4661', this)">4661</button>
+              <button class="option-btn" onclick="selectOption(8, '4820', this)">4820</button>
+              <button class="option-btn" onclick="selectOption(8, '5281', this)">5281</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-8" placeholder="Base 10 integer">
@@ -854,6 +1035,21 @@
   <span class="keyword">return</span> <span class="number">1LL</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> 3-variable system of linear equations. Format: `x,y,z`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — High-Dimensional Linear Systems:</strong> Reversing systems of equations with three or more variables is tedious. Z3 handles high-dimensional systems by applying matrix-like Gaussian elimination and simplex algorithms internally.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(9, '5,6,8', this)">5,6,8</button>
+              <button class="option-btn" onclick="selectOption(9, '6,5,7', this)">6,5,7</button>
+              <button class="option-btn" onclick="selectOption(9, '7,4,6', this)">7,4,6</button>
+              <button class="option-btn" onclick="selectOption(9, '8,3,5', this)">8,3,5</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-9" placeholder="x,y,z">
@@ -889,6 +1085,21 @@
   <span class="keyword">return</span> transform == <span class="number">0xDEADBEEF</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Mixed bitwise rotations, XOR, and arithmetic additions.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Circular Bit Rotations:</strong> Decompilers optimize rotations (ROL/ROR) using shift combinations: `(x >> 16) | (x << 16)`. These operations swap byte blocks, and are modeled in Z3 using bitwise ORs on shifted bitvectors.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(10, '1431655765', this)">1431655765</button>
+              <button class="option-btn" onclick="selectOption(10, '2863311530', this)">2863311530</button>
+              <button class="option-btn" onclick="selectOption(10, '3740114006', this)">3740114006</button>
+              <button class="option-btn" onclick="selectOption(10, '4023233417', this)">4023233417</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-10" placeholder="Base 10 integer">
@@ -926,6 +1137,21 @@
   <span class="keyword">return</span> <span class="keyword">true</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Linear systems over modular algebra. Model bytes using `BitVec(..., 8)` or `Int` with modulo constraints. Format: `a[0],a[1],a[2],a[3]`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Matrix Systems over Finite Rings:</strong> In cryptography, linear diffusion steps are often represented as matrix multiplications modulo a power of two (typically modulo 256 for bytes). Z3 models these modulo-ring matrices without needing matrix inversion.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(11, '128,192,64,255', this)">128,192,64,255</button>
+              <button class="option-btn" onclick="selectOption(11, '165,206,236,254', this)">165,206,236,254</button>
+              <button class="option-btn" onclick="selectOption(11, '206,128,254,192', this)">206,128,254,192</button>
+              <button class="option-btn" onclick="selectOption(11, '206,165,254,236', this)">206,165,254,236</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-11" placeholder="a0,a1,a2,a3">
@@ -961,6 +1187,21 @@
       && ((x & <span class="number">0xFFFF0000</span>) == <span class="number">0x32100000</span>);
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Reversing mixed arithmetic (addition) and bitwise (XOR) operators. Hand analysis is highly difficult due to carry propagation. Format: `x,y`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Mixed Boolean-Arithmetic (MBA):</strong> Code that mixes arithmetic addition (`+`) with bitwise operations (`^`, `&`) is called MBA. Reversing MBA expressions by hand is extremely difficult because carries propagate unpredictably. Z3 solves this easily by analyzing carry chains in bit-vector representation.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(12, '559929812,1234567890', this)">559929812,1234567890</button>
+              <button class="option-btn" onclick="selectOption(12, '839918324,1737071373', this)">839918324,1737071373</button>
+              <button class="option-btn" onclick="selectOption(12, '839953357,1737036340', this)">839953357,1737036340</button>
+              <button class="option-btn" onclick="selectOption(12, '1000000000,2000000000', this)">1000000000,2000000000</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-12" placeholder="x,y (base-10)">
@@ -999,6 +1240,21 @@
   <span class="keyword">return</span> hash == <span class="number">0x284FC66A</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Loop modeling, hash preimages, character boundaries. Find a 6-character printable string. (Multiple inputs may collide and be valid!)</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Loop Unrolling & Hash Collisions:</strong> SMT solvers evaluate loops by unrolling them into a static chain of constraints. This allows Z3 to search for "preimages" (input values) that yield a specific target hash, which is useful for finding hash collisions.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(13, 'solver', this)">solver</button>
+              <button class="option-btn" onclick="selectOption(13, 'vector', this)">vector</button>
+              <button class="option-btn" onclick="selectOption(13, 'z3cool', this)">z3cool</button>
+              <button class="option-btn" onclick="selectOption(13, 'z3rule', this)">z3rule</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-13" placeholder="6-char string">
@@ -1034,6 +1290,21 @@
   <span class="keyword">return</span> <span class="keyword">true</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Non-linear multiplication mixed with bitwise XOR on 16-bit ranges. Format: `a,b,c`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Non-Linear Modular Multiplication:</strong> Equations containing products of symbolic variables under a modulo ring (e.g., `(a * b) % 65536`) are highly non-linear and NP-hard to reverse. Z3 resolves these by using specialized SMT solvers for bit-vectors.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(14, '1000,2000,3000', this)">1000,2000,3000</button>
+              <button class="option-btn" onclick="selectOption(14, '1234,5678,9012', this)">1234,5678,9012</button>
+              <button class="option-btn" onclick="selectOption(14, '1234,30254,25396', this)">1234,30254,25396</button>
+              <button class="option-btn" onclick="selectOption(14, '25396,30254,1234', this)">25396,30254,1234</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-14" placeholder="a,b,c">
@@ -1075,6 +1346,21 @@
       && (arr[<span class="number">0</span>] + arr[<span class="number">1</span>] + arr[<span class="number">2</span>] + arr[<span class="number">3</span>] == <span class="number">2843</span>);
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Tracking shuffled variables and multi-variable dependencies. Format: `arr[0],arr[1],arr[2],arr[3]`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Variable Permutation & Shuffling:</strong> Algorithms often shuffle elements in temporary buffers. Modeling these requires keeping track of the intermediate variables as they are swapped and assigned.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(15, '1000,500,250,187', this)">1000,500,250,187</button>
+              <button class="option-btn" onclick="selectOption(15, '1337,333,85,500', this)">1337,333,85,500</button>
+              <button class="option-btn" onclick="selectOption(15, '1840,333,85,585', this)">1840,333,85,585</button>
+              <button class="option-btn" onclick="selectOption(15, '1840,999,100,500', this)">1840,999,100,500</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-15" placeholder="w,x,y,z">
@@ -1122,6 +1408,21 @@
       && (r2 == <span class="number">0xABCDEF01</span>);
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Modeling state transitions, bitwise rotations, and mixed addition/XOR diffusion. Format: `k1,k2,k3`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — VM Register Files & State Transitions:</strong> Custom virtual machine interpreters use a set of registers (like `R0`, `R1`, `R2`) that are updated at each instruction. To solve VM constraints, you model the register array's state transitions chronologically.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(16, '12345678,87654321,90ABCDEF', this)">12345678,...</button>
+              <button class="option-btn" onclick="selectOption(16, '1111111111,2222222222,3333333333', this)">1111111111,...</button>
+              <button class="option-btn" onclick="selectOption(16, '3232607057,990777454,3303925516', this)">3232607057,...</button>
+              <button class="option-btn" onclick="selectOption(16, '3303925516,990777454,3232607057', this)">3303925516,990777454,3232607057</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-16" placeholder="k1,k2,k3">
@@ -1166,6 +1467,21 @@
       && (d ^ a ^ b == <span class="number">0xDD</span>);
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Modeling lookup tables and substitution layers in Z3. Format: `key[0],key[1],key[2],key[3]`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Lookup Tables (S-Boxes):</strong> Cryptography utilizes non-linear lookup tables (S-Boxes) for confusion. Since array lookups with symbolic indices are complex, they are modeled in Z3 using nested conditional expressions (`If(val == i, sbox[i], ...)`) to represent every possible mapping.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(17, '12,5,6,11', this)">12,5,6,11</button>
+              <button class="option-btn" onclick="selectOption(17, '51,0,119,102', this)">51,0,119,102</button>
+              <button class="option-btn" onclick="selectOption(17, '51,51,119,119', this)">51,51,119,119</button>
+              <button class="option-btn" onclick="selectOption(17, '170,187,204,221', this)">170,187,204,221</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-17" placeholder="k0,k1,k2,k3">
@@ -1205,6 +1521,21 @@
   <span class="keyword">return</span> state == <span class="number">0x1B7E1337</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Modeling loops and bit-level feedback structures. Hand-reversing is highly tedious due to shifting overlaps.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — LFSR & Loop Variable Chaining:</strong> A Linear Feedback Shift Register (LFSR) shifts bits recursively based on XOR feedback taps. To prevent exponential growth of symbolic expressions across clock cycles, you define a new Z3 variable for each step.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(18, '13371337', this)">13371337</button>
+              <button class="option-btn" onclick="selectOption(18, '322122547', this)">322122547</button>
+              <button class="option-btn" onclick="selectOption(18, '322420463', this)">322420463</button>
+              <button class="option-btn" onclick="selectOption(18, '322420480', this)">322420480</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-18" placeholder="Seed (base-10 integer)">
@@ -1239,6 +1570,21 @@
   <span class="keyword">return</span> <span class="keyword">true</span>;
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Modeling integer division and modulus operations. SMT solvers solve this via arithmetic domain reductions. Format: `x,y`.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Modulo-Division Constraints:</strong> Non-linear equations with mixed division and remainder (e.g., `(x / d) + (y % m)`) are difficult due to the step-like nature of integer division. Z3 mathematical `Int` is much faster than `BitVec` for pure division constraints.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(19, '245137,254863', this)">245137,254863</button>
+              <button class="option-btn" onclick="selectOption(19, '300000,200000', this)">300000,200000</button>
+              <button class="option-btn" onclick="selectOption(19, '400000,100000', this)">400000,100000</button>
+              <button class="option-btn" onclick="selectOption(19, '403097,96903', this)">403097,96903</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-19" placeholder="x,y">
@@ -1276,6 +1622,21 @@
   <span class="keyword">return</span> (v0 == <span class="number">0xDEADBEEF</span>) && (v1 == <span class="number">0xCAFEBABE</span>);
 }</pre>
           <p class="skills-desc"><strong>Skills:</strong> Decrypting cipher schedules. Solve for the 4-word key `k[0],k[1],k[2],k[3]`. Z3 handles cryptographic constraint systems cleanly.</p>
+
+          <div class="explanation-box">
+            <strong>Concept — Block Cipher Inversion:</strong> Reversing a round of a block cipher (like TEA) involves resolving mixed XOR, shift, and addition keys. Z3 decrypts this by defining the end states as constants and letting the solver compute the key inputs.
+          </div>
+
+          <div class="options-container">
+            <div class="options-title">Candidate Options</div>
+            <div class="options-grid">
+              <button class="option-btn" onclick="selectOption(20, '0,0,0,0', this)">0,0,0,0</button>
+              <button class="option-btn" onclick="selectOption(20, '1605132080,62038417,1390142839,17469961', this)">1605132080,62038417,1390142839,17469961</button>
+              <button class="option-btn" onclick="selectOption(20, '1605132080,1390142839,62038417,17469961', this)">1605132080,1390142839,...</button>
+              <button class="option-btn" onclick="selectOption(20, '3735928559,3405691582,305419896,2290649224', this)">3735928559,3405691582,...</button>
+            </div>
+          </div>
+
           <div class="action-panel">
             <div class="input-shell">
               <input type="text" id="ans-20" placeholder="k0,k1,k2,k3">
@@ -1362,6 +1723,24 @@
       calculateProgress();
     }
 
+    function selectOption(id, val, btnEl) {
+      const inputEl = document.getElementById('ans-' + id);
+      inputEl.value = val;
+      
+      const card = document.getElementById('card-' + id);
+      const btns = card.querySelectorAll('.option-btn');
+      btns.forEach(btn => btn.classList.remove('selected'));
+      
+      btnEl.classList.add('selected');
+      
+      // Clear error status message when they choose a new option
+      const statusEl = document.getElementById('status-' + id);
+      if (statusEl.innerHTML.includes("ACCESS_DENIED")) {
+        statusEl.innerHTML = "STATUS: NOT_SOLVED";
+        statusEl.className = "status-msg unsolved";
+      }
+    }
+
     function toggleHint(id) {
       const hintBox = document.getElementById('hint-box-' + id);
       hintBox.classList.toggle('visible');
@@ -1397,6 +1776,17 @@
           const input = document.getElementById('ans-' + id);
           if (input) {
             input.placeholder = "Solved";
+          }
+
+          // Preselect the correct option button
+          const correctBtn = Array.from(card.querySelectorAll('.option-btn')).find(btn => {
+            return solutions[id](btn.textContent);
+          });
+          if (correctBtn) {
+            correctBtn.classList.add('selected');
+            if (input) {
+              input.value = correctBtn.textContent;
+            }
           }
         }
       });
