@@ -193,6 +193,226 @@ key_stream = bytes(c ^ p for c, p in zip(ct, known))
 print(key_stream.hex())
 ```
 
+## Common Challenge Snippet Templates
+
+Use these as starting points when a decompiler shows familiar C patterns such as `srand()`, XOR loops, additive byte transforms, table shuffles, or checksum gates. Keep the candidate test function close to the decompiled logic, then print every plausible candidate and verify it against the original binary.
+
+### C `rand()` / `srand()` Replay
+
+Use when the binary seeds C PRNG with a fixed value, timestamp, username length, or visible integer and then compares generated values.
+
+Linux/glibc `rand()` via `ctypes`:
+
+```python
+from ctypes import CDLL, c_uint
+
+libc = CDLL("libc.so.6")
+
+seed = 0x1337
+libc.srand(c_uint(seed))
+
+stream = [libc.rand() for _ in range(16)]
+print(stream)
+```
+
+Windows/MSVCRT `rand()` via `ctypes`:
+
+```python
+from ctypes import CDLL, c_uint
+
+msvcrt = CDLL("msvcrt.dll")
+
+seed = 0x1337
+msvcrt.srand(c_uint(seed))
+
+stream = [msvcrt.rand() for _ in range(16)]
+print(stream)
+```
+
+Timestamp seed brute force:
+
+```python
+from ctypes import CDLL, c_uint
+
+libc = CDLL("libc.so.6")
+target = [12345, 6789, 4242]  # values observed in the checker
+
+for seed in range(1_700_000_000, 1_700_086_400):
+    libc.srand(c_uint(seed))
+    out = [libc.rand() for _ in range(len(target))]
+    if out == target:
+        print("seed", seed)
+        break
+```
+
+When decompiled code uses `rand() % N`, replay the modulo exactly:
+
+```python
+libc.srand(c_uint(0x1337))
+mask = bytes((libc.rand() % 256) for _ in range(32))
+print(mask.hex())
+```
+
+### XOR Crackme Template
+
+Use when the checker transforms each input byte with XOR and compares it with an expected byte array.
+
+```python
+expected = bytes.fromhex("2b 27 2e 2e 2d")
+key = 0x42
+
+plain = bytes(b ^ key for b in expected)
+print(plain)
+```
+
+Brute-force one-byte XOR with printable scoring:
+
+```python
+def score(buf):
+    common = b" etaoinshrdluETAOINSHRDLU{}_"
+    return sum(c in common for c in buf) + sum(32 <= c < 127 for c in buf)
+
+ct = bytes.fromhex("2b272e2e2d")
+
+for key in range(256):
+    pt = bytes(c ^ key for c in ct)
+    if all(c in b"\n\r\t" or 32 <= c < 127 for c in pt):
+        print(key, score(pt), pt)
+```
+
+Repeating XOR key recovery from known flag prefix:
+
+```python
+ct = bytes.fromhex("00112233445566778899")
+known = b"flag{"
+
+keystream = bytes(c ^ p for c, p in zip(ct, known))
+print("known keystream:", keystream)
+
+key_len = 5
+key = bytearray(b"?" * key_len)
+for i, k in enumerate(keystream):
+    key[i % key_len] = k
+
+print("partial key:", key)
+```
+
+### Add/Sub/Rotate Byte Transform
+
+Use when each byte is adjusted by position, constant, or both.
+
+```python
+expected = [0x66, 0x6d, 0x63, 0x6a, 0x7f]
+
+plain = bytes(((b - i) ^ 0x13) & 0xff for i, b in enumerate(expected))
+print(plain)
+```
+
+Bit rotate helpers:
+
+```python
+def rol8(x, n):
+    n &= 7
+    return ((x << n) | (x >> (8 - n))) & 0xff
+
+def ror8(x, n):
+    n &= 7
+    return ((x >> n) | (x << (8 - n))) & 0xff
+
+expected = bytes.fromhex("8c 2d 4e")
+plain = bytes(ror8(b, 3) ^ 0x55 for b in expected)
+print(plain)
+```
+
+### Index Shuffle / Permutation Inversion
+
+Use when the program compares `input[order[i]]` or writes bytes into a shuffled output buffer.
+
+```python
+order = [3, 0, 4, 1, 2]
+shuffled = b"lohel"
+
+plain = bytearray(len(shuffled))
+for out_i, in_i in enumerate(order):
+    plain[in_i] = shuffled[out_i]
+
+print(bytes(plain))
+```
+
+### Checksum Gate Brute Force
+
+Use when a small unknown suffix must satisfy sum, XOR, product, CRC-like, or modulo checks.
+
+```python
+import itertools
+import string
+
+prefix = "flag{"
+suffix_len = 4
+charset = string.ascii_lowercase + string.digits + "_"
+
+def ok(s):
+    data = s.encode()
+    return sum(data) == 850 and (data[0] ^ data[-1]) == 0x12
+
+for tup in itertools.product(charset, repeat=suffix_len):
+    candidate = prefix + "".join(tup) + "}"
+    if ok(candidate):
+        print(candidate)
+```
+
+### Lookup Table Inversion
+
+Use when each byte indexes a constant table and the output is compared to expected values.
+
+```python
+table = bytes.fromhex(
+    "63 7c 77 7b f2 6b 6f c5 30 01 67 2b fe d7 ab 76"
+)
+expected = [0x7c, 0x2b, 0x63]
+
+reverse = {}
+for i, value in enumerate(table):
+    reverse.setdefault(value, []).append(i)
+
+for value in expected:
+    print(value, reverse.get(value, []))
+```
+
+### Z3 For Small Arithmetic Checks
+
+Use when constraints are easier to state than brute force.
+
+```python
+from z3 import Int, Solver, sat
+
+a = Int("a")
+b = Int("b")
+
+s = Solver()
+s.add(a >= 0, a <= 255)
+s.add(b >= 0, b <= 255)
+s.add(3 * a + 2 * b == 180)
+s.add(a - b == 10)
+
+if s.check() == sat:
+    m = s.model()
+    print(m[a].as_long(), m[b].as_long())
+```
+
+For fixed-width C behavior, use `BitVec`:
+
+```python
+from z3 import BitVec, Solver, sat
+
+x = BitVec("x", 8)
+s = Solver()
+s.add(((x * 7) ^ 0x55) == 0x2a)
+
+if s.check() == sat:
+    print(s.model()[x].as_long())
+```
+
 ## Hashing
 
 ```python
@@ -920,3 +1140,4 @@ If unpacking fails, debug runtime behavior and search for decrypted strings afte
 - decompyle builds: https://github.com/extremecoders-re/decompyle-builds
 - Local x86 guide: [Guide to x86 Assembly](../references/Guide%20to%20x86%20Assembly.html)
 - Local syscall table: [Linux x86_64 syscall table](../references/Linux%20System%20Call%20Table%20for%20x86%2064%20-%20Ryan%20A.%20Chapman.html)
+- Local C reversing patterns: [C Reversing Cheat Sheet](C%20Reversing%20Cheat%20Sheet.md)

@@ -1171,6 +1171,7 @@ Use these when you need quick reference syntax, hotkeys, and workflows:
 | Static analysis, XREFs, types, structures, and IDAPython scripting | [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md) |
 | Open-source static analysis, type refactoring, function graphing, and Jython scripts | [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md) |
 | CLI-first disassembly, XREFs, function lists, strings, graphs, and patch planning | [Rizin / Radare2 Cheat Sheet](tools/Rizin%20Radare2%20Cheat%20Sheet.md) |
+| C validation logic, signedness, libc calls, input functions, and transform patterns | [C Reversing Cheat Sheet](tools/C%20Reversing%20Cheat%20Sheet.md) |
 | Windows user-mode debugging, memory dumps, patching, and malware unpacking (Scylla) | [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) |
 | Linux ELF dynamic debugging, GEF context features, telescope, memory, and automation | [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) |
 | Hex editing, dump analysis, text processing, and command line helpers | [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) |
@@ -1281,6 +1282,7 @@ These connect this playbook to the rest of the H4G Training Vault:
 - [REV Python Toolkit](tools/REV%20Python%20Toolkit.md) — extended Python helper library
 - [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md) - local IDA Pro command and navigation reference
 - [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md) - local Ghidra UI and scripting reference
+- [C Reversing Cheat Sheet](tools/C%20Reversing%20Cheat%20Sheet.md) - local C input, libc, signedness, transform, and patch pattern reference
 - [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) - local x64dbg dynamic debugger reference
 - [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) - local GDB (gef) context debugger reference
 - [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) - local editing and hex workflow reference
