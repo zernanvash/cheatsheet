@@ -103,6 +103,8 @@ Open the full local sheet:
 r2 -A ./challenge
 ```
 
+For the dedicated Rizin/Radare2 workflow and offline PDF source, open [Rizin / Radare2 Cheat Sheet](Rizin%20Radare2%20Cheat%20Sheet.md).
+
 Inside r2:
 
 ```text

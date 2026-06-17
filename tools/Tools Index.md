@@ -53,6 +53,7 @@ Command-focused cheatsheets organized by CTF challenge category. Start from [H4G
 ### Static Analysis (Disassemblers)
 - [IDA Pro Cheat Sheet](IDA%20Pro%20Cheat%20Sheet.md)
 - [Ghidra Cheat Sheet](Ghidra%20Cheat%20Sheet.md)
+- [Rizin / Radare2 Cheat Sheet](Rizin%20Radare2%20Cheat%20Sheet.md)
 - [Reversing CLI Tools Cheat Sheet](Reversing%20CLI%20Tools%20Cheat%20Sheet.md)
 
 ### Dynamic Analysis (Debuggers)

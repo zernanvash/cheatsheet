@@ -340,6 +340,7 @@ readelf -s ./challenge | less            # symbol table
 nm -an ./challenge                       # sorted symbols
 
 # Radare2
+rizin -A ./challenge
 r2 -A ./challenge
 afl                                      # list functions
 pdf @ main                               # disassemble main
@@ -1169,6 +1170,7 @@ Use these when you need quick reference syntax, hotkeys, and workflows:
 |---|---|
 | Static analysis, XREFs, types, structures, and IDAPython scripting | [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md) |
 | Open-source static analysis, type refactoring, function graphing, and Jython scripts | [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md) |
+| CLI-first disassembly, XREFs, function lists, strings, graphs, and patch planning | [Rizin / Radare2 Cheat Sheet](tools/Rizin%20Radare2%20Cheat%20Sheet.md) |
 | Windows user-mode debugging, memory dumps, patching, and malware unpacking (Scylla) | [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) |
 | Linux ELF dynamic debugging, GEF context features, telescope, memory, and automation | [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) |
 | Hex editing, dump analysis, text processing, and command line helpers | [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) |
@@ -1190,6 +1192,7 @@ Use these when you need quick reference syntax, hotkeys, and workflows:
 | `binwalk` | Firmware / embedded file scan | `pip install binwalk` |
 | `upx` | Unpack UPX-compressed binaries | package manager |
 | `rabin2` | Radare2 binary info | `radare2` |
+| `rizin` / `r2` | CLI disassembly, XREFs, strings, graph view, and patch planning | `rizin` / `radare2` |
 | `pwn` | Pwntools CLI (cyclic, checksec) | `pip install pwntools` |
 | `ROPgadget` | Find ROP gadgets | `pip install ROPGadget` |
 | `ropper` | Find ROP gadgets (alternative) | `pip install ropper` |
@@ -1202,8 +1205,8 @@ Open [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20S
 |---|---|---|
 | **[Ghidra](tools/Ghidra%20Cheat%20Sheet.md)** | ELF, PE, Mach-O, ARM, MIPS | Free, Java-based, excellent decompiler |
 | **[IDA Pro / Free](tools/IDA%20Pro%20Cheat%20Sheet.md)** | ELF, PE, Mach-O, etc. | Industry standard static analysis |
+| **[Rizin / Radare2](tools/Rizin%20Radare2%20Cheat%20Sheet.md)** | ELF, PE, Mach-O, firmware blobs | CLI-first analysis, XREFs, strings, graphs, patch planning |
 | **Cutter** | ELF, PE | GUI for Radare2, good decompiler |
-| **Radare2** | ELF, PE, many formats | CLI powerhouse, steep learning curve |
 | **jadx** | APK, JAR, .class | Java/Android decompiler |
 | **dnSpyEx** | .NET | .NET debugger and decompiler |
 | **ILSpy** | .NET | .NET decompiler |

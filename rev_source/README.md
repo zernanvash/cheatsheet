@@ -8,6 +8,7 @@ Local source material used to improve the reverse engineering guide. These are r
 - `NMTE-4667.md` - optimized matrix multiplication disguised as another domain, static equation extraction, pseudoinverse reasoning, and Z3 fallback.
 - `restlessness.md` - staged shell-script and macOS artifact deobfuscation, XML entity cleanup, aliases, Base64/hex/ROT/rev pipelines, plist/mobileconfig inspection, launch daemon persistence, and red-herring handling.
 - `writeip_my-favorite-ingredient.md` - static solving when execution fails due unsupported CPU instructions, encoded matrix/target extraction, and modulo-byte Z3 solving.
+- `rizin_radare_cheatsheet.pdf` - offline Rizin/Radare command reference used by the local [Rizin / Radare2 Cheat Sheet](../tools/Rizin%20Radare2%20Cheat%20Sheet.md).
 - `links.txt` - external reverse engineering writeups and tools queued for local mining.
 
 ## Linked Page Snapshots
