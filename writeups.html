@@ -1050,7 +1050,8 @@
             item.title, item.context_title || '', item.category, item.origin,
             item.path, item.summary || item.snippet || '',
             (item.tags || []).join(' '),
-            (item.headings || []).join(' ')
+            (item.headings || []).join(' '),
+            item.text || ''
           ].join(' ').toLowerCase();
           return terms.every(t => haystack.includes(t));
         }
@@ -1082,6 +1083,52 @@
       }
       if (selectedConcept !== 'all') parts.push(`Concept: ${selectedConcept}`);
       searchStats.textContent = parts.length ? `Filters: ${parts.join(' · ')}` : '';
+    }
+
+    // ─── Snippet generator and Highlighter ─────────────────
+    function makeWriteupSnippet(item, terms, phrase) {
+      const source = item.text || item.summary || item.snippet || "";
+      const lower = source.toLowerCase();
+      const needles = [phrase, ...terms].filter(Boolean);
+      let index = -1;
+
+      for (const needle of needles) {
+        index = lower.indexOf(needle);
+        if (index !== -1) break;
+      }
+
+      if (index === -1) {
+        return item.summary || item.snippet || "";
+      }
+
+      const start = Math.max(0, index - 85);
+      const end = Math.min(source.length, index + 135);
+      let snippet = source.slice(start, end).trim();
+
+      if (start > 0) {
+        snippet = "... " + snippet;
+      }
+      if (end < source.length) {
+        snippet = snippet + " ...";
+      }
+      return snippet;
+    }
+
+    // Safe escaping helper for text highlighting
+    function highlightText(text, terms) {
+      if (!terms || terms.length === 0 || !text) return escapeHtml(text);
+      let escaped = escapeHtml(text);
+      const escapedTerms = terms
+        .map(t => t.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'))
+        .filter(Boolean);
+      if (escapedTerms.length === 0) return escaped;
+      
+      try {
+        const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+        return escaped.replace(regex, '<mark style="background: rgba(92, 242, 169, 0.25); color: #fff; padding: 1px 3px; border-radius: 4px; font-weight: 500;">$1</mark>');
+      } catch (e) {
+        return escaped;
+      }
     }
 
     // ─── Render cards ─────────────────────────────────────
@@ -1119,10 +1166,14 @@
           `;
         }
 
+        const terms = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+        const snippetText = searchQuery ? makeWriteupSnippet(item, terms, searchQuery) : (item.summary || item.snippet);
+        const highlightedSnippet = searchQuery ? highlightText(snippetText, terms) : escapeHtml(snippetText);
+
         card.innerHTML = `
           <div class="card-content">
             ${titleHtml}
-            <span class="card-desc">${escapeHtml(item.summary || item.snippet)}</span>
+            <span class="card-desc">${highlightedSnippet}</span>
             ${tagsHtml}
           </div>
           <div class="card-footer">

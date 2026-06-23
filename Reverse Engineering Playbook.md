@@ -1155,8 +1155,7 @@ p.interactive()
 - Align stack with a `ret` gadget on amd64
 - Confirm binary and libc match remote files
 - Check input function: `gets`, `fgets`, `scanf`, `read`, or menu logic
-
-[↑ Back to Table of Contents](#table-of-contents)
+[↑ Back to Table of Contents](#table-of-contents)
 
 ---
 
@@ -1197,6 +1196,7 @@ Use these when you need quick reference syntax, hotkeys, and workflows:
 | `pwn` | Pwntools CLI (cyclic, checksec) | `pip install pwntools` |
 | `ROPgadget` | Find ROP gadgets | `pip install ROPGadget` |
 | `ropper` | Find ROP gadgets (alternative) | `pip install ropper` |
+| `hexedit` | CLI hex editor for view/modify bytes | package manager |
 
 Open [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20Sheet.md) for practical command sequences and decision points for each tool.
 
@@ -1211,9 +1211,15 @@ Open [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20S
 | **jadx** | APK, JAR, .class | Java/Android decompiler |
 | **dnSpyEx** | .NET | .NET debugger and decompiler |
 | **ILSpy** | .NET | .NET decompiler |
+| **AvaloniaILSpy** | .NET | Cross-platform Avalonia-based port of ILSpy |
 | **WABT** | WebAssembly | `wasm2wat`, `wasm-decompile` |
 | **PyLingual** | Python bytecode | Online decompiler |
 | **uncompyle6** | Python 2.x/3.x bytecode | Best for older Python versions |
+| **pycdc** | Python bytecode | C++ Python bytecode disassembler and decompiler |
+| **pe-bear** | Windows PE | Fast visual PE file analyzer and comparison tool |
+| **ImHex** | ELF, PE, Raw | Hex editor for reverse engineers with hex databases |
+| **Apktool** | APK | Decode resources to near-original form and rebuild APKs |
+| **apk.sh** | APK | Android reverse engineering helper shell script |
 
 ### Debuggers
 
@@ -1224,8 +1230,31 @@ Open [Reversing CLI Tools Cheat Sheet](tools/Reversing%20CLI%20Tools%20Cheat%20S
 | **[x64dbg](tools/x64dbg%20Cheat%20Sheet.md)** | Windows | User-mode PE debugging and unpacking |
 | **WinDbg** | Windows | Kernel and low-level debugging |
 | **Process Monitor** | Windows | File/registry/process monitoring |
+| **Process Hacker** | Windows | Advanced process viewer, memory editor, and system monitoring tool |
 
 Open [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) for GEF command syntax, memory examination, comparison breakpoints, and batch-mode scripts. See also [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md), [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md), and [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) for custom hotkeys and workflows.
+
+### Malware Analysis & Sandboxing
+
+| Tool | Platform | Purpose | Link |
+|---|---|---|---|
+| **flareVM** | Windows | Windows security/RE distribution setup script | [GitHub](https://github.com/mandiant/flare-vm) |
+| **Limon** | Linux | Sandbox for analyzing Linux malware | [GitHub](https://github.com/monnappa22/Limon) |
+| **DRAKVUF Sandbox** | Linux / Xen | Virtualization-based agentless malware analysis sandbox | [GitHub](https://github.com/CERT-Polska/drakvuf-sandbox) |
+| **Freki** | Linux | Malware analysis platform and dashboard | [GitHub](https://github.com/crhenr/freki) |
+| **Aleph** | Linux | Open-source malware analysis pipeline system | [GitHub](https://github.com/alephre/aleph) |
+
+### Deobfuscation, Unpacking & Emulation
+
+| Tool | Targets | Description | Link |
+|---|---|---|---|
+| **FLOSS** | Windows, Linux | FLARE Obfuscated String Solver to extract strings | [GitHub](https://github.com/mandiant/flare-floss) |
+| **synchrony** | JavaScript | javascript-obfuscator cleaner & deobfuscator | [GitHub](https://github.com/relative/synchrony) |
+| **python-exe-unpacker** | Python EXEs | Unpacking and decompiling EXEs compiled from Python | [GitHub](https://github.com/WithSecureLabs/python-exe-unpacker) |
+| **Vba2Graph** | VBA Macros | Generate call graphs from VBA code for macro analysis | [GitHub](https://github.com/MalwareCantFly/Vba2Graph) |
+| **qiling** | Cross-platform | True instrumentable binary emulation framework | [GitHub](https://github.com/qilingframework/qiling) |
+| **QBDI** | Cross-platform | LLVM-based Dynamic Binary Instrumentation framework | [GitHub](https://github.com/quarkslab/QBDI) |
+| **ReverseAPK** | APK | Quickly analyze and reverse engineer Android packages | [GitHub](https://github.com/1N3/ReverseAPK) |
 
 ### Python Libraries
 
@@ -1268,6 +1297,8 @@ python -m pip install pillow pytesseract pyzbar requests
 | decompyle builds | https://github.com/extremecoders-re/decompyle-builds |
 | GTFOBins | https://gtfobins.github.io/ |
 | Shell-storm syscall table | https://shell-storm.org/shellcode/files/syscalls.html |
+| Awesome Malware Analysis | https://github.com/rshipp/awesome-malware-analysis |
+| x64dbg Scripts | https://github.com/x64dbg/Scripts |
 
 [↑ Back to Table of Contents](#table-of-contents)
 
