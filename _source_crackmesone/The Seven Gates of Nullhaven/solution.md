@@ -1,5 +1,7 @@
 # The Seven Gates of Nullhaven Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a2239efbfe0ef21de945cf
+
 static stripped elf64. no symbols, but string anchors made navigation easy
 
 the important gate entry points were

@@ -1,5 +1,7 @@
 # Description
 
+Challenge_URL: https://crackmes.one/crackme/69a2c7347b3cc38c80464d8f
+
 Hello everyone!  
 
 I am excited to share my 9th crackme, created for the very first CTF hosted by crackmes.one.  

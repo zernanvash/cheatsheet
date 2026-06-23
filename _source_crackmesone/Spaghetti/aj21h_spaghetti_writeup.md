@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/69f4d57e2b3df128c1df5ab7
+
 (I stink at writing, AI sanity explanation)
 
 # aj21h's Spaghetti

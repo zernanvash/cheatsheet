@@ -1,5 +1,7 @@
 # BobxReal You Can't do it V2 ;) Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69991ad28c526c61da611dd0
+
 main behavior:
 - seed setup from time/pid constants
 - vectored exception handler setup and trigger

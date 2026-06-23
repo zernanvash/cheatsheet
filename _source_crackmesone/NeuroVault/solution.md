@@ -1,5 +1,7 @@
 # NeuroVault Crackme Write-Up
 
+Challenge_URL: https://crackmes.one/crackme/6a0368f48fab7bbca2730160
+
 ## Entry Point and Runtime Setup
 
 The apparent entry point only performs CRT/runtime initialization and then eventually reaches the program controller.

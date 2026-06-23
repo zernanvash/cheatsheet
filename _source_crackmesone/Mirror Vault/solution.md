@@ -1,5 +1,7 @@
 # Mirror Vault Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69b250916793d479be018d3a
+
 from the serial parsing code at 0x140001500 the serial must be exactly 32 bytes:
 bytes  0-7:  "DONCRIS{"  (fixed)
 bytes  8-30: 23 unknown printable ascii characters

@@ -1,5 +1,7 @@
 # CrackMe "MCM v2.0" — Detailed Writeup
 
+Challenge_URL: https://crackmes.one/crackme/698d9ebd3eb49a23d3417763
+
 ## Overview
 
 This is my walkthrough for the MCM v2.0 CrackMe. The binary is a 64-bit Windows PE (`CrackMe.exe`) that employs several advanced protection layers:

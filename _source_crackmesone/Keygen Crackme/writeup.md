@@ -1,5 +1,7 @@
 # CrackMe.exe Reverse Engineering Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69c53f51f2d49d8512f64b7a
+
 ## Challenge Overview
 
 We were given a single Windows executable file, `CrackMe.exe`, with the goal of reverse engineering its verification code algorithm, building a working keygen, and producing a valid verification code for the target machine.

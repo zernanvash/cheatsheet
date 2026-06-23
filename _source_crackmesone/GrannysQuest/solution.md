@@ -1,5 +1,7 @@
 # GrannysQuest Writeup
 
+Challenge_URL: https://crackmes.one/crackme/699661243a36b6fb91ee893e
+
 GRANNY'S QUEST — CRACKME WRITEUP BY KANKER1337
 =================================
 

@@ -1,5 +1,7 @@
 # Cr4ckM3 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a21ed4d266afadcd56fabd9
+
 ## Summary
 
 `Cr4ckM3.exe` is a Windows x64 GUI crackme that mimics a Windows activation dialog. The native executable is mainly a .NET host. The real activation logic is inside an embedded .NET assembly named `Cr4ckM3.dll`.

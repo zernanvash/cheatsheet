@@ -1,5 +1,7 @@
 # KeygenMe #1 Writeup - Hecliet (2026-03-17)
 
+Challenge_URL: https://crackmes.one/crackme/69b854d8f2d49d8512f64a7c
+
 **Difficulty:** 2.0
 **Platform:** Windows/Linux
 **Author:** Hecliet

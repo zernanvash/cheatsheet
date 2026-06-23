@@ -1,5 +1,7 @@
 # leet_echo_chamber - writeup
 
+Challenge_URL: https://crackmes.one/crackme/69e005b6eff294eb8d54264a
+
 so this one's the followup to whatever the author's previous crackme was. the description says "find the elite superior number that will reflect itself into the result" which is just a fancy way of saying "find a fixed point of this hash". echo chamber, input == output. simple to state.
 
 answer up front in case you don't want to read the rest: **`133742069`**.

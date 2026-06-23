@@ -1,5 +1,7 @@
 # CryMore Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69778aa352ed08086d855c77
+
 I first ran the program and observed that it attempted to connect to
 127.0.0.1 on port 44333. If the connection failed, the program printed
 that the malware executed.

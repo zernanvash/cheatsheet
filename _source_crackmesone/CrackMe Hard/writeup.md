@@ -1,5 +1,7 @@
 # Reversing the Key Check — Solution Walkthrough
 
+Challenge_URL: https://crackmes.one/crackme/69cf25d0ddd6176826ae8b91
+
 ## 1. Finding the Key Prompt in the Disassembly
 
 While examining the binary in a disassembler (IDA, Ghidra, or similar), I searched for user‑facing strings to locate the key validation logic.

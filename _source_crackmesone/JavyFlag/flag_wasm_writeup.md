@@ -1,5 +1,7 @@
 # flag.wasm Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a1ec0cad7ff92e1214c0283
+
 ## Summary
 
 The challenge file is a WebAssembly module built with Javy. The flag is embedded near the end of the module in the final data segment, close to the marker string `flag_encoded_hex_bytes`.

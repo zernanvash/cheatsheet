@@ -1,5 +1,7 @@
 # luv4u Crackme Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69889a90fb46458f1ef6cecf
+
 ## Overview
 
 luv4u is a Linux x86_64 PIE binary that generates a random 32 character uppercase license key, asks you to enter it, and validates your input. After three wrong attempts it generates a new license. The binary packs multiple anti debug and anti VM layers, a custom S Box crypto pipeline, self modifying code, and a small bytecode VM. I solved it with an LD_PRELOAD hook library that captures the generated license from rand() outputs, patches out an unsolvable VM checksum condition, and auto injects the correct key.

@@ -1,5 +1,7 @@
 # summary
 
+Challenge_URL: https://crackmes.one/crackme/6a148dd62b3df128c1df5c9e
+
 the target is `p0tp.exe`, a pe64 crackme with a custom vm. i found an accepted pair of byte-string keys that makes the unmodified program print the success line and the flag buffer. the path i used is not a binary patch. it uses the fact that two later vm bytecode blocks are decrypted from the two 32-bit input hashes.
 
 the final keys are byte strings, not normal printable text.

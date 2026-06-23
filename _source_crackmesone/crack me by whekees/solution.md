@@ -1,5 +1,7 @@
 # crack me by whekees Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69b46e26ddd6176826ae8993
+
 ================================================================================
                         CRACKME5 TECHNICAL WRITEUP
                                 by MR_K

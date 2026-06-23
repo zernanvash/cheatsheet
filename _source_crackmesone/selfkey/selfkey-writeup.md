@@ -1,5 +1,7 @@
 # selfkey Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6985c1cca15272fa37a80c0d
+
 ## Metadata
 
 - Challenge: `selfkey`

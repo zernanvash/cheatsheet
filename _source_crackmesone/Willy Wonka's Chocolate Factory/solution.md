@@ -1,5 +1,7 @@
 # Willy Wonka's Chocolate Factory Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69b4768cf2d49d8512f649ff
+
 ================================================================================
   ChocolateFactory.exe — Crackme Writeup
   Platform: crackmes.one

@@ -1,5 +1,7 @@
 # JustTry crackme Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69e8918b643676f8bb961dd5
+
 JustTry.exe Solution Writeup
 
 JustTry.exe is a small 32-bit Windows crackme with a dialog-based UI. The goal was to understand how the input is validated and then patch the binary so it always reaches the success path.

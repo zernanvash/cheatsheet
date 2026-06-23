@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/69a28c267a778cfffbfb67be
+
 
 ---
 > Date: 4/6/2026 :beaver:   

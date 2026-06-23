@@ -1,5 +1,7 @@
 # razkom_v1.1 by [RAZKOM](https://crackmes.one/user/RAZKOM) - [\[url\]](https://crackmes.one/crackme/69968b7589af4192123d7aad)
 
+Challenge_URL: https://crackmes.one/crackme/69968b7589af4192123d7aad
+
 Difficulty: 2.0
 
 Language: C/C++

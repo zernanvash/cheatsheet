@@ -1,5 +1,7 @@
 # Reverse Engineering Writeup: ActivateMe.exe
 
+Challenge_URL: https://crackmes.one/crackme/69de9b7a471059af19ad091e
+
 > **Challenge Category:** Reverse Engineering / Crackme
 > **Difficulty:** Intermediate
 > **Objective:** Reverse-engineer a Windows executable to recover the hidden Activation Key

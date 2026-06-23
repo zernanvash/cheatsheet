@@ -1,5 +1,7 @@
 # Description
 
+Challenge_URL: https://crackmes.one/crackme/69a2c7347b3cc38c80464d8f
+
 JIT Decryption combined with Nanomites.  
 The RE has to find the valid serial to unlock the flag.  
 

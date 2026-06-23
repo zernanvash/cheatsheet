@@ -1,5 +1,7 @@
 # Monster CrackMe 1.0 (MCM) Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6989ed7dfb46458f1ef6cee4
+
 child validation logic in FUN_140004d00
 parent debugger logic in FUN_140005490
 

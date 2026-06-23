@@ -1,5 +1,7 @@
 # `OpenWiredSource's The Wired`
 
+Challenge_URL: https://crackmes.one/crackme/6a3720828a86e4c2c55254ec
+
 ## Program behaviour
 
 with no args :

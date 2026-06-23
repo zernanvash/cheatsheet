@@ -1,5 +1,7 @@
 # CFB1 — Crackmes for Beginners #1
 
+Challenge_URL: https://crackmes.one/crackme/6a1547f42b3df128c1df5ca5
+
 
 ## TL;DR
 

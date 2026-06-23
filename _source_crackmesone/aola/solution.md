@@ -1,5 +1,7 @@
 # b.exe — CrackMe Reverse Engineering Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69eca77717539b5175d120a9
+
 ---
 
 ## 1. Initial Reconnaissance

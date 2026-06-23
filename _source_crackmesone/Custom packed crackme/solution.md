@@ -1,5 +1,7 @@
 # OUT.exe — Static Reverse Engineering Writeup (No Execution)
 
+Challenge_URL: https://crackmes.one/crackme/699e9639c2d74fe054b1c372
+
 Date: 2026-02-25  
 Method: **Static-only** (Binary Ninja + offline decoding/decompression + manual logic lift)
 

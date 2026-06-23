@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/6a2c61c06840520e01b21e2d
+
 FindLicenseKey Reverse Engineering Writeup  |  1
 REVERSE ENGINEERING WRITEUP
 vodeff's FindLicenseKey

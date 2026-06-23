@@ -1,5 +1,7 @@
 # X-0-R by [steve_maxwell](https://crackmes.one/user/steve_maxwell) - [\[url\]](https://crackmes.one/crackme/6976041d9bf7b8997653a6cf)
 
+Challenge_URL: https://crackmes.one/crackme/6976041d9bf7b8997653a6cf
+
 Difficulty: 2.0
 
 Language: Python (claimed C/C++)

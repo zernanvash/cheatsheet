@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/69fe6553d7ff92e1214c0061
+
 Write‐up: elevenpack.exe – Unpacking a Packed Binary
 and Recovering a Custom Cipher
 1. Initial Observation

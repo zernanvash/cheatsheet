@@ -1,5 +1,7 @@
 # SimpleCrackMeForBeginners_ByKakao Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a2471b2ee3223161ea298e9
+
 ## Summary
 
 The correct key is an 8-byte non-printable byte string:

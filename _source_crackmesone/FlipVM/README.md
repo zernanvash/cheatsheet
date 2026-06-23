@@ -1,5 +1,7 @@
 # FlipVM
 
+Challenge_URL: https://crackmes.one/crackme/69dc3b32b38f9259eec7eb56
+
 ## Flag
 
 CMO{<-*~-~*~-.1'm++In.-~*~-~*->}

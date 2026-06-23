@@ -1,5 +1,7 @@
 # SirCrackaLot v2 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a07e02fb7f76ef92045c40
+
 the main verification logic is in the function at image address 0xf4d0 (ghidra rebased 0x10f4d0)
 
 the key parser in this function accepts four 4-hex groups split by dashes and maps them to 16 bit values

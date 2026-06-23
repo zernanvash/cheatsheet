@@ -1,5 +1,7 @@
 # Writeup: "obfuscated" Crackme
 
+Challenge_URL: https://crackmes.one/crackme/697f81c0e04ca145cd9d13c9
+
 ## Overview
 
 The binary is a 64-bit Linux ELF that prompts for a serial number and prints "correct serial number!" or "wrong serial number!". It uses a ptrace-based virtual machine with overlapping instruction encoding (nanomites pattern) to validate the input character by character.

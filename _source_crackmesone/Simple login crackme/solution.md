@@ -1,5 +1,7 @@
 # Simple login crackme Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69e13f938afd9d6c48b488fd
+
 How I Achieved This
 Code Reconstruction: I analyzed the main function using IDA Pro. I noticed that the pseudocode was misleading and missed crucial steps. By switching to Assembly Graph View, I found the real logic inside the loc_7FF6F774137D block, which revealed that the result was multiplied by 0x539 (1337) and then XORed with 0x5A5A (23130) before comparison.
 Dynamic Verification: I used the IDA Local Debugger to confirm my theory. I set a breakpoint right before the password check and inspected the RDX register. By entering test usernames like A and DevVolodya, I captured the exact hex values the program was calculating.

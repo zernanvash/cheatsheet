@@ -1,5 +1,7 @@
 # Prometheora — Reverse Engineering Writeup
 
+Challenge_URL: https://crackmes.one/crackme/697e95cb977274421cc111e1
+
 **Analyst:** RootRevenant  
 **Target:** `prometheora` (ELF64, stripped)  
 **Method:** Binary Ninja-led static reverse engineering, plus controlled runtime confirmation.

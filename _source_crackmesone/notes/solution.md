@@ -1,5 +1,7 @@
 # notes Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a20bf018b5d7ee47093527
+
 Note Writer/Reader Crackme Writeup
 ==================================
 

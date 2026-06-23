@@ -1,5 +1,7 @@
 # The Alchemist's Lock Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69adaa15fbfe0ef21de946bd
+
 Хорошо, переводю:
 
 ---

@@ -1,5 +1,7 @@
 ## Tooling & Environment
 
+Challenge_URL: https://crackmes.one/crackme/6a1aede117539b5175d123ef
+
 **OS**: Windows 10 Virtual Machine
 
 **Static Analysis**: Ghidra and IDA

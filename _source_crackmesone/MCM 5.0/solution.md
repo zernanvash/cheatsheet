@@ -1,5 +1,7 @@
 # MCM 5.0 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/699da9a00b6d36e727710a49
+
 this crackme uses a parent-child debug protocol:
 
 - parent process runs as debugger/guardian

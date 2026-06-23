@@ -1,5 +1,7 @@
 # PhantomGate v1.0 Writeup By lbx
 
+Challenge_URL: https://crackmes.one/crackme/6a09581717539b5175d122b9
+
 ## Overview
 
 The binary asks for a serial in this format:

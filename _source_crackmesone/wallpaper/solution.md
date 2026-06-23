@@ -1,5 +1,7 @@
 # Crackmes.one RE CTF 2026 - wallpaper
 
+Challenge_URL: https://crackmes.one/crackme/69a2911b7a778cfffbfb67ca
+
 This is a 15-puzzle over hex nibbles.
 
 Initial state:

@@ -1,5 +1,7 @@
 # Enigma CrackMe v1.0 — Solution
 
+Challenge_URL: https://crackmes.one/crackme/69e588308afd9d6c48b48962
+
 ## TL;DR
 
 Serial format: `XXXX-XXXX-XXXX-XXXX` (16 hex digits, four 16-bit chunks).
