@@ -1,0 +1,64 @@
+# Easy Challenges
+
+**Categories**:
+
+- [Digital Forensics and Incident Response](#digital-forensics-and-incident-response)
+- [Full Pwn](#full-pwn)
+- [Jeopardy Style CTFs](#jeopardy-style-ctfs)
+- [Miscellaneous](#miscellaneous)
+
+Notes:
+
+- The categorization is my own and not THM's.
+- Challenges can be placed in more than one category.
+
+## Digital Forensics and Incident Response
+
+- [Investigating Windows](Investigating_Windows.md)
+- [Monday Monitor](Monday_Monitor.md)
+- [Summit](Summit.md)
+- [TShark Challenge I: Teamwork](TShark_Challenge_I_Teamwork.md)
+- [TShark Challenge II: Directory](TShark_Challenge_II_Directory.md)
+
+## Full Pwn
+
+- [Agent Sudo](Agent_Sudo.md)
+- [Anonforce](Anonforce.md)
+- [Anthem](Anthem.md)
+- [Basic Pentesting](Basic_Pentesting.md)
+- [Blueprint](Blueprint.md)
+- [Break Out The Cage](Break_Out_The_Cage.md)
+- [Chill Hack](Chill_Hack.md)
+- [Dav](Dav.md)
+- [Fowsniff CTF](Fowsniff_CTF.md)
+- [HeartBleed](HeartBleed.md)
+- [Ignite](Ignite.md)
+- [Jack-of-All-Trades](Jack-of-All-Trades.md)
+- [LazyAdmin](LazyAdmin.md)
+- [Lian_Yu](Lian_Yu.md)
+- [Library](Library.md)
+- [Madness](Madness.md)
+- [Pickle Rick](Pickle_Rick.md)
+- [Poster](Poster.md)
+- [Simple CTF](Simple_CTF.md)
+- [Skynet](Skynet.md)
+- [Thompson](Thompson.md)
+- [Tony the Tiger](Tony_the_Tiger.md)
+- [tomghost](tomghost.md)
+- [ToolsRus](ToolsRus.md)
+- [Vulnerability Capstone](Vulnerability_Capstone.md)
+- [VulnNet: Roasted](VulnNet_Roasted.md)
+- [Wgel CTF](Wgel_CTF.md)
+- [Year of the Rabbit](Year_of_the_Rabbit.md)
+
+## Jeopardy Style CTFs
+
+- [c4ptur3-th3-fl4g](c4ptur3-th3-fl4g.md)
+- [CTF collection Vol.1](CTF_collection_Vol_1.md)
+
+## Miscellaneous
+
+- [Crack the hash](Crack_the_hash.md)
+- [Ninja Skills](Ninja_Skills.md)
+- [OhSINT](OhSINT.md)
+- [Reversing ELF](Reversing_ELF.md)

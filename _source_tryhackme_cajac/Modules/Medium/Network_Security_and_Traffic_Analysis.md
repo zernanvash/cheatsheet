@@ -1,0 +1,35 @@
+# Network Security and Traffic Analysis Module
+
+```text
+Type: Module
+Difficulty: Medium
+Description:
+Understand the core concepts of Network Security and Traffic Analysis to spot and probe 
+network anomalies using industry tools and techniques.
+
+This module will cover the core concepts of Network Monitoring and deep dive into Network 
+Traffic & Packet Analysis. You will learn the core concepts of network traffic 
+investigation, packet analysis and network forensics by using industry-standard tools. 
+By the end of the module, you will be comfortable using different tools and approaches 
+to identify, detect and prevent network anomalies, threats and attacks.
+```
+
+Web link: [https://tryhackme.com/module/network-security-and-traffic-analysis](https://tryhackme.com/module/network-security-and-traffic-analysis)
+
+## Included rooms
+
+- [Traffic Analysis Essentials](../../Walkthroughs/Easy/Traffic_Analysis_Essentials.md)
+- [Snort](../../Walkthroughs/Medium/Snort.md)
+- [Snort Challenge - The Basics](../../Walkthroughs/Medium/Snort_Challenge-The_Basics.md)
+- [Snort Challenge - Live Attacks](../../Walkthroughs/Medium/Snort_Challenge-Live_Attacks.md)
+- [NetworkMiner](../../Walkthroughs/Easy/NetworkMiner.md)
+- [Zeek](../../Walkthroughs/Medium/Zeek.md)
+- [Zeek Exercises](../../Challenges/Medium/Zeek_Exercises.md)
+- [Brim](../../Walkthroughs/Medium/Brim.md)
+- [Wireshark: The Basics](../../Walkthroughs/Easy/Wireshark_The_Basics.md)
+- [Wireshark: Packet Operations](../../Walkthroughs/Easy/Wireshark_Packet_Operations.md)
+- [Wireshark: Traffic Analysis](../../Walkthroughs/Medium/Wireshark_Traffic_Analysis.md)
+- [TShark: The Basics](../../Walkthroughs/Easy/TShark_The_Basics.md)
+- [TShark: CLI Wireshark Features](../../Walkthroughs/Medium/TShark_CLI_Wireshark_Features.md)
+- [TShark Challenge I: Teamwork](../../Challenges/Easy/TShark_Challenge_I_Teamwork.md)
+- [TShark Challenge II: Directory](../../Challenges/Easy/TShark_Challenge_II_Directory.md)

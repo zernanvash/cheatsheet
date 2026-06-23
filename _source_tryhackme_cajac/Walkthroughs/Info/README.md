@@ -1,0 +1,57 @@
+# Info Walkthroughs
+
+**Categories**:
+
+- [Exploitation](#exploitation)
+- [Linux](#linux)
+- [Miscellaneous](#miscellaneous)
+- [Networking](#networking)
+- [Web](#web)
+- [Windows](#windows)
+
+Notes:
+
+- The categorization is my own and not THM's.
+- Rooms can be placed in more than one category.
+
+## Exploitation
+
+- [Baron Samedit](Baron_Samedit.md)
+- [Dirty Pipe: CVE-2022-0847](Dirty_Pipe_CVE-2022-0847.md)
+- [Polkit: CVE-2021-3560](Polkit_CVE-2021-3560.md)
+- [Pwnkit: CVE-2021-4034](Pwnkit_CVE-2021-4034.md)
+- [Sudo Buffer Overflow](Sudo_Buffer_Overflow.md)
+- [Sudo Security Bypass](Sudo_Security_Bypass.md)
+
+## Linux
+
+- [Linux Fundamentals Part 1](Linux_Fundamentals_Part_1.md)
+- [Linux Fundamentals Part 2](Linux_Fundamentals_Part_2.md)
+- [Linux Fundamentals Part 3](Linux_Fundamentals_Part_3.md)
+
+## Miscellaneous
+
+- [Careers in Cyber](Careers_in_Cyber.md)
+- [Defensive Security Intro](Defensive_Security_Intro.md)
+- [History of Malware](History_of_Malware.md)
+- [Principles of Security](Principles_of_Security.md)
+- [Training Impact on Teams](Training_Impact_on_Teams.md)
+
+## Networking
+
+- [Extending Your Network](Extending_Your_Network.md)
+- [Intro to LAN](Intro_to_LAN.md)
+- [OSI Model](OSI_Model.md)
+- [Packets & Frames](Packets_and_Frames.md)
+- [What is Networking?](What_is_Networking.md)
+
+## Web
+
+- [Burp Suite: Repeater](Burp_Suite_Repeater.md)
+- [Burp Suite: The Basics](Burp_Suite_The_Basics.md)
+
+## Windows
+
+- [Windows Fundamentals Part 1](Windows_Fundamentals_Part_1.md)
+- [Windows Fundamentals Part 2](Windows_Fundamentals_Part_2.md)
+- [Windows Fundamentals Part 3](Windows_Fundamentals_Part_3.md)
