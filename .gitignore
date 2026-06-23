@@ -1,6 +1,6 @@
 # Ignore all non-md content in _source_* dirs (directory-level ignore blocks negation)
-_source_*/**
-!_source_*/**/
-!_source_*/**/*.md
+#_source_*/**
+#!_source_*/**/
+#!_source_*/**/*.md
 .obsidian/workspace.json
 .obsidian/plugins/
