@@ -17932,7 +17932,7 @@
     },
     {
         "title": "Enigma CrackMe v1.0 Writeup",
-        "path": "_source_crackmesone/Enigma CrackMe v1.0/solution.md",
+        "path": "_source_crackmesone/Enigma CrackMe v1.0/SOLUTION.md",
         "category": "Reverse Engineering",
         "origin": "crackmes.one",
         "headings": [
@@ -18757,7 +18757,7 @@
     },
     {
         "title": "Crackme hard Writeup",
-        "path": "_source_crackmesone/Crackme hard/solution.md",
+        "path": "_source_crackmesone/CrackMe Hard/solution.md",
         "category": "Reverse Engineering",
         "origin": "crackmes.one",
         "headings": [
@@ -19776,7 +19776,7 @@
     },
     {
         "title": "SelfKey Writeup",
-        "path": "_source_crackmesone/SelfKey/solution.md",
+        "path": "_source_crackmesone/selfkey/solution.md",
         "category": "Reverse Engineering",
         "origin": "crackmes.one",
         "headings": [
