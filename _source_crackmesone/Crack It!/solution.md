@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/697e6957e04ca145cd9d13b4
+
 Join my telegram channel - t.me/dimension59 for more reverse stuffs.
 Write-up for 
 -

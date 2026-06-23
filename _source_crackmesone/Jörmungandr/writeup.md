@@ -1,5 +1,7 @@
 # jormungandr Crackme Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a1f32972b3df128c1df5d7a
+
 ## Summary
 
 The visible serial `1331D66091E9E2E5` is a decoy. It prints `DONE`, then starts

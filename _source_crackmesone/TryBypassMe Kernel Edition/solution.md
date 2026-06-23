@@ -1,5 +1,7 @@
 # TryBypassMe Kernel Edition Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69db34d6b38f9259eec7eb32
+
 The game consists of three primary components: the game executable (TBM.exe), a watchdog, and a kernel-mode driver (TBMKD.sys).
 
 The game implements many security mechanisms, including debugger checks, blacklisted process/window scanning, section hashing, IAT integrity checks, encrypted variables, handle stripping (driver-side), and remote thread blocking (driver-side).

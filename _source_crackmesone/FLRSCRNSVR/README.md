@@ -1,5 +1,7 @@
 # FLRSCRNSVR.SCR
 
+Challenge_URL: https://crackmes.one/crackme/69a28c267a778cfffbfb67be
+
 The challenge binary is a Windows screensaver that contains light anti-analysis components. The screensaver configuration mode (`/c`) sets the registry value (the flag) that is decoded during regular screensaver execution.
 
 ![Preview](screen.png)

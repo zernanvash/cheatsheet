@@ -1,5 +1,7 @@
 # InputPrinter writeup
 
+Challenge_URL: https://crackmes.one/crackme/69fc5a3a3fba64e45dcea9ed
+
 Crackme ID: `69fc5a3a3fba64e45dcea9ed`
 Writeup author: `andreagennaioli` www.andreagennaioli.dev
 Personal difficulty rate: 2.5/6

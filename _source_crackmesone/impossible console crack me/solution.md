@@ -1,5 +1,7 @@
 # crackmeh.exe — Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a1280d0b6d36e727710a97
+
 **Analyst:** RootRevenant
 **Date:** 2026-02-27
 **Category:** Reverse Engineering / Unpacking

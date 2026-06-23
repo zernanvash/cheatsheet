@@ -1,5 +1,7 @@
 # CrackMe One Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a1daa532b3df128c1df5d3f
+
 ## Metadata
 
 - Target: `/Users/singularity/Downloads/crack/crackme.exe`

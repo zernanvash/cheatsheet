@@ -1,5 +1,7 @@
 # Write-up: TurbineControl.exe KeyGenMe
 
+Challenge_URL: https://crackmes.one/crackme/69bd737bf2d49d8512f64adc
+
 ## 1. Challenge Overview
 The `TurbineControl.exe` challenge is a Windows KeyGenMe centered around an industrial SCADA/monitoring theme. Upon execution, the program generates a dynamic 5-character Hardware ID (HWID) and requires a 16-character license key in the format `XXXX-YYYY-ZZZZ-WWWW`.
 

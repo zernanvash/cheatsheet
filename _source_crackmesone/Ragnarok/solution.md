@@ -1,5 +1,7 @@
 # Ragnarok Writeup
 
+Challenge_URL: https://crackmes.one/crackme/697265519bf7b8997653a690
+
 
 I started by searching for interesting strings:
 

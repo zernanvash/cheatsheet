@@ -1,5 +1,7 @@
 # The Barista's Secret Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69b878e2ddd6176826ae8a22
+
 the binary has very descriptive symbol names thanks to the debug info left in by mingw
 
 sym.anti_debug__

@@ -1,5 +1,7 @@
 # Rust Crackme Easy - Dynamic Analysis Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69ceb8986793d479be018f3f
+
 **Difficulty:** Beginner
 **Platform:** Windows x64
 **Language:** Rust

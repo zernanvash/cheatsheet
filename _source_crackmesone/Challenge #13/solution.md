@@ -1,5 +1,7 @@
 # Challenge #13 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69c66fe1f2d49d8512f64b8e
+
 the prompt string is referenced from fcn.1400caec0, which is the main challenge function
 
 ...

@@ -1,5 +1,7 @@
 ## Call Path: `main` → `CheckPassword`
 
+Challenge_URL: https://crackmes.one/crackme/69fba1198fab7bbca27300f2
+
 ```
 main()  [0x103520]
   └─ MainWindow::MainWindow()  [0x103d10]

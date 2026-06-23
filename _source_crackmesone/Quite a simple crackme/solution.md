@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/697f761b32fcb81e1bd005c6
+
 Quite a Simple Crackme Solution  
 Author: killswitcher 
 Introduction 

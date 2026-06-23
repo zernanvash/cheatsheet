@@ -1,5 +1,7 @@
 # Running a VM-Hostile Crackme Inside a VM
 
+Challenge_URL: https://crackmes.one/crackme/6a2d0b1f5f26f108ba18b8cd
+
 ### So I picked up a reversing bounty, and the challenge sounded simple enough:
 
 *"Successfully execute this sample inside a VM and publish a technical blog explaining how you did it."*

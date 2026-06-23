@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/6a00a162d7ff92e1214c008d
+
 iseey0u-re CrackMe#1 Writeup
 
 Challenge Information

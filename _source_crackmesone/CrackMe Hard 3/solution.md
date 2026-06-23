@@ -1,5 +1,7 @@
 # CrackMe Hard 3 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a17264017539b5175d123a9
+
 Main is located at 140003f90.
 After decrypting some strings and printing them to the console it gets user input and runs the important functions:
 - 140002f00. Checks if process is debugged and returns true if so

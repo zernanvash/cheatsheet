@@ -1,5 +1,7 @@
 # karity-crackme-B writeup
 
+Challenge_URL: https://crackmes.one/crackme/6a10641e3fba64e45dceab4f
+
 I finally finished this one. The journey was a bit sweet though, especially that "looks-standard-but-isn't" GF(2^8) table in the middle gave me a real headache. Burned a few hours chasing a wrong assumption. Writing up my notes in case it helps anyone.
 
 ## First look

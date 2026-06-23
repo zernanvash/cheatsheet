@@ -1,5 +1,7 @@
 # ASCII_CRACK Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a806c17b3cc38c80464e06
+
 The program transforms the input string using a simple algorithm and then 
 compares it with the hardcoded string "IYJ~U4cQ1Q[<mL[(U;`'Ynk/M-i".
 

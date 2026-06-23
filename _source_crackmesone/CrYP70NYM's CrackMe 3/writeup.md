@@ -1,5 +1,7 @@
 # CrackMe3 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69eb20d78fab7bbca272ffb1
+
 ## Overview
 
 CrackMe3 is a 32-bit Windows GUI application protected with a custom packer/protector. The protector uses CPUID-based hardware fingerprinting (HWID) to lock the executable to a specific machine. The goals are:

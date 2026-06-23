@@ -1,5 +1,7 @@
 # OMEGA CrackMe (2026 Edition) — Reverse Engineering Write-up
 
+Challenge_URL: https://crackmes.one/crackme/69cfa9aef2d49d8512f64c34
+
 ## Table of Contents
 
 1. [Introduction](#1-introduction)

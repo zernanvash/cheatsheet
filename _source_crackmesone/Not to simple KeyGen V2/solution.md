@@ -1,5 +1,7 @@
 # Not to simple KeyGen V2 Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a1f44218b5d7ee4709351d
+
 i traced input handling and then focused on the branch near the end of main
 
 0x401996  cmp rax, 0x10

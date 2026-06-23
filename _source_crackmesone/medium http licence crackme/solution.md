@@ -1,5 +1,7 @@
 # medium http licence crackme Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69917e2d853c2615340abd81
+
 using System;
 using System.IO;
 using System.Security.Cryptography;

@@ -1,5 +1,7 @@
 # CantCrack.exe
 
+Challenge_URL: https://crackmes.one/crackme/6a30eab0a4b247348ae805c4
+
 loaded it in ida. checked strings first cause thats always the easiest way. found the success and fail messages.
 
 followed the xref from congratulations to the main function. decompiled it. pretty straightforward.

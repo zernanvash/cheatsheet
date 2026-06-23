@@ -1,5 +1,7 @@
 # Fixed Easy Crackme Writeup
 
+Challenge_URL: https://crackmes.one/crackme/698d2206e2ba6023bfacaa4f
+
 Writeup: Kanax01's Fixed Easy Crackme
 Author: Lazex
 

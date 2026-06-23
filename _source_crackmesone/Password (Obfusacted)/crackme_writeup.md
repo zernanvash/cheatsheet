@@ -1,5 +1,7 @@
 # CrackMe.obf.exe Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69b1ff67ddd6176826ae8960
+
 ## Initial Triage
 
 The first pass in IDA was intentionally misleading:

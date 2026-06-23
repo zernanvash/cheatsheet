@@ -1,5 +1,7 @@
 # Gadget Writeup
 
+Challenge_URL: https://crackmes.one/crackme/6987dc623eb49a23d34176ed
+
 when chall.exe starts:
 
 1) opens gadget.hex

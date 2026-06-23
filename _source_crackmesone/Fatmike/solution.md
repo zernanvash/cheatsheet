@@ -1,5 +1,7 @@
 # Fatmike's Crackme #10 (crackmes.one CTF 2026) Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a2c7347b3cc38c80464d8f
+
 Fatmike's Crackme #10 (crackmes.one CTF 2026)
 https://crackmes.one/crackme/69a2c7347b3cc38c80464d8f
 To find the function of interest, check the import table for audio-related functions:

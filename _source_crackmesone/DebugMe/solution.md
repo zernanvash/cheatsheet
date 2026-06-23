@@ -1,5 +1,7 @@
 # DebugMe — Reverse Engineering Write-up
 
+Challenge_URL: https://crackmes.one/crackme/69f50fd517539b5175d12188
+
 ## Overview
 
 **Target:** `DebugMe` — 64-bit ELF PIE executable, stripped, dynamically linked (GCC 15.2.1)

@@ -1,5 +1,7 @@
 # c Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69e352c2643676f8bb961d2e
+
 Torontos's c
 
 Tools:

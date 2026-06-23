@@ -1,5 +1,7 @@
 # deo's High cortisol
 
+Challenge_URL: https://crackmes.one/crackme/6a25ae31e13aafcf3f84fa7b
+
 ## summary
 
 the key is:

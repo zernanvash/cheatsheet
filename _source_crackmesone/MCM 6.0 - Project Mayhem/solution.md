@@ -1,5 +1,7 @@
 # MCM 6.0 - Project Mayhem Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69a95101fbfe0ef21de94652
+
 Having analyzed and fully restored the algorithm, I realized that calculating the key mathematically is impossible.
 (You can examine the key verification algorithm in detail within my brute-force or program patching scripts.)
 

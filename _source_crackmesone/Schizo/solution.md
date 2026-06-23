@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/698f40f1e2ba6023bfacaa82
+
 Schizo Crackme Writeup: A Reverse Engineering Deep Dive
 
 # Schizo Crackme Writeup: A Reverse Engineering Deep Dive

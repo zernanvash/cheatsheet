@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/69723bb7d735cd51e7a1aa78
+
 [CorpCons's EasyVM](https://crackmes.one/crackme/69723bb7d735cd51e7a1aa78) - original link to crackmes
 
 Author - [Profile](https://crackmes.one/user/CorpCons)

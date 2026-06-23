@@ -1,5 +1,7 @@
 # Lösung
 
+Challenge_URL: https://crackmes.one/crackme/69e69e738afd9d6c48b489a9
+
 Die folgende Liste ist nach den Schritten in chronologischer Reihenfolge aufgeschrieben
 
 - Zunächst habe ich die .EXE Datei und die .dll in AvaloniaILSpy eingefügt und in Lutris einmal ausgeführt

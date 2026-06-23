@@ -1,5 +1,7 @@
 # CFB3 — Crackmes for Beginners #3
 
+Challenge_URL: https://crackmes.one/crackme/6a154aca8fab7bbca27302a2
+
 
 ## TL;DR
 

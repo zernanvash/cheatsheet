@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/69ff482c8fab7bbca273011e
+
 gurneyburner52 back at it AGAIN with another banger today we will be attempting the fresh `ASMe | ASM CrackMe`
 i thoroughly enjoyed this challenge despite having **NO** snacks and it took about 23 minutes to solve, i still think its a relatively tough challenge
 and it helps that i have some decent compute ^.^ oh well here we go:

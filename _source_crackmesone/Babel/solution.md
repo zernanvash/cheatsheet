@@ -1,5 +1,7 @@
 # [Write-up] BABEL_VM CrackMe by w33d
 
+Challenge_URL: https://crackmes.one/crackme/69ca6a30f2d49d8512f64bcc
+
 ## 1. Challenge Overview
 **Target:** `babel_vm.exe`  
 **Difficulty:** Level 3-4 (Medium/Hard)  

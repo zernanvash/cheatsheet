@@ -1,5 +1,7 @@
 # CrackIt;) Writeup
 
+Challenge_URL: https://crackmes.one/crackme/697e6957e04ca145cd9d13b4
+
 # Writeup of crackit;)
 
 Open the binary with hexdump in cli.

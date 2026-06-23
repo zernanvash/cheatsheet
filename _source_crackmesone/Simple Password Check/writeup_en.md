@@ -1,5 +1,7 @@
 # crackme_goodlucklol — Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69c52f066793d479be018ec3
+
 **Platform:** Windows x64  
 **Tools:** IDA Pro 9.3, Python  
 

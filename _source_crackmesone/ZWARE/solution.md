@@ -1,3 +1,5 @@
+Challenge_URL: https://crackmes.one/crackme/69e2a353471059af19ad0951
+
 Writeup: MAS's ZWARE - Custom VM Architecture Reversing
 1. Challenge Overview
 Platform: crackmes.one

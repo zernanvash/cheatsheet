@@ -1,5 +1,7 @@
 # Bobs gambling Writeup
 
+Challenge_URL: https://crackmes.one/crackme/69b9accff2d49d8512f64a8f
+
 ================================================================
 WRITEUP: Bob's Gambling Crackme
 ================================================================
