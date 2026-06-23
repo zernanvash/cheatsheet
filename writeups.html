@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>H4G CTF Writeups Vault</title>
+  <meta name="description" content="Search and filter 1,030+ CTF writeups from TryHackMe, HackMyVM, picoCTF, HackTheBox and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -19,7 +20,7 @@
       --line: rgba(48, 56, 71, 0.5);
       --accent: #5cf2a9;
       --accent-glow: rgba(92, 242, 169, 0.15);
-      
+
       /* Category Colors */
       --color-rev: #a855f7;
       --color-machine: #f97316;
@@ -41,17 +42,16 @@
       --color-pg: #ec4899;
       --color-ptd: #06b6d4;
       --color-secfortress: #14b8a6;
+      --color-ruycr4ft: #fb7185;
       --color-other: #64748b;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       background: var(--bg);
-      background-image: 
+      background-image:
         radial-gradient(at 0% 0%, rgba(92, 242, 169, 0.03) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
         radial-gradient(at 50% 100%, rgba(249, 115, 22, 0.02) 0px, transparent 50%);
@@ -68,22 +68,19 @@
       padding: 32px 24px 72px;
     }
 
-    /* Top Header */
+    /* ─── Header ─────────────────────────────────────── */
     header {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 24px;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       padding-bottom: 28px;
       border-bottom: 1px solid var(--line);
     }
 
-    .header-left {
-      flex: 1;
-      min-width: 320px;
-    }
+    .header-left { flex: 1; min-width: 320px; }
 
     h1 {
       margin: 0 0 8px;
@@ -103,10 +100,7 @@
       max-width: 680px;
     }
 
-    .nav-actions {
-      display: flex;
-      gap: 12px;
-    }
+    .nav-actions { display: flex; gap: 12px; }
 
     .btn {
       display: inline-flex;
@@ -132,9 +126,9 @@
       box-shadow: 0 0 12px var(--accent-glow);
     }
 
-    /* Search Panel */
+    /* ─── Search Bar ──────────────────────────────────── */
     .search-panel {
-      margin: -12px 0 32px;
+      margin-bottom: 20px;
       padding: 18px;
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -156,8 +150,12 @@
       background: rgba(7, 9, 14, 0.72);
       color: var(--text);
       font: inherit;
+      font-size: 0.97rem;
       outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+
+    .search-shell input::placeholder { color: var(--muted); }
 
     .search-shell input:focus {
       border-color: var(--accent);
@@ -175,6 +173,7 @@
       font: inherit;
       font-weight: 600;
       transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .search-shell button:hover {
@@ -183,161 +182,239 @@
     }
 
     .search-meta {
-      margin-top: 8px;
+      margin-top: 10px;
       color: var(--muted);
       font-size: 0.85rem;
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
-    /* Main Dashboard Layout */
+    /* ─── Category Chips (below search) ──────────────── */
+    .category-filter-bar {
+      margin-bottom: 28px;
+    }
+
+    .category-filter-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .chip.active {
+      color: #fff;
+      border-color: var(--chip-color, var(--accent));
+      background: var(--chip-bg, rgba(92, 242, 169, 0.1));
+      box-shadow: 0 0 10px var(--chip-glow, var(--accent-glow));
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--chip-color, var(--accent));
+      flex-shrink: 0;
+      opacity: 0.6;
+      transition: opacity 0.18s;
+    }
+
+    .chip.active .chip-dot { opacity: 1; }
+
+    .chip-count {
+      font-size: 0.72rem;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+    }
+
+    .chip.active .chip-count {
+      background: var(--chip-bg, rgba(92,242,169,0.1));
+      color: var(--chip-color, var(--accent));
+    }
+
+    /* Chip color variants */
+    .chip[data-cat="all"]      { --chip-color: var(--accent); --chip-bg: rgba(92,242,169,0.1); --chip-glow: rgba(92,242,169,0.15); }
+    .chip[data-cat="rev"]      { --chip-color: var(--color-rev); --chip-bg: rgba(168,85,247,0.1); --chip-glow: rgba(168,85,247,0.15); }
+    .chip[data-cat="machine"]  { --chip-color: var(--color-machine); --chip-bg: rgba(249,115,22,0.1); --chip-glow: rgba(249,115,22,0.15); }
+    .chip[data-cat="web"]      { --chip-color: var(--color-web); --chip-bg: rgba(14,165,233,0.1); --chip-glow: rgba(14,165,233,0.15); }
+    .chip[data-cat="pwn"]      { --chip-color: var(--color-pwn); --chip-bg: rgba(239,68,68,0.1); --chip-glow: rgba(239,68,68,0.15); }
+    .chip[data-cat="steg"]     { --chip-color: var(--color-steg); --chip-bg: rgba(16,185,129,0.1); --chip-glow: rgba(16,185,129,0.15); }
+    .chip[data-cat="crypto"]   { --chip-color: var(--color-crypto); --chip-bg: rgba(99,102,241,0.1); --chip-glow: rgba(99,102,241,0.15); }
+    .chip[data-cat="osint"]    { --chip-color: var(--color-osint); --chip-bg: rgba(234,179,8,0.1); --chip-glow: rgba(234,179,8,0.15); }
+    .chip[data-cat="forensics"]{ --chip-color: var(--color-forensics); --chip-bg: rgba(20,184,166,0.1); --chip-glow: rgba(20,184,166,0.15); }
+    .chip[data-cat="general"]  { --chip-color: var(--color-reporting); --chip-bg: rgba(100,116,139,0.1); --chip-glow: rgba(100,116,139,0.15); }
+
+    /* ─── Main Layout ─────────────────────────────────── */
     .dashboard-layout {
       display: grid;
-      grid-template-columns: 300px 1fr;
+      grid-template-columns: 280px 1fr;
       gap: 32px;
       align-items: start;
     }
 
-    /* Sidebar filters */
+    /* ─── Sidebar (Origins only) ──────────────────────── */
     .sidebar {
       position: sticky;
       top: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
       background: var(--panel);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 20px;
+      padding: 20px 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .sidebar-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
     }
 
     .sidebar-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       color: var(--muted);
-      margin: 4px 0 12px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 0 10px;
+      margin-bottom: 12px;
     }
 
-    .filter-btn {
+    .origin-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .origin-btn {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 14px;
+      gap: 10px;
+      padding: 9px 12px;
       border: 1px solid transparent;
       border-radius: 10px;
       background: transparent;
       color: var(--muted);
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
       width: 100%;
     }
 
-    .filter-btn:hover {
-      background: rgba(255, 255, 255, 0.03);
+    .origin-btn:hover {
+      background: rgba(255,255,255,0.04);
       color: var(--text);
     }
 
-    .filter-btn.active {
+    .origin-btn.active {
       color: var(--text);
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255,255,255,0.06);
       border-color: var(--line);
     }
 
-    /* Active Dot Indicators */
-    .filter-btn::before {
-      content: '';
-      width: 6px;
-      height: 6px;
+    .origin-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: currentColor;
       flex-shrink: 0;
-      opacity: 0.4;
-      transition: opacity 0.2s;
+      background: var(--o-color, var(--muted));
+      opacity: 0.5;
+      transition: opacity 0.18s, transform 0.18s;
     }
 
-    .filter-btn.active::before {
+    .origin-btn:hover .origin-dot,
+    .origin-btn.active .origin-dot {
       opacity: 1;
     }
 
-    .filter-count {
-      font-size: 0.75rem;
-      background: rgba(255, 255, 255, 0.05);
+    .origin-btn.active .origin-dot {
+      transform: scale(1.25);
+      box-shadow: 0 0 6px var(--o-color, transparent);
+    }
+
+    .origin-label { flex: 1; }
+
+    .origin-count {
+      font-size: 0.72rem;
       padding: 2px 6px;
       border-radius: 4px;
+      background: rgba(255,255,255,0.04);
       color: var(--muted);
     }
 
-    .filter-btn.active .filter-count {
-      background: var(--accent-glow);
-      color: var(--accent);
+    .origin-btn.active .origin-count {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
     }
 
-    /* Category Specific Color Dots */
-    .filter-btn[data-cat="all"] { color: var(--text); }
-    .filter-btn[data-cat="rev"]::before { background: var(--color-rev); }
-    .filter-btn[data-cat="machine"]::before { background: var(--color-machine); }
-    .filter-btn[data-cat="web"]::before { background: var(--color-web); }
-    .filter-btn[data-cat="pwn"]::before { background: var(--color-pwn); }
-    .filter-btn[data-cat="steg"]::before { background: var(--color-steg); }
-    .filter-btn[data-cat="crypto"]::before { background: var(--color-crypto); }
-    .filter-btn[data-cat="osint"]::before { background: var(--color-osint); }
-    .filter-btn[data-cat="forensics"]::before { background: var(--color-forensics); }
-    .filter-btn[data-cat="general"]::before { background: var(--color-reporting); }
+    /* Origin dot colors */
+    .origin-btn[data-origin="all"]             { --o-color: var(--accent); }
+    .origin-btn[data-origin="TryHackMe"]       { --o-color: var(--color-thm); }
+    .origin-btn[data-origin="HackMyVM"]        { --o-color: var(--color-hmv); }
+    .origin-btn[data-origin="picoCTF"]         { --o-color: var(--color-pico); }
+    .origin-btn[data-origin="crackmes.one"]    { --o-color: var(--color-crackme); }
+    .origin-btn[data-origin="HackTheBox"]      { --o-color: var(--color-htb); }
+    .origin-btn[data-origin="Vulnyx"]          { --o-color: var(--color-vulnyx); }
+    .origin-btn[data-origin="Proving Grounds"] { --o-color: var(--color-pg); }
+    .origin-btn[data-origin="PwnTillDawn"]     { --o-color: var(--color-ptd); }
+    .origin-btn[data-origin="Sec-Fortress"]    { --o-color: var(--color-secfortress); }
+    .origin-btn[data-origin="ruycr4ft"]        { --o-color: var(--color-ruycr4ft); }
+    .origin-btn[data-origin="Other"]           { --o-color: var(--color-other); }
 
-    /* Origin Specific Color Dots */
-    .filter-btn[data-origin="all"] { color: var(--text); }
-    .filter-btn[data-origin="TryHackMe"]::before { background: var(--color-thm); }
-    .filter-btn[data-origin="HackMyVM"]::before { background: var(--color-hmv); }
-    .filter-btn[data-origin="picoCTF"]::before { background: var(--color-pico); }
-    .filter-btn[data-origin="crackmes.one"]::before { background: var(--color-crackme); }
-    .filter-btn[data-origin="HackTheBox"]::before { background: var(--color-htb); }
-    .filter-btn[data-origin="Vulnyx"]::before { background: var(--color-vulnyx); }
-    .filter-btn[data-origin="Proving Grounds"]::before { background: var(--color-pg); }
-    .filter-btn[data-origin="PwnTillDawn"]::before { background: var(--color-ptd); }
-    .filter-btn[data-origin="Sec-Fortress"]::before { background: var(--color-secfortress); }
-    .filter-btn[data-origin="Other"]::before { background: var(--color-other); }
-
-    /* Content Area */
+    /* ─── Content Area ────────────────────────────────── */
     .content-area {
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 24px;
+      min-width: 0;
     }
 
-    /* Cards Grid */
+    /* ─── Cards Grid ──────────────────────────────────── */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
     }
 
-    /* Card Styling */
     .card {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 180px;
-      padding: 24px;
+      min-height: 170px;
+      padding: 22px;
       border: 1px solid var(--line);
       border-radius: 14px;
       background: var(--panel);
@@ -354,212 +431,107 @@
     .card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 4px;
       height: 100%;
       background: var(--accent-gradient, var(--line));
       opacity: 0.8;
-      transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.2s;
     }
 
     .card:hover {
       transform: translateY(-4px);
       border-color: var(--hover-border-color, var(--accent));
       background: var(--panel-hover);
-      box-shadow: 0 8px 30px var(--hover-glow, rgba(0, 0, 0, 0.3));
-      outline: none;
+      box-shadow: 0 8px 30px var(--hover-glow, rgba(0,0,0,0.3));
     }
 
-    .card:hover::before {
-      width: 6px;
-    }
+    .card:hover::before { width: 6px; }
 
-    .card-content {
-      margin-bottom: 20px;
-    }
+    .card-content { margin-bottom: 18px; }
 
     .card-title {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: #fff;
       transition: color 0.2s;
     }
 
-    .card:hover .card-title {
-      color: var(--hover-title-color, var(--accent));
-    }
+    .card:hover .card-title { color: var(--hover-title-color, var(--accent)); }
 
     .card-desc {
       display: block;
       color: var(--muted);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       line-height: 1.5;
     }
 
-    /* Badges */
     .card-footer {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
+      padding: 3px 9px;
+      border-radius: 5px;
+      font-size: 0.73rem;
       font-weight: 600;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
       color: var(--muted);
     }
 
     .badge-category {
-      background: var(--hover-badge-bg, rgba(92, 242, 169, 0.05));
-      border-color: var(--hover-border-color, rgba(92, 242, 169, 0.2));
+      background: var(--hover-badge-bg, rgba(92,242,169,0.05));
+      border-color: var(--hover-border-color, rgba(92,242,169,0.2));
       color: var(--hover-title-color, var(--accent));
     }
 
     .badge-origin {
-      border-color: var(--origin-border-color, rgba(255, 255, 255, 0.1));
+      border-color: var(--origin-border-color, rgba(255,255,255,0.1));
       color: var(--origin-text-color, var(--text));
-      background: var(--origin-bg-color, rgba(255, 255, 255, 0.05));
+      background: var(--origin-bg-color, rgba(255,255,255,0.05));
     }
 
-    /* Category Specific Colors */
-    .cat-rev {
-      --hover-border-color: var(--color-rev);
-      --hover-title-color: #d8b4fe;
-      --hover-glow: rgba(168, 85, 247, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #c084fc, #a855f7);
-      --hover-badge-bg: rgba(168, 85, 247, 0.08);
-    }
-    .cat-machine {
-      --hover-border-color: var(--color-machine);
-      --hover-title-color: #fed7aa;
-      --hover-glow: rgba(249, 115, 22, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #fb923c, #f97316);
-      --hover-badge-bg: rgba(249, 115, 22, 0.08);
-    }
-    .cat-web {
-      --hover-border-color: var(--color-web);
-      --hover-title-color: #bae6fd;
-      --hover-glow: rgba(14, 165, 233, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #38bdf8, #0ea5e9);
-      --hover-badge-bg: rgba(14, 165, 233, 0.08);
-    }
-    .cat-pwn {
-      --hover-border-color: var(--color-pwn);
-      --hover-title-color: #fca5a5;
-      --hover-glow: rgba(239, 68, 68, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #f87171, #ef4444);
-      --hover-badge-bg: rgba(239, 68, 68, 0.08);
-    }
-    .cat-steg {
-      --hover-border-color: var(--color-steg);
-      --hover-title-color: #a7f3d0;
-      --hover-glow: rgba(16, 185, 129, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #34d399, #10b981);
-      --hover-badge-bg: rgba(16, 185, 129, 0.08);
-    }
-    .cat-crypto {
-      --hover-border-color: var(--color-crypto);
-      --hover-title-color: #c7d2fe;
-      --hover-glow: rgba(99, 102, 241, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #818cf8, #6366f1);
-      --hover-badge-bg: rgba(99, 102, 241, 0.08);
-    }
-    .cat-osint {
-      --hover-border-color: var(--color-osint);
-      --hover-title-color: #fef08a;
-      --hover-glow: rgba(234, 179, 8, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #facc15, #eab308);
-      --hover-badge-bg: rgba(234, 179, 8, 0.08);
-    }
-    .cat-forensics {
-      --hover-border-color: var(--color-forensics);
-      --hover-title-color: #99f6e4;
-      --hover-glow: rgba(20, 184, 166, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #2dd4bf, #14b8a6);
-      --hover-badge-bg: rgba(20, 184, 166, 0.08);
-    }
-    .cat-general {
-      --hover-border-color: var(--color-reporting);
-      --hover-title-color: #cbd5e1;
-      --hover-glow: rgba(100, 116, 139, 0.15);
-      --accent-gradient: linear-gradient(to bottom, #94a3b8, #64748b);
-      --hover-badge-bg: rgba(100, 116, 139, 0.08);
-    }
+    /* Category card color themes */
+    .cat-rev      { --hover-border-color: var(--color-rev);       --hover-title-color: #d8b4fe; --hover-glow: rgba(168,85,247,0.15);  --accent-gradient: linear-gradient(to bottom,#c084fc,#a855f7); --hover-badge-bg: rgba(168,85,247,0.08); }
+    .cat-machine  { --hover-border-color: var(--color-machine);   --hover-title-color: #fed7aa; --hover-glow: rgba(249,115,22,0.15);  --accent-gradient: linear-gradient(to bottom,#fb923c,#f97316); --hover-badge-bg: rgba(249,115,22,0.08); }
+    .cat-web      { --hover-border-color: var(--color-web);       --hover-title-color: #bae6fd; --hover-glow: rgba(14,165,233,0.15);  --accent-gradient: linear-gradient(to bottom,#38bdf8,#0ea5e9); --hover-badge-bg: rgba(14,165,233,0.08); }
+    .cat-pwn      { --hover-border-color: var(--color-pwn);       --hover-title-color: #fca5a5; --hover-glow: rgba(239,68,68,0.15);   --accent-gradient: linear-gradient(to bottom,#f87171,#ef4444); --hover-badge-bg: rgba(239,68,68,0.08); }
+    .cat-steg     { --hover-border-color: var(--color-steg);      --hover-title-color: #a7f3d0; --hover-glow: rgba(16,185,129,0.15);  --accent-gradient: linear-gradient(to bottom,#34d399,#10b981); --hover-badge-bg: rgba(16,185,129,0.08); }
+    .cat-crypto   { --hover-border-color: var(--color-crypto);    --hover-title-color: #c7d2fe; --hover-glow: rgba(99,102,241,0.15);  --accent-gradient: linear-gradient(to bottom,#818cf8,#6366f1); --hover-badge-bg: rgba(99,102,241,0.08); }
+    .cat-osint    { --hover-border-color: var(--color-osint);     --hover-title-color: #fef08a; --hover-glow: rgba(234,179,8,0.15);   --accent-gradient: linear-gradient(to bottom,#facc15,#eab308); --hover-badge-bg: rgba(234,179,8,0.08); }
+    .cat-forensics{ --hover-border-color: var(--color-forensics); --hover-title-color: #99f6e4; --hover-glow: rgba(20,184,166,0.15);  --accent-gradient: linear-gradient(to bottom,#2dd4bf,#14b8a6); --hover-badge-bg: rgba(20,184,166,0.08); }
+    .cat-general  { --hover-border-color: var(--color-reporting); --hover-title-color: #cbd5e1; --hover-glow: rgba(100,116,139,0.15); --accent-gradient: linear-gradient(to bottom,#94a3b8,#64748b); --hover-badge-bg: rgba(100,116,139,0.08); }
 
-    /* Origin Colors on Badges */
-    .origin-thm {
-      --origin-border-color: rgba(244, 63, 94, 0.3);
-      --origin-text-color: #fda4af;
-      --origin-bg-color: rgba(244, 63, 94, 0.08);
-    }
-    .origin-hmv {
-      --origin-border-color: rgba(59, 130, 246, 0.3);
-      --origin-text-color: #93c5fd;
-      --origin-bg-color: rgba(59, 130, 246, 0.08);
-    }
-    .origin-pico {
-      --origin-border-color: rgba(16, 185, 129, 0.3);
-      --origin-text-color: #6ee7b7;
-      --origin-bg-color: rgba(16, 185, 129, 0.08);
-    }
-    .origin-crackme {
-      --origin-border-color: rgba(245, 158, 11, 0.3);
-      --origin-text-color: #fcd34d;
-      --origin-bg-color: rgba(245, 158, 11, 0.08);
-    }
-    .origin-htb {
-      --origin-border-color: rgba(132, 204, 22, 0.3);
-      --origin-text-color: #bef264;
-      --origin-bg-color: rgba(132, 204, 22, 0.08);
-    }
-    .origin-vulnyx {
-      --origin-border-color: rgba(168, 85, 247, 0.3);
-      --origin-text-color: #d8b4fe;
-      --origin-bg-color: rgba(168, 85, 247, 0.08);
-    }
-    .origin-pg {
-      --origin-border-color: rgba(236, 72, 153, 0.3);
-      --origin-text-color: #fbcfe8;
-      --origin-bg-color: rgba(236, 72, 153, 0.08);
-    }
-    .origin-ptd {
-      --origin-border-color: rgba(6, 182, 212, 0.3);
-      --origin-text-color: #67e8f9;
-      --origin-bg-color: rgba(6, 182, 212, 0.08);
-    }
-    .origin-secfortress {
-      --origin-border-color: rgba(20, 184, 166, 0.3);
-      --origin-text-color: #5eead4;
-      --origin-bg-color: rgba(20, 184, 166, 0.08);
-    }
-    .origin-other {
-      --origin-border-color: rgba(100, 116, 139, 0.3);
-      --origin-text-color: #cbd5e1;
-      --origin-bg-color: rgba(100, 116, 139, 0.08);
-    }
+    /* Origin badge colors */
+    .origin-thm       { --origin-border-color:rgba(244,63,94,0.3);  --origin-text-color:#fda4af; --origin-bg-color:rgba(244,63,94,0.08); }
+    .origin-hmv       { --origin-border-color:rgba(59,130,246,0.3); --origin-text-color:#93c5fd; --origin-bg-color:rgba(59,130,246,0.08); }
+    .origin-pico      { --origin-border-color:rgba(16,185,129,0.3); --origin-text-color:#6ee7b7; --origin-bg-color:rgba(16,185,129,0.08); }
+    .origin-crackme   { --origin-border-color:rgba(245,158,11,0.3); --origin-text-color:#fcd34d; --origin-bg-color:rgba(245,158,11,0.08); }
+    .origin-htb       { --origin-border-color:rgba(132,204,22,0.3); --origin-text-color:#bef264; --origin-bg-color:rgba(132,204,22,0.08); }
+    .origin-vulnyx    { --origin-border-color:rgba(168,85,247,0.3); --origin-text-color:#d8b4fe; --origin-bg-color:rgba(168,85,247,0.08); }
+    .origin-pg        { --origin-border-color:rgba(236,72,153,0.3); --origin-text-color:#fbcfe8; --origin-bg-color:rgba(236,72,153,0.08); }
+    .origin-ptd       { --origin-border-color:rgba(6,182,212,0.3);  --origin-text-color:#67e8f9; --origin-bg-color:rgba(6,182,212,0.08); }
+    .origin-secfortress{ --origin-border-color:rgba(20,184,166,0.3);--origin-text-color:#5eead4; --origin-bg-color:rgba(20,184,166,0.08); }
+    .origin-ruycr4ft  { --origin-border-color:rgba(251,113,133,0.3);--origin-text-color:#fda4af; --origin-bg-color:rgba(251,113,133,0.08); }
+    .origin-other     { --origin-border-color:rgba(100,116,139,0.3);--origin-text-color:#cbd5e1; --origin-bg-color:rgba(100,116,139,0.08); }
 
-    /* Load More Action */
+    /* ─── Load More ───────────────────────────────────── */
     .load-more-container {
       display: flex;
       justify-content: center;
-      margin-top: 24px;
     }
+    .load-more-btn { min-width: 200px; }
 
-    .load-more-btn {
-      min-width: 200px;
-    }
-
+    /* ─── Empty State ─────────────────────────────────── */
     .empty-state {
       text-align: center;
       padding: 64px 32px;
@@ -567,15 +539,16 @@
       border: 1px dashed var(--line);
       border-radius: 14px;
       color: var(--muted);
+      grid-column: 1 / -1;
     }
-
     .empty-state h3 {
       color: #fff;
       font-family: 'Outfit', sans-serif;
       margin-top: 0;
     }
+    .empty-icon { font-size: 3rem; margin-bottom: 16px; }
 
-    /* Footer styling */
+    /* ─── Footer ──────────────────────────────────────── */
     footer {
       margin-top: 80px;
       padding-top: 24px;
@@ -588,104 +561,176 @@
       font-size: 0.85rem;
       color: var(--muted);
     }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
 
-    footer a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    footer a:hover {
-      color: var(--accent);
-    }
-
-    /* Responsive */
-    @media (max-width: 992px) {
-      .dashboard-layout {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        position: static;
-      }
+    /* ─── Responsive ──────────────────────────────────── */
+    @media (max-width: 960px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .origin-list { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+      .origin-btn { width: auto; }
     }
 
     @media (max-width: 560px) {
-      .search-shell {
-        flex-direction: column;
-      }
+      .search-shell { flex-direction: column; }
+      .category-chips { gap: 6px; }
     }
   </style>
 </head>
 <body>
   <div class="app-container">
+    <!-- ─── Header ─────────────────────────── -->
     <header>
       <div class="header-left">
-        <h1>H4G CTF Writeups Vault</h1>
-        <p class="subtitle">Search, filter, and study 1,030+ writeups and solves for TryHackMe, HackMyVM, picoCTF, and more.</p>
+        <h1>H4G Writeups Vault</h1>
+        <p class="subtitle">Search and filter 1,030+ writeups from TryHackMe, HackMyVM, picoCTF, HackTheBox and more.</p>
       </div>
       <div class="nav-actions">
         <a href="index.html" class="btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-          Back to Dashboard
+          Dashboard
         </a>
       </div>
     </header>
 
+    <!-- ─── Search Bar ────────────────────────── -->
     <section class="search-panel" aria-label="Writeups search">
       <div class="search-shell">
-        <input id="writeups-search" type="search" placeholder="Search writeups by name, keyword, CTF, or description..." autocomplete="off">
+        <input id="writeups-search" type="search" placeholder="Search by name, keyword, CTF, technique…" autocomplete="off">
         <button id="search-clear" type="button">Clear</button>
       </div>
       <div class="search-meta">
-        <span id="search-count">Loading writeups database...</span>
+        <span id="search-count">Loading writeups database…</span>
         <span id="search-stats"></span>
       </div>
     </section>
 
-    <div class="dashboard-layout">
-      <!-- Sidebar Navigation/Filters -->
-      <aside class="sidebar">
-        <!-- Category Filter Group -->
-        <div class="sidebar-group">
-          <div class="sidebar-title">Categories</div>
-          <button class="filter-btn active" data-cat="all">All Categories <span class="filter-count" id="count-cat-all">0</span></button>
-          <button class="filter-btn" data-cat="rev">Reverse Engineering <span class="filter-count" id="count-cat-rev">0</span></button>
-          <button class="filter-btn" data-cat="machine">Machine Exploit <span class="filter-count" id="count-cat-machine">0</span></button>
-          <button class="filter-btn" data-cat="web">Web Exploitation <span class="filter-count" id="count-cat-web">0</span></button>
-          <button class="filter-btn" data-cat="pwn">PWN / Binary Exploit <span class="filter-count" id="count-cat-pwn">0</span></button>
-          <button class="filter-btn" data-cat="steg">Steganography <span class="filter-count" id="count-cat-steg">0</span></button>
-          <button class="filter-btn" data-cat="crypto">Cryptography <span class="filter-count" id="count-cat-crypto">0</span></button>
-          <button class="filter-btn" data-cat="osint">OSINT <span class="filter-count" id="count-cat-osint">0</span></button>
-          <button class="filter-btn" data-cat="forensics">Forensics <span class="filter-count" id="count-cat-forensics">0</span></button>
-          <button class="filter-btn" data-cat="general">General <span class="filter-count" id="count-cat-general">0</span></button>
-        </div>
+    <!-- ─── Category Chips (below search) ─────── -->
+    <div class="category-filter-bar" aria-label="Filter by challenge type">
+      <div class="category-filter-label">Challenge Type</div>
+      <div class="category-chips">
+        <button class="chip active" data-cat="all">
+          <span class="chip-dot"></span>All
+          <span class="chip-count" id="cc-all">0</span>
+        </button>
+        <button class="chip" data-cat="machine">
+          <span class="chip-dot"></span>Machine Exploit
+          <span class="chip-count" id="cc-machine">0</span>
+        </button>
+        <button class="chip" data-cat="web">
+          <span class="chip-dot"></span>Web Exploitation
+          <span class="chip-count" id="cc-web">0</span>
+        </button>
+        <button class="chip" data-cat="pwn">
+          <span class="chip-dot"></span>PWN / Binary
+          <span class="chip-count" id="cc-pwn">0</span>
+        </button>
+        <button class="chip" data-cat="rev">
+          <span class="chip-dot"></span>Reverse Engineering
+          <span class="chip-count" id="cc-rev">0</span>
+        </button>
+        <button class="chip" data-cat="crypto">
+          <span class="chip-dot"></span>Cryptography
+          <span class="chip-count" id="cc-crypto">0</span>
+        </button>
+        <button class="chip" data-cat="forensics">
+          <span class="chip-dot"></span>Forensics
+          <span class="chip-count" id="cc-forensics">0</span>
+        </button>
+        <button class="chip" data-cat="osint">
+          <span class="chip-dot"></span>OSINT
+          <span class="chip-count" id="cc-osint">0</span>
+        </button>
+        <button class="chip" data-cat="steg">
+          <span class="chip-dot"></span>Steganography
+          <span class="chip-count" id="cc-steg">0</span>
+        </button>
+        <button class="chip" data-cat="general">
+          <span class="chip-dot"></span>General
+          <span class="chip-count" id="cc-general">0</span>
+        </button>
+      </div>
+    </div>
 
-        <!-- Origin Filter Group -->
-        <div class="sidebar-group" style="margin-top: 16px; border-top: 1px solid var(--line); padding-top: 20px;">
-          <div class="sidebar-title">CTF / Origins</div>
-          <button class="filter-btn active" data-origin="all">All Origins <span class="filter-count" id="count-orig-all">0</span></button>
-          <button class="filter-btn" data-origin="TryHackMe">TryHackMe <span class="filter-count" id="count-orig-thm">0</span></button>
-          <button class="filter-btn" data-origin="HackMyVM">HackMyVM <span class="filter-count" id="count-orig-hmv">0</span></button>
-          <button class="filter-btn" data-origin="picoCTF">picoCTF <span class="filter-count" id="count-orig-pico">0</span></button>
-          <button class="filter-btn" data-origin="crackmes.one">crackmes.one <span class="filter-count" id="count-orig-crackme">0</span></button>
-          <button class="filter-btn" data-origin="HackTheBox">HackTheBox <span class="filter-count" id="count-orig-htb">0</span></button>
-          <button class="filter-btn" data-origin="Vulnyx">Vulnyx <span class="filter-count" id="count-orig-vulnyx">0</span></button>
-          <button class="filter-btn" data-origin="Proving Grounds">Proving Grounds <span class="filter-count" id="count-orig-pg">0</span></button>
-          <button class="filter-btn" data-origin="PwnTillDawn">PwnTillDawn <span class="filter-count" id="count-orig-ptd">0</span></button>
-          <button class="filter-btn" data-origin="Sec-Fortress">Sec-Fortress <span class="filter-count" id="count-orig-secfortress">0</span></button>
-          <button class="filter-btn" data-origin="Other">Other <span class="filter-count" id="count-orig-other">0</span></button>
+    <!-- ─── Main Layout ───────────────────────── -->
+    <div class="dashboard-layout">
+
+      <!-- Sidebar: CTF / Origins only -->
+      <aside class="sidebar" aria-label="Filter by CTF or origin">
+        <div class="sidebar-title">CTF / Origins</div>
+        <div class="origin-list">
+          <button class="origin-btn active" data-origin="all">
+            <span class="origin-dot"></span>
+            <span class="origin-label">All Origins</span>
+            <span class="origin-count" id="oc-all">0</span>
+          </button>
+          <button class="origin-btn" data-origin="TryHackMe">
+            <span class="origin-dot"></span>
+            <span class="origin-label">TryHackMe</span>
+            <span class="origin-count" id="oc-TryHackMe">0</span>
+          </button>
+          <button class="origin-btn" data-origin="HackMyVM">
+            <span class="origin-dot"></span>
+            <span class="origin-label">HackMyVM</span>
+            <span class="origin-count" id="oc-HackMyVM">0</span>
+          </button>
+          <button class="origin-btn" data-origin="picoCTF">
+            <span class="origin-dot"></span>
+            <span class="origin-label">picoCTF</span>
+            <span class="origin-count" id="oc-picoCTF">0</span>
+          </button>
+          <button class="origin-btn" data-origin="HackTheBox">
+            <span class="origin-dot"></span>
+            <span class="origin-label">HackTheBox</span>
+            <span class="origin-count" id="oc-HackTheBox">0</span>
+          </button>
+          <button class="origin-btn" data-origin="Sec-Fortress">
+            <span class="origin-dot"></span>
+            <span class="origin-label">Sec-Fortress</span>
+            <span class="origin-count" id="oc-Sec-Fortress">0</span>
+          </button>
+          <button class="origin-btn" data-origin="Proving Grounds">
+            <span class="origin-dot"></span>
+            <span class="origin-label">Proving Grounds</span>
+            <span class="origin-count" id="oc-Proving Grounds">0</span>
+          </button>
+          <button class="origin-btn" data-origin="PwnTillDawn">
+            <span class="origin-dot"></span>
+            <span class="origin-label">PwnTillDawn</span>
+            <span class="origin-count" id="oc-PwnTillDawn">0</span>
+          </button>
+          <button class="origin-btn" data-origin="Vulnyx">
+            <span class="origin-dot"></span>
+            <span class="origin-label">Vulnyx</span>
+            <span class="origin-count" id="oc-Vulnyx">0</span>
+          </button>
+          <button class="origin-btn" data-origin="crackmes.one">
+            <span class="origin-dot"></span>
+            <span class="origin-label">crackmes.one</span>
+            <span class="origin-count" id="oc-crackmes.one">0</span>
+          </button>
+          <button class="origin-btn" data-origin="ruycr4ft">
+            <span class="origin-dot"></span>
+            <span class="origin-label">ruycr4ft</span>
+            <span class="origin-count" id="oc-ruycr4ft">0</span>
+          </button>
+          <button class="origin-btn" data-origin="Other">
+            <span class="origin-dot"></span>
+            <span class="origin-label">Other</span>
+            <span class="origin-count" id="oc-Other">0</span>
+          </button>
         </div>
       </aside>
 
-      <!-- Main Content Area -->
+      <!-- Main content -->
       <main class="content-area">
         <div class="cards-grid" id="writeups-container">
-          <!-- Populated dynamically -->
+          <!-- populated by JS -->
         </div>
-
         <div class="load-more-container" id="load-more-wrap" hidden>
           <button class="btn load-more-btn" id="load-more-btn" type="button">Load More Results</button>
         </div>
@@ -693,7 +738,7 @@
     </div>
 
     <footer>
-      <span>H4G Vault &copy; 2026. Made for Security Analysts & CTF Players.</span>
+      <span>H4G Vault &copy; 2026 &mdash; Made for Security Analysts &amp; CTF Players.</span>
       <div>
         <a href="index.html">Dashboard</a> &bull;
         <a href="0xrefs.html">0xrefs Interactive</a>
@@ -702,249 +747,65 @@
   </div>
 
   <script>
-    // State management
-    let allWriteups = [];
+    // ─── State ────────────────────────────────────────────
+    let allWriteups    = [];
     let filteredWriteups = [];
-    let selectedCat = 'all';
-    let selectedOrigin = 'all';
-    let searchQuery = '';
-    let visibleCount = 30;
+    let selectedCat    = 'all';   // stored as short key: 'rev','machine',etc.
+    let selectedOrigin = 'all';   // stored as raw origin string: 'HackMyVM', etc.
+    let searchQuery    = '';
+    let visibleCount   = 30;
 
-    // DOM Elements
-    const searchInput = document.getElementById('writeups-search');
-    const searchClear = document.getElementById('search-clear');
-    const searchCount = document.getElementById('search-count');
-    const searchStats = document.getElementById('search-stats');
-    const writeupsContainer = document.getElementById('writeups-container');
-    const loadMoreWrap = document.getElementById('load-more-wrap');
-    const loadMoreBtn = document.getElementById('load-more-btn');
-
-    // Utility mapping for origin keys
-    const originMap = {
-      'TryHackMe': 'thm',
-      'HackMyVM': 'hmv',
-      'picoCTF': 'pico',
-      'crackmes.one': 'crackme',
-      'HackTheBox': 'htb',
-      'Vulnyx': 'vulnyx',
-      'Proving Grounds': 'pg',
-      'PwnTillDawn': 'ptd',
-      'Sec-Fortress': 'secfortress',
-      'Other': 'other'
-    };
-
-    // Utility mapping for category keys
+    // Short-key map (for data-cat attributes & card CSS classes)
     const catMap = {
-      'Reverse Engineering': 'rev',
+      'Reverse Engineering' : 'rev',
       'Machine Exploitation': 'machine',
-      'Web Exploitation': 'web',
+      'Web Exploitation'    : 'web',
       'PWN / Binary Exploit': 'pwn',
-      'Steganography': 'steg',
-      'Cryptography': 'crypto',
-      'OSINT': 'osint',
-      'Forensics': 'forensics',
-      'General': 'general'
+      'Steganography'       : 'steg',
+      'Cryptography'        : 'crypto',
+      'OSINT'               : 'osint',
+      'Forensics'           : 'forensics',
+      'General'             : 'general'
     };
 
-    // Helper to sanitize title strings that might have markdown wraps
-    function cleanMarkdownText(str) {
+    // CSS class map for origin badges on cards
+    const originClassMap = {
+      'TryHackMe'      : 'origin-thm',
+      'HackMyVM'       : 'origin-hmv',
+      'picoCTF'        : 'origin-pico',
+      'crackmes.one'   : 'origin-crackme',
+      'HackTheBox'     : 'origin-htb',
+      'Vulnyx'         : 'origin-vulnyx',
+      'Proving Grounds': 'origin-pg',
+      'PwnTillDawn'    : 'origin-ptd',
+      'Sec-Fortress'   : 'origin-secfortress',
+      'ruycr4ft'       : 'origin-ruycr4ft',
+      'Other'          : 'origin-other'
+    };
+
+    // ─── DOM refs ─────────────────────────────────────────
+    const searchInput       = document.getElementById('writeups-search');
+    const searchClear       = document.getElementById('search-clear');
+    const searchCount       = document.getElementById('search-count');
+    const searchStats       = document.getElementById('search-stats');
+    const writeupsContainer = document.getElementById('writeups-container');
+    const loadMoreWrap      = document.getElementById('load-more-wrap');
+    const loadMoreBtn       = document.getElementById('load-more-btn');
+
+    // ─── Helpers ──────────────────────────────────────────
+    function cleanTitle(str) {
       if (!str) return '';
-      return str.replace(/\*\*/g, '').replace(/\|\|/g, '').replace(/::/g, '').trim();
+      return str.replace(/\*\*/g, '').replace(/\|\|/g, '').replace(/::/g, '').replace(/::.*/, '').trim();
     }
 
-    // Helper to determine category class name
-    function getCategoryClass(cat) {
-      const mapping = {
-        'Reverse Engineering': 'cat-rev',
-        'Machine Exploitation': 'cat-machine',
-        'Web Exploitation': 'cat-web',
-        'PWN / Binary Exploit': 'cat-pwn',
-        'Steganography': 'cat-steg',
-        'Cryptography': 'cat-crypto',
-        'OSINT': 'cat-osint',
-        'Forensics': 'cat-forensics',
-        'General': 'cat-general'
-      };
-      return mapping[cat] || 'cat-general';
+    function getCatClass(cat) {
+      return 'cat-' + (catMap[cat] || 'general');
     }
 
-    // Helper to determine origin class name
     function getOriginClass(origin) {
-      const mapping = {
-        'TryHackMe': 'origin-thm',
-        'HackMyVM': 'origin-hmv',
-        'picoCTF': 'origin-pico',
-        'crackmes.one': 'origin-crackme',
-        'HackTheBox': 'origin-htb',
-        'Vulnyx': 'origin-vulnyx',
-        'Proving Grounds': 'origin-pg',
-        'PwnTillDawn': 'origin-ptd',
-        'Sec-Fortress': 'origin-secfortress',
-        'Other': 'origin-other'
-      };
-      return mapping[origin] || 'origin-other';
+      return originClassMap[origin] || 'origin-other';
     }
 
-    // Load dynamic search index
-    async function loadDatabase() {
-      try {
-        const response = await fetch('writeups-index.json');
-        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-        allWriteups = await response.json();
-        
-        // Initial setup
-        calculateBadgeCounts(allWriteups);
-        applyFilters();
-      } catch (error) {
-        console.error('Database load error:', error);
-        searchCount.textContent = 'Could not load writeups database. Make sure index exists.';
-      }
-    }
-
-    // Calculate sidebar badge counts based on current items
-    function calculateBadgeCounts(items) {
-      // Categories counts
-      const catCounts = { all: items.length };
-      Object.keys(catMap).forEach(key => catCounts[catMap[key]] = 0);
-      
-      // Origins counts
-      const origCounts = { all: items.length };
-      Object.keys(originMap).forEach(key => origCounts[originMap[key]] = 0);
-
-      // Aggregate counts
-      items.forEach(item => {
-        const cKey = catMap[item.category] || 'general';
-        const oKey = originMap[item.origin] || 'other';
-        
-        if (cKey in catCounts) catCounts[cKey]++;
-        if (oKey in origCounts) origCounts[oKey]++;
-      });
-
-      // Update Category Badges DOM
-      document.getElementById('count-cat-all').textContent = catCounts.all;
-      Object.keys(catMap).forEach(key => {
-        const elem = document.getElementById(`count-cat-${catMap[key]}`);
-        if (elem) elem.textContent = catCounts[catMap[key]];
-      });
-
-      // Update Origin Badges DOM
-      document.getElementById('count-orig-all').textContent = origCounts.all;
-      Object.keys(originMap).forEach(key => {
-        const elem = document.getElementById(`count-orig-${originMap[key]}`);
-        if (elem) elem.textContent = origCounts[oKey = originMap[key]];
-      });
-    }
-
-    // Apply currently active search and filters
-    function applyFilters() {
-      const terms = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
-
-      filteredWriteups = allWriteups.filter(item => {
-        // 1. Category Filter
-        if (selectedCat !== 'all' && (catMap[item.category] || 'general') !== selectedCat) {
-          return false;
-        }
-
-        // 2. Origin Filter
-        if (selectedOrigin !== 'all' && (originMap[item.origin] || 'other') !== selectedOrigin) {
-          return false;
-        }
-
-        // 3. Search Query
-        if (terms.length > 0) {
-          const matchString = [
-            item.title,
-            item.category,
-            item.origin,
-            item.path,
-            item.snippet,
-            (item.headings || []).join(' ')
-          ].join(' ').toLowerCase();
-
-          // All terms must be present
-          return terms.every(term => matchString.includes(term));
-        }
-
-        return true;
-      });
-
-      // Reset visible items count
-      visibleCount = 30;
-      
-      // Update stats and trigger render
-      renderStats();
-      renderCards();
-    }
-
-    // Render counts metadata
-    function renderStats() {
-      const total = allWriteups.length;
-      const matched = filteredWriteups.length;
-
-      if (searchQuery) {
-        searchCount.textContent = `Found ${matched} writeup${matched === 1 ? '' : 's'} matching "${searchQuery}"`;
-      } else {
-        searchCount.textContent = `Displaying ${matched} out of ${total} total writeups`;
-      }
-
-      if (selectedCat !== 'all' || selectedOrigin !== 'all') {
-        const catLabel = selectedCat === 'all' ? 'All' : Object.keys(catMap).find(k => catMap[k] === selectedCat);
-        const originLabel = selectedOrigin === 'all' ? 'All' : Object.keys(originMap).find(k => originMap[k] === selectedOrigin);
-        searchStats.textContent = `Filters: Category [${catLabel}] | Origin [${originLabel}]`;
-      } else {
-        searchStats.textContent = '';
-      }
-    }
-
-    // Render Cards in Grid
-    function renderCards() {
-      writeupsContainer.innerHTML = '';
-      
-      if (filteredWriteups.length === 0) {
-        writeupsContainer.innerHTML = `
-          <div class="empty-state" style="grid-column: 1 / -1;">
-            <h3>No writeups found</h3>
-            <p>Try clearing search keywords or selecting different categories and origins in the sidebar.</p>
-          </div>
-        `;
-        loadMoreWrap.hidden = true;
-        return;
-      }
-
-      const slice = filteredWriteups.slice(0, visibleCount);
-      
-      slice.forEach(item => {
-        const cleanTitle = cleanMarkdownText(item.title);
-        const cardClass = getCategoryClass(item.category);
-        const originClass = getOriginClass(item.origin);
-        
-        const card = document.createElement('a');
-        card.className = `card ${cardClass}`;
-        card.href = `viewer.html?file=${encodeURIComponent(item.path)}`;
-        
-        card.innerHTML = `
-          <div class="card-content">
-            <span class="card-title">${escapeHtml(cleanTitle)}</span>
-            <span class="card-desc">${escapeHtml(item.snippet)}</span>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-category">${escapeHtml(item.category)}</span>
-            <span class="badge badge-origin ${originClass}">${escapeHtml(item.origin)}</span>
-          </div>
-        `;
-        
-        writeupsContainer.appendChild(card);
-      });
-
-      // Toggle Load More visibility
-      if (filteredWriteups.length > visibleCount) {
-        loadMoreWrap.hidden = false;
-      } else {
-        loadMoreWrap.hidden = true;
-      }
-    }
-
-    // Simple HTML Escaper
     function escapeHtml(str) {
       if (!str) return '';
       return str
@@ -955,64 +816,183 @@
         .replace(/'/g, '&#39;');
     }
 
-    // Set up sidebar category button events
-    document.querySelectorAll('.filter-btn[data-cat]').forEach(btn => {
+    // ─── Load JSON index ──────────────────────────────────
+    async function loadDatabase() {
+      try {
+        const res = await fetch('writeups-index.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        allWriteups = await res.json();
+        updateBadgeCounts(allWriteups);
+        applyFilters();
+      } catch (err) {
+        console.error('Database load error:', err);
+        searchCount.textContent = 'Could not load writeups database. Ensure writeups-index.json exists.';
+      }
+    }
+
+    // ─── Badge count update ───────────────────────────────
+    function updateBadgeCounts(items) {
+      // Category chip counts
+      const catCounts = { all: items.length };
+      Object.values(catMap).forEach(k => catCounts[k] = 0);
+      items.forEach(item => {
+        const k = catMap[item.category] || 'general';
+        catCounts[k] = (catCounts[k] || 0) + 1;
+      });
+
+      document.getElementById('cc-all').textContent = catCounts.all;
+      Object.entries(catMap).forEach(([, key]) => {
+        const el = document.getElementById(`cc-${key}`);
+        if (el) el.textContent = catCounts[key] || 0;
+      });
+
+      // Origin sidebar counts — keyed by raw origin string
+      const originCounts = { all: items.length };
+      items.forEach(item => {
+        const o = item.origin || 'Other';
+        originCounts[o] = (originCounts[o] || 0) + 1;
+      });
+
+      document.getElementById('oc-all').textContent = originCounts.all;
+      document.querySelectorAll('.origin-btn[data-origin]').forEach(btn => {
+        const o = btn.getAttribute('data-origin');
+        if (o === 'all') return;
+        const el = btn.querySelector('.origin-count');
+        if (el) el.textContent = originCounts[o] || 0;
+      });
+    }
+
+    // ─── Apply all filters ────────────────────────────────
+    function applyFilters() {
+      const terms = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+
+      filteredWriteups = allWriteups.filter(item => {
+        // 1. Category filter — compare short keys
+        if (selectedCat !== 'all') {
+          const itemCatKey = catMap[item.category] || 'general';
+          if (itemCatKey !== selectedCat) return false;
+        }
+
+        // 2. Origin filter — compare raw origin strings directly
+        if (selectedOrigin !== 'all') {
+          if ((item.origin || 'Other') !== selectedOrigin) return false;
+        }
+
+        // 3. Full-text search
+        if (terms.length > 0) {
+          const haystack = [
+            item.title, item.category, item.origin,
+            item.path, item.snippet,
+            (item.headings || []).join(' ')
+          ].join(' ').toLowerCase();
+          return terms.every(t => haystack.includes(t));
+        }
+
+        return true;
+      });
+
+      visibleCount = 30;
+      renderStats();
+      renderCards();
+    }
+
+    // ─── Stats bar ────────────────────────────────────────
+    function renderStats() {
+      const total   = allWriteups.length;
+      const matched = filteredWriteups.length;
+
+      if (searchQuery) {
+        searchCount.textContent = `Found ${matched} writeup${matched === 1 ? '' : 's'} matching "${searchQuery}"`;
+      } else {
+        searchCount.textContent = `Displaying ${matched} of ${total} writeups`;
+      }
+
+      const parts = [];
+      if (selectedOrigin !== 'all') parts.push(`Origin: ${selectedOrigin}`);
+      if (selectedCat    !== 'all') {
+        const label = Object.entries(catMap).find(([,v]) => v === selectedCat)?.[0] || selectedCat;
+        parts.push(`Type: ${label}`);
+      }
+      searchStats.textContent = parts.length ? `Filters: ${parts.join(' · ')}` : '';
+    }
+
+    // ─── Render cards ─────────────────────────────────────
+    function renderCards() {
+      writeupsContainer.innerHTML = '';
+
+      if (filteredWriteups.length === 0) {
+        writeupsContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No writeups found</h3>
+            <p>Try clearing your search, or pick a different origin / challenge type.</p>
+          </div>`;
+        loadMoreWrap.hidden = true;
+        return;
+      }
+
+      filteredWriteups.slice(0, visibleCount).forEach(item => {
+        const card = document.createElement('a');
+        card.className = `card ${getCatClass(item.category)}`;
+        card.href = `viewer.html?file=${encodeURIComponent(item.path)}`;
+
+        card.innerHTML = `
+          <div class="card-content">
+            <span class="card-title">${escapeHtml(cleanTitle(item.title))}</span>
+            <span class="card-desc">${escapeHtml(item.snippet)}</span>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-category">${escapeHtml(item.category)}</span>
+            <span class="badge badge-origin ${getOriginClass(item.origin)}">${escapeHtml(item.origin)}</span>
+          </div>`;
+
+        writeupsContainer.appendChild(card);
+      });
+
+      loadMoreWrap.hidden = filteredWriteups.length <= visibleCount;
+    }
+
+    // ─── Event: Category chips ────────────────────────────
+    document.querySelectorAll('.chip[data-cat]').forEach(btn => {
       btn.addEventListener('click', () => {
-        // Toggle active button
-        document.querySelectorAll('.filter-btn[data-cat]').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.chip[data-cat]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
         selectedCat = btn.getAttribute('data-cat');
         applyFilters();
       });
     });
 
-    // Set up sidebar origin button events
-    document.querySelectorAll('.filter-btn[data-origin]').forEach(btn => {
+    // ─── Event: Origin sidebar ────────────────────────────
+    document.querySelectorAll('.origin-btn[data-origin]').forEach(btn => {
       btn.addEventListener('click', () => {
-        // Toggle active button
-        document.querySelectorAll('.filter-btn[data-origin]').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.origin-btn[data-origin]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
         selectedOrigin = btn.getAttribute('data-origin');
         applyFilters();
       });
     });
 
-    // Real-time search handler with debounce
-    let searchDebounce;
+    // ─── Event: Search input (debounced) ──────────────────
+    let debounce;
     searchInput.addEventListener('input', () => {
-      clearTimeout(searchDebounce);
-      searchDebounce = setTimeout(() => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
         searchQuery = searchInput.value.trim();
         applyFilters();
-      }, 100);
+      }, 120);
     });
 
-    // Clear Search Input event
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { searchInput.value = ''; searchQuery = ''; applyFilters(); }
+    });
+
     searchClear.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      applyFilters();
-      searchInput.focus();
+      searchInput.value = ''; searchQuery = ''; applyFilters(); searchInput.focus();
     });
 
-    // Keyboard ESC key handler to clear search
-    searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        searchInput.value = '';
-        searchQuery = '';
-        applyFilters();
-      }
-    });
+    loadMoreBtn.addEventListener('click', () => { visibleCount += 30; renderCards(); });
 
-    // Load More action handler
-    loadMoreBtn.addEventListener('click', () => {
-      visibleCount += 30;
-      renderCards();
-    });
-
-    // Initialize Page
+    // ─── Boot ─────────────────────────────────────────────
     loadDatabase();
   </script>
 </body>
