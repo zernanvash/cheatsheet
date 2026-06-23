@@ -1447,14 +1447,14 @@
             "TCP Port Scan",
             "UDP Port Scan",
             "Initial Access",
-            "Phase 1 \u2014 IPMI Hash Dump (Admin Account)",
-            "Phase 2 \u2014 BMC User Enumeration via ipmitool",
-            "Phase 3 \u2014 Mass IPMI Hash Dump (All Users)",
-            "Phase 4 \u2014 Offline Hash Cracking with Hashcat",
-            "Phase 5 \u2014 SSH Credential Spray with Hydra",
-            "Phase 6 \u2014 SSH Login & User Flag",
+            "Phase 1 — IPMI Hash Dump (Admin Account)",
+            "Phase 2 — BMC User Enumeration via ipmitool",
+            "Phase 3 — Mass IPMI Hash Dump (All Users)",
+            "Phase 4 — Offline Hash Cracking with Hashcat",
+            "Phase 5 — SSH Credential Spray with Hydra",
+            "Phase 6 — SSH Login & User Flag",
             "Privilege Escalation",
-            "Phase 1 \u2014 Internal Network Enumeration"
+            "Phase 1 — Internal Network Enumeration"
         ],
         "snippet": "Summary: The Atom machine exposes a single Intelligent Platform Management Interface (IPMI) service on UDP port 623, alongside SSH on TCP port 22. The attack..."
     },
@@ -1473,9 +1473,9 @@
             "Web Application Enumeration",
             "Role Enumeration via Fuzzing",
             "JWT Authentication and Secret Cracking",
-            "JWT Forgery \u2014 Privilege Escalation to Admin Role",
+            "JWT Forgery — Privilege Escalation to Admin Role",
             "Remote Code Execution via `/execute`",
-            "Reverse Shell \u2014 `www-data`",
+            "Reverse Shell — `www-data`",
             "Internal Enumeration",
             "User and Directory Enumeration",
             "Web Application Working Directory"
@@ -1582,9 +1582,9 @@
             "Reconnaissance",
             "Host Discovery",
             "Port Scanning",
-            "Web Enumeration \u2014 Source Code Analysis",
+            "Web Enumeration — Source Code Analysis",
             "Directory Fuzzing",
-            "Vulnerability Discovery \u2014 mod_backdoor",
+            "Vulnerability Discovery — mod_backdoor",
             "Initial Access",
             "Confirming RCE via the Backdoor Header",
             "Reverse Shell",
@@ -1593,7 +1593,7 @@
             "Sudo Lecture File",
             "Transferring Enumeration Tools"
         ],
-        "snippet": "Summary: Blackhat is a beginner-level HackMyVM machine that presents a deceptively simple web surface \u2014 a defaced Apache page \u2014 hiding a custom Apache module..."
+        "snippet": "Summary: Blackhat is a beginner-level HackMyVM machine that presents a deceptively simple web surface — a defaced Apache page — hiding a custom Apache module..."
     },
     {
         "title": "Breakout",
@@ -1645,16 +1645,16 @@
             "Reconnaissance",
             "Network Discovery",
             "Port Scanning",
-            "WordPress Enumeration \u2014 WPScan",
+            "WordPress Enumeration — WPScan",
             "Initial Access",
-            "CVE-2024-50498 \u2014 Unauthenticated RCE via WP Query Console",
-            "Step 1 \u2014 Confirming Code Execution via `phpinfo()`",
-            "Step 2 \u2014 Reverse Shell via `shell_exec` and `busybox nc`",
-            "Post-Exploitation \u2014 Credential Harvesting",
+            "CVE-2024-50498 — Unauthenticated RCE via WP Query Console",
+            "Step 1 — Confirming Code Execution via `phpinfo()`",
+            "Step 2 — Reverse Shell via `shell_exec` and `busybox nc`",
+            "Post-Exploitation — Credential Harvesting",
             "System Users",
             "WordPress Database Credentials from `wp-config.php`",
             "Dumping WordPress User Hashes from MySQL",
-            "Password Cracking \u2014 John the Ripper"
+            "Password Cracking — John the Ripper"
         ],
         "snippet": "Summary: Buster is a beginner-level Linux machine running a WordPress site backed by nginx. The attack path begins with network discovery and a full-port Nma..."
     },
@@ -1774,17 +1774,17 @@
         "headings": [
             "ComingSoon",
             "Executive Summary",
-            "Phase 1 \u2014 Reconnaissance",
+            "Phase 1 — Reconnaissance",
             "Network Discovery",
             "Port Scanning",
-            "Web Application \u2014 Initial Look",
-            "Phase 2 \u2014 Vulnerability Discovery",
-            "Hidden Cookie \u2014 Base64-Encoded Feature Flag",
-            "Phase 3 \u2014 Initial Access",
+            "Web Application — Initial Look",
+            "Phase 2 — Vulnerability Discovery",
+            "Hidden Cookie — Base64-Encoded Feature Flag",
+            "Phase 3 — Initial Access",
             "Unlocking the Hidden Upload Endpoint",
-            "PHP Reverse Shell Upload \u2014 Extension Bypass",
+            "PHP Reverse Shell Upload — Extension Bypass",
             "Obtaining the Reverse Shell",
-            "Phase 4 \u2014 Internal Enumeration",
+            "Phase 4 — Internal Enumeration",
             "User Discovery and Home Directory",
             "Web Root Notes"
         ],
@@ -1848,17 +1848,17 @@
             "Executive Summary",
             "Reconnaissance",
             "Host Discovery",
-            "Port Scanning \u2014 Nmap Full TCP Scan",
-            "Vulnerability Discovery \u2014 Memcached Credential Leak (Port 11211)",
+            "Port Scanning — Nmap Full TCP Scan",
+            "Vulnerability Discovery — Memcached Credential Leak (Port 11211)",
             "Initial Access",
-            "Phase 1 \u2014 Exploiting the Restricted Shell on Port 4444",
-            "Phase 2 \u2014 Reverse Shell via Backtick Injection",
-            "Phase 3 \u2014 User Flag",
+            "Phase 1 — Exploiting the Restricted Shell on Port 4444",
+            "Phase 2 — Reverse Shell via Backtick Injection",
+            "Phase 3 — User Flag",
             "Privilege Escalation",
-            "Step 1 \u2014 Process Monitoring with pspy64",
-            "Step 2 \u2014 Discovering the Root Cron Job",
-            "Step 3 \u2014 Analysing the Cron Script",
-            "Step 4 \u2014 Identifying the PATH Hijack Opportunity"
+            "Step 1 — Process Monitoring with pspy64",
+            "Step 2 — Discovering the Root Cron Job",
+            "Step 3 — Analysing the Cron Script",
+            "Step 4 — Identifying the PATH Hijack Opportunity"
         ],
         "snippet": "Summary: Crazymed is a beginner-level Linux machine themed around a fictional \"Crazy Medical Research Laboratory.\" The attack path begins with a host discove..."
     },
@@ -1941,7 +1941,7 @@
             "Discovering the Hidden Document Root",
             "Finding the Hidden Comment in info.php",
             "Accessing the /S3cR3t Directory",
-            "Initial Access \u2014 LD_PRELOAD via Shared Object Disguised as an Image",
+            "Initial Access — LD_PRELOAD via Shared Object Disguised as an Image",
             "Technique Overview: The Shared Object in Disguise",
             "Building the Payloads",
             "Setting Up the Listener and Triggering the Shell",
@@ -1961,8 +1961,8 @@
             "Network Discovery",
             "Port Scanning",
             "Enumeration",
-            "Port 21 \u2014 Anonymous FTP",
-            "Port 80 \u2014 HTTP Web Server",
+            "Port 21 — Anonymous FTP",
+            "Port 80 — HTTP Web Server",
             "Initial Access",
             "Unlocking the VBA-Protected Microsoft Access Database",
             "Extracting the SSH Private Key from the VBA Module",
@@ -2273,11 +2273,11 @@
             "1.1 Host Discovery",
             "1.2 Port Scan (Nmap)",
             "1.3 Web Content Discovery (Root)",
-            "1.4 Note File \u2014 Credential Hint",
-            "1.5 Agency Website \u2014 Username Discovery",
+            "1.4 Note File — Credential Hint",
+            "1.5 Agency Website — Username Discovery",
             "1.6 Web Content Discovery (Agency Subdirectory)",
             "2. Initial Access",
-            "2.1 Vulnerability Research \u2014 CVE-2008-0166 (Debian OpenSSL Predictable PRNG)",
+            "2.1 Vulnerability Research — CVE-2008-0166 (Debian OpenSSL Predictable PRNG)",
             "This program is free software; you can redistribute it and/or modify",
             "it under the terms of the GNU General Public License as published by",
             "the Free Software Foundation; either version 2 of the License, or",
@@ -2317,14 +2317,14 @@
             "Host Discovery",
             "Port & Service Enumeration",
             "Initial Access",
-            "Step 1 \u2014 FTP Anonymous Login & File Retrieval",
-            "Step 2 \u2014 Steganography: Extracting the Hidden Message",
-            "Step 3 \u2014 Web Enumeration",
-            "Step 4 \u2014 Directory Brute-Forcing",
-            "Step 5 \u2014 PHP Reverse Shell Upload",
+            "Step 1 — FTP Anonymous Login & File Retrieval",
+            "Step 2 — Steganography: Extracting the Hidden Message",
+            "Step 3 — Web Enumeration",
+            "Step 4 — Directory Brute-Forcing",
+            "Step 5 — PHP Reverse Shell Upload",
             "Privilege Escalation",
-            "Step 6 \u2014 Lateral Movement: www-data \u2192 first (via Neofetch sudo abuse)",
-            "Step 7 \u2014 Root Escalation: first \u2192 root (via /bin/secret Buffer Overflow)",
+            "Step 6 — Lateral Movement: www-data → first (via Neofetch sudo abuse)",
+            "Step 7 — Root Escalation: first → root (via /bin/secret Buffer Overflow)",
             "Attack Chain Summary"
         ],
         "snippet": "Summary: The First machine is a beginner-level HackMyVM box that chains together several classic CTF techniques into a coherent attack path. Reconnaissance u..."
@@ -2785,8 +2785,8 @@
             "Offline Password Cracking",
             "SSH Access as `jack`",
             "Privilege Escalation",
-            "Stage 1 \u2014 `jack` \u2192 `jaba` via `sudo awk`",
-            "Stage 2 \u2014 `jaba` \u2192 `root` via Python Library Hijacking",
+            "Stage 1 — `jack` → `jaba` via `sudo awk`",
+            "Stage 2 — `jaba` → `root` via Python Library Hijacking",
             "Attack Chain Summary"
         ],
         "snippet": "Summary: The Jabita machine presents a layered attack path rooted in a classic Local File Inclusion (LFI) vulnerability in a PHP web application. The index.p..."
@@ -2825,15 +2825,15 @@
             "Executive Summary",
             "Reconnaissance",
             "Host Discovery",
-            "Port Scan \u2014 Nmap",
+            "Port Scan — Nmap",
             "Initial Access",
-            "Step 1 \u2014 FTP Anonymous Login & Steganography",
-            "Step 2 \u2014 Web Enumeration",
-            "Step 3 \u2014 Authenticated Login & Unrestricted File Upload",
-            "Step 4 \u2014 Reverse Shell",
+            "Step 1 — FTP Anonymous Login & Steganography",
+            "Step 2 — Web Enumeration",
+            "Step 3 — Authenticated Login & Unrestricted File Upload",
+            "Step 4 — Reverse Shell",
             "Privilege Escalation",
-            "Step 5 \u2014 Internal Enumeration as www-data",
-            "Step 6 \u2014 Analysing the SUID Binary",
+            "Step 5 — Internal Enumeration as www-data",
+            "Step 6 — Analysing the SUID Binary",
             "Remove current site",
             "Restore from backup"
         ],
@@ -3272,10 +3272,10 @@
             "Port Scanning",
             "Web Application Fingerprinting",
             "Initial Access",
-            "Vulnerability Research \u2014 CVE-2021-26120",
+            "Vulnerability Research — CVE-2021-26120",
             "Confirming RCE",
             "Obtaining a Reverse Shell",
-            "Post-Exploitation Enumeration (www-data \u2192 matthieu)",
+            "Post-Exploitation Enumeration (www-data → matthieu)",
             "User Discovery",
             "Analysing StaleFinder",
             "Process Monitoring with pspy64",
@@ -3332,7 +3332,7 @@
             "Network Discovery",
             "Port Scan",
             "Initial Access",
-            "Web Enumeration \u2014 Port 80",
+            "Web Enumeration — Port 80",
             "Leaking a Filename via HTTP Response Headers",
             "Extracting the Corrupted SSH Private Key",
             "Brute-Forcing the Three Missing Base64 Characters",
@@ -3342,7 +3342,7 @@
             "Abusing `chgrp` to Read `/etc/shadow`",
             "Cracking `root`'s Password Hash Offline"
         ],
-        "snippet": "Summary: Stars is a beginner-level HackMyVM machine that rewards careful HTTP response analysis. The web server at port 80 appears deceptively bare \u2014 display..."
+        "snippet": "Summary: Stars is a beginner-level HackMyVM machine that rewards careful HTTP response analysis. The web server at port 80 appears deceptively bare — display..."
     },
     {
         "title": "Superhuman",
@@ -3359,12 +3359,12 @@
             "Hosts Entry & HTTP Headers",
             "Directory & File Enumeration with Feroxbuster",
             "Steganography Investigation on `nietzsche.jpg`",
-            "Decoding `notes-tips.txt` \u2014 Base85",
+            "Decoding `notes-tips.txt` — Base85",
             "Initial Access",
             "Retrieving and Cracking `salome_and_me.zip`",
             "Building a Password List from the Poem",
             "SSH Brute-Force with Hydra",
-            "SSH Login \u2014 The Shell Trap"
+            "SSH Login — The Shell Trap"
         ],
         "snippet": "Summary: Superhuman is a beginner-level HackMyVM machine built around a layered information-gathering chain. Host discovery reveals an Apache web server on p..."
     },
@@ -3479,12 +3479,12 @@
             "Index Page Inspection",
             "Directory & File Brute-Force",
             "Investigating `log.php` and `access.php`",
-            "The Rabbit Hole \u2014 Steganography in `rabbit.jpg`",
+            "The Rabbit Hole — Steganography in `rabbit.jpg`",
             "Initial Access",
             "Parameter Discovery on `access.php`",
-            "Log Poisoning \u2014 Injecting a PHP Web Shell",
+            "Log Poisoning — Injecting a PHP Web Shell",
             "Reverse Shell",
-            "Internal Enumeration \u2014 Web Root Discovery"
+            "Internal Enumeration — Web Root Discovery"
         ],
         "snippet": "Summary: The Teacher machine is a beginner-level Linux box that chains together multiple interesting attack vectors. Initial reconnaissance reveals a web ser..."
     },
@@ -3697,17 +3697,17 @@
             "Executive Summary",
             "Reconnaissance",
             "Host Discovery",
-            "Port Scan \u2014 Initial",
+            "Port Scan — Initial",
             "Initial Access",
-            "Web Enumeration \u2014 Port 80",
-            "Parameter Fuzzing \u2014 `/index.php`",
+            "Web Enumeration — Port 80",
+            "Parameter Fuzzing — `/index.php`",
             "Crashing Port 80 (The Intended DDoS)",
-            "Port Scan \u2014 Post-Crash",
-            "Flask Debug Console \u2014 Credential Guessing",
+            "Port Scan — Post-Crash",
+            "Flask Debug Console — Credential Guessing",
             "Remote Code Execution via Ping Injection",
             "Reverse Shell",
             "Privilege Escalation",
-            "Stage 1: `sudo md5sum` \u2192 Cracking `umz.pass`"
+            "Stage 1: `sudo md5sum` → Cracking `umz.pass`"
         ],
         "snippet": "Summary: Umz is a creative beginner-level Linux machine on HackMyVM that chains together an unconventional initial-access vector with two distinct privilege ..."
     },
@@ -3747,13 +3747,13 @@
             "Host Discovery",
             "Port Scanning",
             "Initial Access",
-            "FTP \u2014 Anonymous Login & Information Disclosure",
-            "HTTP \u2014 Web Application Enumeration",
+            "FTP — Anonymous Login & Information Disclosure",
+            "HTTP — Web Application Enumeration",
             "Credential Pattern Discovery via Base64 Leak",
             "Brute-Forcing matthew's Password with Hydra",
             "SSH Login as matthew",
             "Privilege Escalation",
-            "sudo Misconfiguration \u2014 World-Writable /opt Directory",
+            "sudo Misconfiguration — World-Writable /opt Directory",
             "Flags",
             "Attack Chain Summary"
         ],
@@ -3981,7 +3981,7 @@
             "Host Discovery",
             "Port and Service Enumeration",
             "Phase 2: FTP Enumeration (Port 21)",
-            "Phase 3: Port 1337 \u2014 The Math Game and Port Knocking",
+            "Phase 3: Port 1337 — The Math Game and Port Knocking",
             "Initial Manual Probe",
             "Python Automation Script",
             "Port Knocking to Open SSH",
@@ -4145,15 +4145,15 @@
             "Network Discovery",
             "Port Scanning",
             "Service Enumeration",
-            "Port 7577 \u2014 Spring Cloud Skipper API",
-            "Port 9393 \u2014 Spring Cloud Data Flow API",
+            "Port 7577 — Spring Cloud Skipper API",
+            "Port 9393 — Spring Cloud Data Flow API",
             "Version Fingerprinting",
-            "Initial Access \u2014 CVE-2024-37084 (Spring Cloud Skipper RCE)",
+            "Initial Access — CVE-2024-37084 (Spring Cloud Skipper RCE)",
             "Vulnerability Research",
             "Exploit Preparation",
             "Exploit Execution",
             "Shell Stabilisation",
-            "Container Enumeration & SUID Escalation (cnb \u2192 container root)"
+            "Container Enumeration & SUID Escalation (cnb → container root)"
         ],
         "snippet": "Summary: The mathdop machine presents a multi-stage attack chain beginning with unauthenticated Remote Code Execution (RCE) against Spring Cloud Data Flow / ..."
     },
@@ -4422,17 +4422,17 @@
             "Executive Summary",
             "Reconnaissance",
             "Host Discovery",
-            "Port Scan \u2014 Nmap",
-            "Web Directory Enumeration \u2014 Gobuster",
+            "Port Scan — Nmap",
+            "Web Directory Enumeration — Gobuster",
             "Initial Access",
-            "Web Application \u2014 Login Page",
+            "Web Application — Login Page",
             "Discovering the Command Injection Vector",
             "Confirming Remote Code Execution",
             "Reverse Shell",
             "Internal Enumeration",
             "Privilege Escalation",
-            "www-data \u2192 messagemaster (via pidstat GTFOBins)",
-            "messagemaster \u2192 root (via md5sum + custom hash cracker)"
+            "www-data → messagemaster (via pidstat GTFOBins)",
+            "messagemaster → root (via md5sum + custom hash cracker)"
         ],
         "snippet": "Summary: The wmessage machine hosts a custom web-based messaging application on port 80 that exposes a server-side command injection vulnerability through a ..."
     },
@@ -4484,7 +4484,7 @@
             "Initial Access",
             "Web Application Analysis",
             "XML Parser Fingerprinting",
-            "XXE Injection \u2014 `/etc/passwd` Disclosure",
+            "XXE Injection — `/etc/passwd` Disclosure",
             "Wordlist Generation for Brute Force",
             "SSH Credential Brute Force with Hydra",
             "SSH Login",
@@ -5842,7 +5842,7 @@
             "**Foothold**",
             "**Privilege Escalation**",
             "**Mitigations**",
-            "**Status Check** \u26a0\ufe0f"
+            "**Status Check** ⚠️"
         ],
         "snippet": "Running an nmap scan the following ports where found"
     },
@@ -6068,7 +6068,7 @@
         "headings": [
             "Exploitation"
         ],
-        "snippet": "hey, Glad to be here \ud83d\ude0d"
+        "snippet": "hey, Glad to be here 😍"
     },
     {
         "title": "Stuntman Mike",
@@ -6104,7 +6104,7 @@
             "**Performing a Vertical Lookup**",
             "**Manual Method**"
         ],
-        "snippet": "After dumping the NTDS.dit secrets we have to sort out the NT part of this hashes that where dumped before we can crack them \ud83d\udc7e"
+        "snippet": "After dumping the NTDS.dit secrets we have to sort out the NT part of this hashes that where dumped before we can crack them 👾"
     },
     {
         "title": "Blackpearl",
@@ -6151,10 +6151,10 @@
         "origin": "Sec-Fortress",
         "headings": [
             "Types of malware",
-            "\ud83e\udd16 **Malware**, short for \"malicious software,\" is a digital underworld of software designed to cause havoc. But did you know there are various types? Let's uncover a few:",
+            "🤖 **Malware**, short for \"malicious software,\" is a digital underworld of software designed to cause havoc. But did you know there are various types? Let's uncover a few:",
             "**Protect yourself against these digital foes:**"
         ],
-        "snippet": "\ud83e\udda0 Viruses: Like the common cold for computers, viruses attach themselves to clean files, making them infectious. They spread when you open an infected file."
+        "snippet": "🦠 Viruses: Like the common cold for computers, viruses attach themselves to clean files, making them infectious. They spread when you open an infected file."
     },
     {
         "title": "**Abusing dangerous privileges - Windows Privilege Escalation**",
@@ -6250,7 +6250,7 @@
             "sc qc <SERVICE>",
             "sc config daclsvc binpath= <REVERSE_SHELL_PATH>",
             "Querying the service config again binpath has been changed",
-            "\u276f rlwrap nc -lvnp 4444",
+            "❯ rlwrap nc -lvnp 4444",
             "**Unquoted Service Path**",
             "sc qc <SERVICE>",
             "C:\\PrivEsc\\accesschk.exe /accepteula -uwdq \"C:\\Program Files\\Unquoted Path Service\\\""
@@ -6290,7 +6290,7 @@
             "**Lab: Referer-based access control**",
             "Resources"
         ],
-        "snippet": "Access control flaws occur when applications fail to properly enforce who can access what \u2014 allowing attackers to view or modify data and actions beyond thei..."
+        "snippet": "Access control flaws occur when applications fail to properly enforce who can access what — allowing attackers to view or modify data and actions beyond thei..."
     },
     {
         "title": "Authentication Vulnerabilities",
@@ -6325,7 +6325,7 @@
             "Cracking the Hash using john",
             "Cracking the Hash using hash cat"
         ],
-        "snippet": "Two popular methods for gaining access to that first set of\u00a0AD\u00a0credentials is Open Source Intelligence (OSINT) and Phishing. We will only briefly mention the..."
+        "snippet": "Two popular methods for gaining access to that first set of AD credentials is Open Source Intelligence (OSINT) and Phishing. We will only briefly mention the..."
     },
     {
         "title": "Changing MAC Address in Linux",
@@ -6371,8 +6371,8 @@
             "**Lab: Information disclosure in error messages**",
             "**Lab: Information disclosure on debug page**",
             "**Lab: Source code disclosure via backup files**",
-            "**Lab: Authentication bypass via\u00a0information disclosure**",
-            "**Lab:\u00a0Information disclosure\u00a0in version control history**"
+            "**Lab: Authentication bypass via information disclosure**",
+            "**Lab: Information disclosure in version control history**"
         ],
         "snippet": "We are given the task -:"
     },
@@ -6398,15 +6398,15 @@
             "LEVEL 11",
             "LEVEL 12"
         ],
-        "snippet": "This level requires you to\u00a0find\u00a0a Set User ID program that will run as the \u201cflag00\u201d account. You could also find this by carefully looking in top level direc..."
+        "snippet": "This level requires you to find a Set User ID program that will run as the “flag00” account. You could also find this by carefully looking in top level direc..."
     },
     {
-        "title": "Nebula\ud83d\udc27",
+        "title": "Nebula🐧",
         "path": "_source_sec_fortress/posts/projects/posts/Nebula.md",
         "category": "General",
         "origin": "Sec-Fortress",
         "headings": [
-            "Nebula\ud83d\udc27",
+            "Nebula🐧",
             "Embarking on My Nebula Challenge: Unveiling Linux Vulnerabilities",
             "Unveiling Linux Weaknesses",
             "A Personalized Learning Experience",
@@ -6414,7 +6414,7 @@
             "Taking Command with Root Access",
             "Crafting a Walkthrough"
         ],
-        "snippet": "\u2588\u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2557      \u2588\u2588\u2588\u2588\u2588\u2557"
+        "snippet": "███╗   ██╗███████╗██████╗ ██╗   ██╗██╗      █████╗"
     },
     {
         "title": "Output the credentials (for testing, not recommended in production)",
@@ -6454,16 +6454,16 @@
         "snippet": "A ping sweep can be defined as performing an entire ICMP echo request on a network, let's go:"
     },
     {
-        "title": "\ud83d\ude80 Let's Dive into Cybersecurity: Zero-Day Attacks Explained! \ud83d\ude80",
+        "title": "🚀 Let's Dive into Cybersecurity: Zero-Day Attacks Explained! 🚀",
         "path": "_source_sec_fortress/posts/articles/posts/Zero-day explained.md",
         "category": "General",
         "origin": "Sec-Fortress",
         "headings": [
-            "\ud83d\ude80 Let's Dive into Cybersecurity: Zero-Day Attacks Explained! \ud83d\ude80",
+            "🚀 Let's Dive into Cybersecurity: Zero-Day Attacks Explained! 🚀",
             "Do you know what a Zero-Day Attack is? It's a term buzzing in the cybersecurity world, and here's what it means:",
-            "**Now, the big question: How can we defend against Zero-Day Attacks? \ud83d\udcaa**"
+            "**Now, the big question: How can we defend against Zero-Day Attacks? 💪**"
         ],
-        "snippet": "\u23f3 Zero-Day Attack : Imagine it as a secret weapon in a spy movie. It's an exploit targeting a software vulnerability that's undisclosed (zero days) to the so..."
+        "snippet": "⏳ Zero-Day Attack : Imagine it as a secret weapon in a spy movie. It's an exploit targeting a software vulnerability that's undisclosed (zero days) to the so..."
     },
     {
         "title": "**DNS with AWS Route 53**",
@@ -6902,7 +6902,7 @@
             "Endpoint Security Monitoring Module",
             "Included rooms"
         ],
-        "snippet": "Monitoring activity on workstations is essential, as that\u2019s where adversaries spend the"
+        "snippet": "Monitoring activity on workstations is essential, as that’s where adversaries spend the"
     },
     {
         "title": "Eviction",
@@ -6967,7 +6967,7 @@
             "Connecting",
             "Task 2: Hash Functions",
             "Why is Hashing Important?",
-            "What\u2019s a Hash Collision?",
+            "What’s a Hash Collision?",
             "What is the SHA256 hash of the passport.jpg file in ~/Hashing-Basics/Task-2?",
             "What is the output size in bytes of the MD5 hash function?",
             "If you have an 8-bit hash output, how many possible hash values are there?",
@@ -7180,7 +7180,7 @@
             "Task 1 - Introduction",
             "Learning Objectives",
             "Prerequisites",
-            "Task 2 - ATT&CK\u00ae Framework",
+            "Task 2 - ATT&CK® Framework",
             "ATT&CK Evolution",
             "ATT&CK Matrix",
             "What Tactic does the Hide Artifacts technique belong to in the ATT&CK Matrix?",
@@ -7565,7 +7565,7 @@
             "Specify the Network Interface",
             "Save the Captured Packets",
             "Limit the Number of Captured Packets",
-            "Don\u2019t Resolve IP Addresses and Port Numbers",
+            "Don’t Resolve IP Addresses and Port Numbers",
             "Produce (More) Verbose Output",
             "Summary and Examples"
         ],
@@ -8068,8 +8068,8 @@
             "Troubleshooting Connectivity Issues",
             "Task 2: AS-REP Roasting",
             "AS-REP Roasting in Two Phases",
-            "Phase 1: Enumeration \u2013 Identifying Vulnerable Accounts",
-            "Phase 2: Exploitation \u2013 Cracking Password Hashes and Accessing the Network",
+            "Phase 1: Enumeration – Identifying Vulnerable Accounts",
+            "Phase 2: Exploitation – Cracking Password Hashes and Accessing the Network",
             "Mitigations"
         ],
         "snippet": "Tags: Windows, Active Directory"
@@ -10022,7 +10022,7 @@
             "Scenario-Based Examples",
             "An employee reports that their system is slow, and monitoring shows constant high CPU usage. What type of malware is most likely responsible?",
             "Users suddenly lose access to their files, and a message appears demanding cryptocurrency in exchange for unlocking the data. Which malware fits this situation?",
-            "A user\u2019s browser opens pop-up windows even when no site is loaded. No data appears to be stolen or encrypted. What kind of malware is this most likely?",
+            "A user’s browser opens pop-up windows even when no site is loaded. No data appears to be stolen or encrypted. What kind of malware is this most likely?",
             "Sensitive internal documents are found posted online. Analysis shows the data came from a workstation that had a malicious program. Which malware type does this represent?",
             "Task 3 - Real-World Malware Examples",
             "Spyware"
@@ -10401,7 +10401,7 @@
             "Which flag needs to be set when you initiate a TCP connection (first packet of TCP 3-way handshake)?",
             "Task 4: TCP Connect Scan",
             "Which port number was closed in the scan above but is now open on this target VM?",
-            "What is Nmap\u2019s guess about the newly installed service?"
+            "What is Nmap’s guess about the newly installed service?"
         ],
         "snippet": "Meta Tags: Walkthrough, Walk-through, Write-up, Writeup"
     },
@@ -10477,8 +10477,8 @@
             "Learning Objectives",
             "Room Prerequisites",
             "Task 2: Host Discovery: Who Is Online",
-            "Scanning a \u201cLocal\u201d Network",
-            "Scanning a \u201cRemote\u201d Network",
+            "Scanning a “Local” Network",
+            "Scanning a “Remote” Network",
             "What is the last IP address that will be scanned when your scan target is 192.168.0.1/27?",
             "Task 3: Port Scanning: Who Is Listening",
             "Scanning TCP Ports",
@@ -10709,7 +10709,7 @@
             "Scan for directories and files with gobuster",
             "Login to the web portal",
             "What is the first ingredient that Rick needs?",
-            "What is the second ingredient in Rick\u2019s potion?",
+            "What is the second ingredient in Rick’s potion?",
             "What is the last and final ingredient?",
             "References"
         ],
@@ -11531,7 +11531,7 @@
             "If you wanted to assess vulnerability based on the risk it poses to an organisation, what framework would you use?",
             "If you wanted to use a framework that was free and open-source, what framework would that be?",
             "Task 4: Vulnerability Databases",
-            "NVD \u2013 National Vulnerability Database"
+            "NVD – National Vulnerability Database"
         ],
         "snippet": "Meta Tags: Walkthrough, Walk-through, Write-up, Writeup"
     },
@@ -11731,7 +11731,7 @@
             "Network Configuration",
             "Network Troubleshooting",
             "More Networking Commands",
-            "Which command can we use to look up the server\u2019s physical address (MAC address)?"
+            "Which command can we use to look up the server’s physical address (MAC address)?"
         ],
         "snippet": "Meta Tags: Walkthrough, Walk-through, Write-up, Writeup"
     },
@@ -12100,7 +12100,7 @@
             "Victim",
             "Paste Content Below"
         ],
-        "snippet": "First of all start jamming with this track as you solve the box xD \ud83d\ude06"
+        "snippet": "First of all start jamming with this track as you solve the box xD 😆"
     },
     {
         "title": "**Reset | THM**",
@@ -12116,12 +12116,12 @@
             "**DNS Enumeration (53)**",
             "**SMB Enumeration (139/445)**",
             "[**FootHold**](#FootHold)",
-            "-g:\u00a0generate. Here, we specify the file types (for related attacks) to generate",
-            "-s:\u00a0The IP address of our Kali machine, In this case (tun0)",
-            "-f:\u00a0filename",
+            "-g: generate. Here, we specify the file types (for related attacks) to generate",
+            "-s: The IP address of our Kali machine, In this case (tun0)",
+            "-f: filename",
             "Exploit"
         ],
-        "snippet": "My First ever CTF on Active Directory, Please make sure to leave feedbacks,If you have any doubts or questions \ud83d\ude04"
+        "snippet": "My First ever CTF on Active Directory, Please make sure to leave feedbacks,If you have any doubts or questions 😄"
     },
     {
         "title": "**Smol**",
@@ -12436,8 +12436,8 @@
         "headings": [
             "Tom Ghost",
             "Difficulty = Easy",
-            "Nmap 7.94 scan initiated Sun Oct \u00a01 19:26:10 2023 as: nmap -sVC -T4 -oN nmap.txt -v 10.10.153.250",
-            "Nmap done at Sun Oct \u00a01 19:27:14 2023 -- 1 IP address (1 host up) scanned in 64.14 seconds"
+            "Nmap 7.94 scan initiated Sun Oct  1 19:26:10 2023 as: nmap -sVC -T4 -oN nmap.txt -v 10.10.153.250",
+            "Nmap done at Sun Oct  1 19:27:14 2023 -- 1 IP address (1 host up) scanned in 64.14 seconds"
         ],
         "snippet": "Running our nmap scan we have this :"
     },
@@ -12493,7 +12493,7 @@
             "Getting Shell",
             "Privilege Escalation"
         ],
-        "snippet": "Running our nmap scan we have a long list of open ports {I have a feeling this gonna be fun \ud83d\ude05\ud83e\udd1f}"
+        "snippet": "Running our nmap scan we have a long list of open ports {I have a feeling this gonna be fun 😅🤟}"
     },
     {
         "title": "Zeno",
@@ -12637,7 +12637,7 @@
             "Send the payload",
             "Got Shell?"
         ],
-        "snippet": "\u2514\u2500$ file pwn101.pwn101"
+        "snippet": "└─$ file pwn101.pwn101"
     },
     {
         "title": "Basic Computer Exploitation Module",
@@ -13616,23 +13616,15 @@
         "snippet": "<h2 class=\"menu-header\" id=\"indexhtml\"><a href=\"../../index.html\">Root</a></h2>"
     },
     {
-        "title": "FLRSCRNSVR.SCR Writeup",
+        "title": "Crackmes.one RE CTF 2026 - FLRSCRNSVR.SCR Writeup",
         "path": "_source_crackmesone/FLRSCRNSVR/solution.md",
         "category": "Reverse Engineering",
         "origin": "crackmes.one",
         "headings": [
-            "FLRSCRNSVR.SCR Writeup",
-            "1. Initial Triage (Static Analysis)",
-            "Interesting Strings",
-            "File Type and Entry Point",
-            "2. Behavioral Analysis (Dynamic Analysis)",
-            "3. Core Challenge Analysis",
-            "Loading the Flag",
-            "Reversing `encode`",
-            "4. Solution",
-            "Part 1: Finding the Flag"
+            "XOR Short quak with  FLARE",
+            "Mapping str2 to str1"
         ],
-        "snippet": "This document details the process of reverse engineering FLRSCRNSVR.exe. The binary is a Windows screensaver that contains a some anti-analysis code. Players..."
+        "snippet": "--- > Date: 4/6/2026 :beaver: > Purpose : Understand FLRSCRNSVR.SRC Execution Flow and Get Flag > Owner: Khoi nguyen - Nova :dragonface: > Tools reverse : Gh..."
     },
     {
         "title": "13",
@@ -17756,11 +17748,11 @@
             "(Forwardable, Proxiable, Renewable, Canonicalize)",
             "req_body['kdc-options'] = \"'01010000100000000000000000000000'B\""
         ],
-        "snippet": "Teniendo una lista de usuarios v\u00e1lidos podemos intentar un AS-REP Roast para intentar conseguir un hash de la contrase\u00f1a del usuario vulnerable para luego cr..."
+        "snippet": "Teniendo una lista de usuarios válidos podemos intentar un AS-REP Roast para intentar conseguir un hash de la contraseña del usuario vulnerable para luego cr..."
     },
     {
-        "title": "Enumeraci\u00f3n",
-        "path": "_source_ruycr4ft_cheatsheets/Apuntes-AD/Enumeraci\u00f3n.md",
+        "title": "Enumeración",
+        "path": "_source_ruycr4ft_cheatsheets/Apuntes-AD/Enumeración.md",
         "category": "General",
         "origin": "ruycr4ft",
         "headings": [
@@ -17778,9 +17770,9 @@
             "BloodHound",
             "LDAP",
             "MSSQL",
-            "Navegaci\u00f3n por tablas, bases de datos columnas, etc."
+            "Navegación por tablas, bases de datos columnas, etc."
         ],
-        "snippet": "Mediante una lista de usuarios como pueden ser las de SecLists podemos ver usuarios v\u00e1lidos a nivel de dominio gracias a kerberos:"
+        "snippet": "Mediante una lista de usuarios como pueden ser las de SecLists podemos ver usuarios válidos a nivel de dominio gracias a kerberos:"
     },
     {
         "title": "Groups",
@@ -17795,8 +17787,8 @@
             "AD Recycle Bin",
             "Azure Admins",
             "Buscando la Key Information",
-            "Busca la configuraci\u00f3n",
-            "Decodear la contrase\u00f1a",
+            "Busca la configuración",
+            "Decodear la contraseña",
             "Account Operators"
         ],
         "snippet": "Gracias a pertenecer a este grupo podemos escalar privilegios de la siguiente forma:"
@@ -17829,7 +17821,7 @@
             "Cached creds",
             "UsoSvc"
         ],
-        "snippet": "A\u00fan siendo una vulnerabilidad antigua, hay empresas que siguen usando Windows Server 2008, el cu\u00e1l es vulnerable a MS14-068. Usaremos impacket para explotarlo:"
+        "snippet": "Aún siendo una vulnerabilidad antigua, hay empresas que siguen usando Windows Server 2008, el cuál es vulnerable a MS14-068. Usaremos impacket para explotarlo:"
     },
     {
         "title": "The following libdefaults parameters are only for Heimdal Kerberos.",
@@ -17853,7 +17845,7 @@
             "The following libdefaults parameters are only for Heimdal Kerberos.",
             "Get-bADpasswords"
         ],
-        "snippet": "Aqu\u00ed se encuentran otras cosas interesantes que encuentro en m\u00e1quinas pero que no se d\u00f3nde categorizarlas en otros archivos."
+        "snippet": "Aquí se encuentran otras cosas interesantes que encuentro en máquinas pero que no se dónde categorizarlas en otros archivos."
     },
     {
         "title": "The following libdefaults parameters are only for Heimdal Kerberos.",
@@ -17861,10 +17853,10 @@
         "category": "General",
         "origin": "ruycr4ft",
         "headings": [
-            "Otras cosas con contrase\u00f1as",
+            "Otras cosas con contraseñas",
             "Sobreescribiendo archivos con `Invoke-Command`",
             "Ver reglas de firewall",
-            "Ver contrase\u00f1as en texto claro de archivos `xml`",
+            "Ver contraseñas en texto claro de archivos `xml`",
             "EnterPSSession",
             "The following libdefaults parameters are only for Heimdal Kerberos.",
             "CLM ByPass",
@@ -17872,7 +17864,7 @@
             "TODO: Forward the PowerShell remoting port to the external interface",
             "Password is now encrypted \\o/"
         ],
-        "snippet": "En caso de que tengamos credenciales de un usuario pero EnterPSSession no funcione, podemos hacer algo as\u00ed:"
+        "snippet": "En caso de que tengamos credenciales de un usuario pero EnterPSSession no funcione, podemos hacer algo así:"
     },
     {
         "title": "Tickets",
@@ -17897,8 +17889,8 @@
             "Sobre un grupo",
             "Sobre un usuario",
             "ForceChangePassword",
-            "Desde Linux (m\u00e1quina atacante):",
-            "Desde Windows (m\u00e1quina v\u00edctima)",
+            "Desde Linux (máquina atacante):",
+            "Desde Windows (máquina víctima)",
             "ReadGMSAPassword",
             "WriteDacl",
             "Sobre un grupo",
@@ -17908,6 +17900,3462 @@
             "Sobre ordenador",
             "Sobre usuario"
         ],
-        "snippet": "Gracias a este privilegio sobre un usuario podr\u00edamos asignar un SPN (Service Principal Name) a la cuenta:"
+        "snippet": "Gracias a este privilegio sobre un usuario podríamos asignar un SPN (Service Principal Name) a la cuenta:"
+    },
+    {
+        "title": "A real test for a professional Writeup",
+        "path": "_source_crackmesone/A real test for a professional/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "guardsman.exe Writeup",
+            "Overview",
+            "Environment",
+            "Finding the Interesting Code",
+            "Embedded File Names",
+            "Understanding the Runtime Checks",
+            "Final Password Comparison",
+            "Verification",
+            "Conclusion"
+        ],
+        "snippet": "`guardsman.exe` is a 64-bit Windows crackme that asks for a password and prints either `Correct password` or `Incorrect passord`. The password is not stored ..."
+    },
+    {
+        "title": "CryMore Writeup",
+        "path": "_source_crackmesone/CryMore/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CryMore Writeup"
+        ],
+        "snippet": "I first ran the program and observed that it attempted to connect to 127.0.0.1 on port 44333. If the connection failed, the program printed that the malware ..."
+    },
+    {
+        "title": "Enigma CrackMe v1.0 Writeup",
+        "path": "_source_crackmesone/Enigma CrackMe v1.0/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Enigma CrackMe v1.0 — Solution",
+            "TL;DR",
+            "Binary layout",
+            "Obfuscation",
+            "`derive_key` — FNV-1a + post-mix",
+            "`transform` — register VM (not re-implemented)",
+            "Keygen strategy",
+            "keygen.sh \"Name\"",
+            "Verified outputs",
+            "Files",
+            "Reversing notes / pitfalls"
+        ],
+        "snippet": "Serial format: `XXXX-XXXX-XXXX-XXXX` (16 hex digits, four 16-bit chunks). Given `name`, valid serial chunks are: Validation accumulates `acc |= parsed[i] ^ c..."
+    },
+    {
+        "title": "hekliet keygenme #1 Writeup",
+        "path": "_source_crackmesone/hekliet keygenme #1/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "KeygenMe #1 Writeup - Hecliet (2026-03-17)",
+            "Introduction",
+            "Initial Analysis",
+            "Binary Information",
+            "Program Behavior",
+            "Reverse Engineering with Ghidra",
+            "Key Functions Identified",
+            "Main Function Analysis",
+            "Name Processing Function",
+            "Key Validation Function",
+            "Mathematical Analysis",
+            "Factoring the Expression",
+            "The Quadratic Connection",
+            "Solution: Quadratic Formula",
+            "Keygen Implementation",
+            "XOR first half of name",
+            "XOR second half of name",
+            "Calculate a = 5.0 * (2.0 * xor1 / 128.0 - 1.0)",
+            "Calculate b = 5.0 * (2.0 * xor2 / 128.0 - 1.0)",
+            "Condition 1: if abs(b) < 0.1, set b = 1.0",
+            "Condition 2: if a*a - b*4.0 <= 0.0, flip sign of b",
+            "Verification",
+            "Conclusion",
+            "Key Takeaways",
+            "Tools Used"
+        ],
+        "snippet": "Difficulty: 2.0 Platform: Windows/Linux Author: Hecliet Challenge Type: KeygenMe --- This writeup documents my approach to solving Hecliet's KeygenMe #1 chal..."
+    },
+    {
+        "title": "Spaghetti Writeup",
+        "path": "_source_crackmesone/Spaghetti/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "aj21h's Spaghetti",
+            "Unpacking",
+            "VM",
+            "Finding the gate",
+            "Constraints",
+            "Verifying against the original"
+        ],
+        "snippet": "(I stink at writing, AI sanity explanation) Crackme. UPX + custom VM. x86-64 Linux. TL;DR: password is `inthebeginningtherewastheflyingspaghettimonsteranditw..."
+    },
+    {
+        "title": "AI - Almost Impossible Writeup",
+        "path": "_source_crackmesone/AI - Almost Impossible/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "\"Almost\" (AI - Almost Impossible) - Reverse Engineering Writeup",
+            "Table of Contents",
+            "1. Overview",
+            "2. Binary Profiling",
+            "3. Imported Libraries & Their Roles",
+            "3.1 libcrypto.so.3 (OpenSSL 3.0)",
+            "3.2 libpng16.so.16",
+            "3.3 libzbar.so.0",
+            "3.4 libX11.so.6",
+            "4. Application Architecture",
+            "4.1 Startup Flow (Main Function at `0x65f9`)",
+            "4.2 Key GUI Controls",
+            "5. Target Generation Algorithm",
+            "Step 1: Random Scalar Generation (`0x6a76`)",
+            "Step 2: EC Group Setup (`0x6b5b` - `0x6bbc`)",
+            "Step 3: EC Point Computation (`0x6c6a` - `0x6cf3`)",
+            "Step 4: Point Serialization (`0x6d32`)",
+            "Step 5: Encryption of Target Data",
+            "6. Cryptographic Primitives",
+            "6.1 SplitMix64 PRNG (`0x7b2a`)",
+            "6.2 XOR Stream Cipher (`0x89ad` / `0x8a9c`)",
+            "6.3 Key Derivation",
+            "7. The Validation Pipeline",
+            "Stage 1: PNG Reading (`0x91a0`–`0x933b`)",
+            "Stage 2: QR Code Scanning (`0x93a0`–`0x944d`)",
+            "Stage 3: QR Payload Parsing (`0x9556`–`0x96c7`)",
+            "Stage 4: EC Point Computation (`0x993c`–`0x9a06`)",
+            "Stage 5: First Check - EC Point Comparison (`0x9a54`–`0x9b4e`)",
+            "Stage 6: Second Check - Flag Comparison (`0x9b54`–`0x9bad`)",
+            "Stage 7: Final Decision (`0x9c29`)",
+            "8. Why Only One Input Works",
+            "8.1 The Elliptic Curve Discrete Logarithm Problem (ECDLP)",
+            "8.2 The Double-Lock Mechanism",
+            "8.3 The \"Almost Impossible\" Design",
+            "9. Proof of Concept",
+            "9.1 Attack Strategy",
+            "9.2 PoC Script",
+            "SplitMix64 PRNG (from 0x7b2a)",
+            "XOR stream cipher (from 0x89ad)",
+            "Brute-force scalar",
+            "Decrypt the flag",
+            "9.3 Demo Run",
+            "9.4 PoC Artifacts"
+        ],
+        "snippet": "1. Overview 2. Binary Profiling 3. Imported Libraries & Their Roles 4. Application Architecture 5. Target Generation Algorithm 6. Cryptographic Primitives 7...."
+    },
+    {
+        "title": "ASCII_CRACK Writeup",
+        "path": "_source_crackmesone/ASCII_CRACK/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "ASCII_CRACK Writeup"
+        ],
+        "snippet": "The program transforms the input string using a simple algorithm and then compares it with the hardcoded string \"IYJ~U4cQ1Q[<mL[(U;`'Ynk/M-i\". The transforma..."
+    },
+    {
+        "title": "c Writeup",
+        "path": "_source_crackmesone/c/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "c Writeup"
+        ],
+        "snippet": "Torontos's c Tools: OS: Arch Linux Kernel Linux 6.18.9-arch1-2 Terminal: kitty 0.45.0 Dissasember: Ghidra Dissasembed using standard options. So first thing ..."
+    },
+    {
+        "title": "catgirl.crack Writeup",
+        "path": "_source_crackmesone/catgirl.crack/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "catgirl.crack"
+        ],
+        "snippet": "`CatgirlCrack.dll` is a .NET assembly. The only check is a case-insensitive `String.Equals` against: `Mint` Any case variant of `Mint` is accepted."
+    },
+    {
+        "title": "choose-your-own-adventure Writeup",
+        "path": "_source_crackmesone/choose-your-own-adventure/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Writeup: \"obfuscated\" Crackme",
+            "Overview",
+            "Tools Used",
+            "Initial Analysis",
+            "Architecture",
+            "Overcoming Anti-Debug",
+            "Decoding the Overlapping Instructions",
+            "Finding the Success Condition",
+            "Handler Classification",
+            "XOR Handlers (modify r12d)",
+            "ADD Handlers (modify r14d)",
+            "Stack Handlers (for r13d)",
+            "CHECK Handler (0x1401)",
+            "Other Handlers",
+            "Solving the Three Constraints",
+            "r12d = 0xdeadbeef",
+            "found it",
+            "r14d = 0xcafebabe",
+            "Byte 0: (n1×0x0e + n6×0xb0) mod 256 = 0xbe, carry0 = sum>>8",
+            "Byte 1: (n5×0xb0 + n8×0x0a + carry0) mod 256 = 0xba, carry1 = sum>>8",
+            "Byte 2: (n4×0x0e + n7×0xf0 + carry1) mod 256 = 0xfe, carry2 = sum>>8",
+            "Byte 3: (n2×0x0a + n3×0xc0 + carry2) mod 256 = 0xca",
+            "r13d = 0x42318657",
+            "BFS over permutation space",
+            "... standard BFS ...",
+            "Final Serial Construction",
+            "Keygen"
+        ],
+        "snippet": "The binary is a 64-bit Linux ELF that prompts for a serial number and prints \"correct serial number!\" or \"wrong serial number!\". It uses a ptrace-based virtu..."
+    },
+    {
+        "title": "crackit Writeup",
+        "path": "_source_crackmesone/crackit/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackit Writeup",
+            "WRITEUP crackit"
+        ],
+        "snippet": "The description show us a good information: \"It is actually a python script compiled by Pyinstaller.\" Ok you need to extract python files from the binary. We..."
+    },
+    {
+        "title": "CrackIt;) Writeup",
+        "path": "_source_crackmesone/CrackIt;)/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackIt;) Writeup",
+            "Writeup of crackit;)"
+        ],
+        "snippet": "Open the binary with hexdump in cli. Found a section containing string: hexdump -C crackit [...] 00002090 00 43 54 46 7b 00 4d 79 5f 00 53 33 63 00 72 33 |.C..."
+    },
+    {
+        "title": "Crackmes.one RE CTF 2026 - wallpaper Writeup",
+        "path": "_source_crackmesone/wallpaper/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Crackmes.one RE CTF 2026 - wallpaper"
+        ],
+        "snippet": "This is a 15-puzzle over hex nibbles. Initial state: `b6fd071e9c8a3425` Goal state: `fedcba9876543210` The accepted move encoding is: - `0` = down - `1` = ri..."
+    },
+    {
+        "title": "DebugMe Writeup",
+        "path": "_source_crackmesone/DebugMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "DebugMe — Reverse Engineering Write-up",
+            "Overview",
+            "1. Initial Reconnaissance",
+            "2. Disassembly — Full Control-Flow Analysis",
+            "2.1 `main` — Entry Point (`0x10e0`)",
+            "2.2 SIGFPE Handler (`0x1319`)",
+            "2.3 `check_tracer_pid` Helper (`0x1259`)",
+            "3. Solution Design",
+            "Execution trace with the solution",
+            "4. Why Other Approaches Fail",
+            "Running under GDB / strace",
+            "PID namespace (TracerPid = 1)",
+            "No intervention (plain execution)",
+            "5. Exploit Code",
+            "5.1 LD_PRELOAD Shared Library — `override_fopen.c`",
+            "5.2 Python PoC — `poc.py`",
+            "---------------------------------------------------------------------------",
+            "C source for the LD_PRELOAD shared library",
+            "---------------------------------------------------------------------------",
+            "Spoofed TracerPid for stages 2 & 3 (must match argv[1])",
+            "Print combined stdout (binary outputs everything to stdout)",
+            "Use a temporary directory for compilation artifacts"
+        ],
+        "snippet": "Target: `DebugMe` — 64-bit ELF PIE executable, stripped, dynamically linked (GCC 15.2.1) Goal: Provide valid input that passes all three stages and prints `W..."
+    },
+    {
+        "title": "FindLicenseKey Writeup",
+        "path": "_source_crackmesone/FindLicenseKey/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "FindLicenseKey Reverse Engineering Writeup | 1 REVERSE ENGINEERING WRITEUP vodeff's FindLicenseKey Key-generation crackme analysis - Linux x86-64 Challenge a..."
+    },
+    {
+        "title": "FlipVM Writeup",
+        "path": "_source_crackmesone/FlipVM/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "FlipVM crackme writeup",
+            "Result",
+            "Files",
+            "VM level idea",
+            "Keygen",
+            "Patch",
+            "Why this works"
+        ],
+        "snippet": "Password: Flag: The challenge contains a tiny custom loader/interpreter and a bytecode file named `code.flp`. The bytecode file begins with an `FLP` header: ..."
+    },
+    {
+        "title": "InputPrinter Writeup",
+        "path": "_source_crackmesone/InputPrinter/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "InputPrinter writeup",
+            "Program behavior",
+            "Static analysis",
+            "Reads the buf pointer",
+            "Builds the shellcode. Since the shellcode uses the stack to save strings like",
+            "'/bin/sh' it's needed to move RSP away from our stack to avoid overwriting of",
+            "the shellcode by the shellcode its self, since RSP points inside buf at the",
+            "time of the shellcode execution."
+        ],
+        "snippet": "Crackme ID: `69fc5a3a3fba64e45dcea9ed` Writeup author: `andreagennaioli` www.andreagennaioli.dev Personal difficulty rate: 2.5/6 Looking at the code on Ghidr..."
+    },
+    {
+        "title": "luv4u Writeup",
+        "path": "_source_crackmesone/luv4u/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "luv4u Crackme Writeup",
+            "Overview",
+            "Tools Used",
+            "Static Analysis",
+            "Finding main",
+            "Function Discovery",
+            "Anti Debug / Anti Tamper Layers",
+            "License Generation (generate_license at 0x1038d0)",
+            "S Box Construction (init_sbox_tables at 0x101a10)",
+            "Hash Function (hash_input at 0x103990)",
+            "Validation (validate_license at 0x103ba0)",
+            "The VM Architecture",
+            "Solution Strategy",
+            "Bypassing Anti Debug",
+            "Capturing the License",
+            "Patching the VM Checksum",
+            "Auto Injection",
+            "Running It",
+            "Bugs I Hit Along the Way",
+            "Files"
+        ],
+        "snippet": "luv4u is a Linux x8664 PIE binary that generates a random 32 character uppercase license key, asks you to enter it, and validates your input. After three wro..."
+    },
+    {
+        "title": "Not to simple KeyGen V2 Writeup",
+        "path": "_source_crackmesone/Not to simple KeyGen V2/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Not to simple KeyGen V2 Writeup"
+        ],
+        "snippet": "i traced input handling and then focused on the branch near the end of main 0x401996 cmp rax, 0x10 0x40199a jne 0x401a08 this forces serial length = 16 after..."
+    },
+    {
+        "title": "notes Writeup",
+        "path": "_source_crackmesone/notes/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "notes Writeup"
+        ],
+        "snippet": "Note Writer/Reader Crackme Writeup ================================== Author: EljaTux !! i dont reveal the flag here !! !! solve it yourself !! Overview ----..."
+    },
+    {
+        "title": "Prometheora Writeup",
+        "path": "_source_crackmesone/Prometheora/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Prometheora — Reverse Engineering Writeup",
+            "1. Executive Summary",
+            "2. Binary Triage",
+            "3. Control-Flow Overview",
+            "3.1 Front-end input handler",
+            "3.2 Core verifier",
+            "4. Deterministic Validation Core (`sub_439610`)",
+            "5. Stage-by-Stage Constraints",
+            "5.1 Format and character class (`sub_4396a0`)",
+            "5.2 Positional constraints + 4-byte tail hash (`sub_439840` + `sub_439888`)",
+            "5.3 Whole-key keyed hash checks (`sub_4398e0`, `sub_439950`, `sub_4399c0`)",
+            "5.4 4×7-byte segment checks (`sub_439a30`)",
+            "5.5 Polynomial fingerprint stage (`sub_439be0`)",
+            "6. Additional High-Complexity Gate (`sub_435a20`)",
+            "7. Anti-Analysis Characteristics",
+            "8. Practical Keygen Implications",
+            "9. Conclusion",
+            "10. Recovered Valid Key",
+            "11. Runtime Behavior Clarification (Important)",
+            "12. Keygen + Reliable Runner Artifacts",
+            "13. Reproduction (Operator Quick-Start)",
+            "14. Analyst Notes"
+        ],
+        "snippet": "Analyst: RootRevenant Target: `prometheora` (ELF64, stripped) Method: Binary Ninja-led static reverse engineering, plus controlled runtime confirmation. --- ..."
+    },
+    {
+        "title": "Quite a simple crackme Writeup",
+        "path": "_source_crackmesone/Quite a simple crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "Quite a Simple Crackme Solution Author: killswitcher Introduction The challenge is relatively easy, as many clues are in the description. However, I had prob..."
+    },
+    {
+        "title": "Schizo Writeup",
+        "path": "_source_crackmesone/Schizo/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Schizo Crackme Writeup: A Reverse Engineering Deep Dive",
+            "Overview",
+            "Initial Behavior and Recon",
+            "Bypassing the Anti-debugger",
+            "Cracking SCHIZO",
+            "Final Thoughts"
+        ],
+        "snippet": "Schizo Crackme Writeup: A Reverse Engineering Deep Dive By 0xh4ty - 2026-02-26 - 10 min read This challenge required navigating a C++ PIE binary, tracking da..."
+    },
+    {
+        "title": "selfkey Writeup",
+        "path": "_source_crackmesone/selfkey/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "selfkey Writeup",
+            "Metadata",
+            "Result",
+            "Triage",
+            "Main Function",
+            "Password Generation Function",
+            "Solving",
+            "Runtime Verification",
+            "Final Answer"
+        ],
+        "snippet": "- Challenge: `selfkey` - Source: https://github.com/opmr0/selfkey - Platform: Linux x86-64 - Compiler: GCC - Binary: stripped PIE ELF64 - MD5: `8dddd70becc4a..."
+    },
+    {
+        "title": "simple crackme Writeup",
+        "path": "_source_crackmesone/simple crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Simple Crackme by [marco007](https://crackmes.one/user/marco007) - [\\[url\\]](https://crackmes.one/crackme/698a6214fb46458f1ef6cef5)",
+            "Running the Executable",
+            "Program Analysis",
+            "Program Summary",
+            "Patch",
+            "Keygen"
+        ],
+        "snippet": "Difficulty: 1.5 Language: C/C++ Platform: Unix/linux Arch: x86-64 --- Description: Password validation with basic obfuscation --- Files: - crackme --- Trying..."
+    },
+    {
+        "title": "SirCrackaLot v2 Writeup",
+        "path": "_source_crackmesone/SirCrackaLot v2/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "SirCrackaLot v2 Writeup"
+        ],
+        "snippet": "the main verification logic is in the function at image address 0xf4d0 (ghidra rebased 0x10f4d0) the key parser in this function accepts four 4-hex groups sp..."
+    },
+    {
+        "title": "The Seven Gates of Nullhaven Writeup",
+        "path": "_source_crackmesone/The Seven Gates of Nullhaven/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "The Seven Gates of Nullhaven Writeup"
+        ],
+        "snippet": "static stripped elf64. no symbols, but string anchors made navigation easy the important gate entry points were gate 1 --> 0x402e5f gate 2 --> 0x403004 gate ..."
+    },
+    {
+        "title": "The Wired Writeup",
+        "path": "_source_crackmesone/The Wired/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "`OpenWiredSource's The Wired`",
+            "Program behaviour",
+            "File analysis"
+        ],
+        "snippet": "with no args : with some args : Also program creates .png file in current directory. On picture we can see anime character Lain from \"Experiments Lain\" Runne..."
+    },
+    {
+        "title": "U Can't Pass Writeup",
+        "path": "_source_crackmesone/U Can't Pass/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "U_Can't_Pass",
+            "Initial Analysis:"
+        ],
+        "snippet": "- Using gdb to disassemble main, we get the following disassembly: - We can verify that the function being called at , and are printf calls by examining the ..."
+    },
+    {
+        "title": "Use your brain Writeup",
+        "path": "_source_crackmesone/Use your brain/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CTF Writeup: a.out — Brainfuck in Disguise",
+            "Table of Contents",
+            "Challenge Overview",
+            "Initial Reconnaissance",
+            "File Analysis",
+            "Strings & Imports",
+            "Running the Binary",
+            "Deep Reverse Engineering",
+            "Step 1: Disassembly Overview",
+            "Step 2: Identifying the Core Data Model",
+            "Step 3: Recognizing Obfuscation Patterns",
+            "Pattern 1: `usleep(0)` — Timing Noise",
+            "Pattern 2: `getpid()` + Sign Check — Dead Code",
+            "Pattern 3: XOR with `0xDEADBEEF` — Junk Computation",
+            "Pattern 4: `write(2, buf, 0)` — No-op Syscall",
+            "Pattern 5: Dummy Loops — Control Flow Noise",
+            "Pattern 6: Pointer Shuffling — Redundant Moves",
+            "Pattern 7: Null Pointer Wrap-Around",
+            "Step 4: Extracting Brainfuck Operations",
+            "Step 5: Understanding the Loop Structure",
+            "Step 6: Extracting the Password",
+            "Step 7: Verification"
+        ],
+        "snippet": "- Challenge Overview - Initial Reconnaissance - File Analysis - Strings & Imports - Running the Binary - Deep Reverse Engineering - Step 1: Disassembly Overv..."
+    },
+    {
+        "title": "VaultBreaker Writeup",
+        "path": "_source_crackmesone/VaultBreaker/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Call Path: `main` → `CheckPassword`",
+            "CheckPassword Decompiled (`0x1038a0`)",
+            "The Encoded Table",
+            "Solution"
+        ],
+        "snippet": "`main` creates a `QApplication` and a `MainWindow`, then enters the Qt event loop. The constructor at `0x103d10` wires both the button's `clicked` signal and..."
+    },
+    {
+        "title": "X-0-R Writeup",
+        "path": "_source_crackmesone/X-0-R/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "X-0-R by [steve_maxwell](https://crackmes.one/user/steve_maxwell) - [\\[url\\]](https://crackmes.one/crackme/6976041d9bf7b8997653a6cf)",
+            "Running the Executable",
+            "Program Analysis",
+            "Program Summary",
+            "Solution"
+        ],
+        "snippet": "Difficulty: 2.0 Language: Python (claimed C/C++) Platform: Unix/linux Arch: x86-64 --- Description: Every byte has been nudged in the same way. Reversing the..."
+    },
+    {
+        "title": "JavyFlag Writeup",
+        "path": "_source_crackmesone/JavyFlag/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "flag.wasm Writeup",
+            "Summary",
+            "Metadata",
+            "Environment",
+            "Triage",
+            "WASM Section Inspection",
+            "Data Segment Analysis",
+            "Extraction Script",
+            "Conclusion"
+        ],
+        "snippet": "The challenge file is a WebAssembly module built with Javy. The flag is embedded near the end of the module in the final data segment, close to the marker st..."
+    },
+    {
+        "title": "$1K Reward - AntiVM Challenge Writeup",
+        "path": "_source_crackmesone/$1K Reward - AntiVM Challenge/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Running a VM-Hostile Crackme Inside a VM",
+            "So I picked up a reversing bounty, and the challenge sounded simple enough:",
+            "First contact: IDA won't even open it",
+            "Recon: what are we even dealing with",
+            "The obfuscation",
+            "Ruling out the usual anti-VM",
+            "Dynamic analysis",
+            "The crash, and the rdtsc discovery",
+            "Dead ends",
+            "The self-hash wall",
+            "The environment defeat",
+            "The lesson",
+            "Going after the password",
+            "The target",
+            "Reading the check without a debugger",
+            "What the check actually is",
+            "The wall"
+        ],
+        "snippet": "\"Successfully execute this sample inside a VM and publish a technical blog explaining how you did it.\" That's it. Run it in a VM. Except the second you drop ..."
+    },
+    {
+        "title": "Adversarial Mind Writeup",
+        "path": "_source_crackmesone/Adversarial Mind/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "AdversarialMind Crackme Writeup Crackme: https://crackmes.one/crackme/69cc0fa13e328e778db052a7 Difficulty: Easy / Trick Goal: Find the correct password to pa..."
+    },
+    {
+        "title": "aola Writeup",
+        "path": "_source_crackmesone/aola/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "b.exe — CrackMe Reverse Engineering Writeup",
+            "1. Initial Reconnaissance",
+            "2. Section Analysis",
+            "3. Anti-Analysis Techniques Identified",
+            "3.1 XOR String Encryption (Key: `0xAA`)",
+            "3.2 SSE2 SIMD XOR Decryption",
+            "3.3 Dead-Code Hash Chain",
+            "3.4 Dynamic DLL Loading via TLS Callback",
+            "3.5 Indirect API Calls",
+            "3.6 XOR-Obfuscated Output Messages",
+            "3.7 Separate Helper Functions for Hash Operations",
+            "4. String Decryption — XOR 0xAA",
+            "4.1 Encrypted Data in `.data` Section",
+            "4.2 XOR Key",
+            "4.3 Decryption: Prompt String",
+            "4.4 Decryption: Password String",
+            "5. Dead-Code Hash Chain (Red Herring)",
+            "5.1 The Hash Chain (Inlined)",
+            "5.2 Why It's Dead Code",
+            "5.3 Corresponding Helper Functions",
+            "6. TLS Callback — Dynamic API Resolution",
+            "6.1 TLS Callback at `0x1400015E0`",
+            "6.2 Effect",
+            "7. Main Function — Full Reverse Engineering",
+            "7.1 Function Entry (`0x140003420`)",
+            "7.2 Prompt Decryption and Display",
+            "7.3 Read User Input",
+            "7.4 Decrypt and Compare Password",
+            "7.5 Print Result",
+            "8. Password Validation Algorithm",
+            "9. Status Message Obfuscation",
+            "10. The Password",
+            "11. PoC / Keygen (Python)",
+            "Encrypted data extracted from .data section",
+            "Decrypt",
+            "12. Conclusion"
+        ],
+        "snippet": "--- Running `file` on the binary reveals a standard 64-bit Windows console executable compiled with GCC: Key observations from initial analysis: - Stripped b..."
+    },
+    {
+        "title": "ASMe | ASM CrackMe Writeup",
+        "path": "_source_crackmesone/ASMe _ ASM CrackMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "quick answer",
+            "summary",
+            "initial recon",
+            "api resolution",
+            "runtime string decoding",
+            "window procedure",
+            "anti-debug and multiplier setup",
+            "hidden check routine",
+            "self modifying stub",
+            "recovering the serial (oh boy)",
+            "keygen? pls gurneyburner i dont like using pXi8 i want something longer or cooler",
+            "GPU search for serials"
+        ],
+        "snippet": "gurneyburner52 back at it AGAIN with another banger today we will be attempting the fresh `ASMe | ASM CrackMe` i thoroughly enjoyed this challenge despite ha..."
+    },
+    {
+        "title": "Babel Writeup",
+        "path": "_source_crackmesone/Babel/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "[Write-up] BABEL_VM CrackMe by w33d",
+            "1. Challenge Overview",
+            "2. Analysis Environment",
+            "3. Tools Used",
+            "3. Analysis Phase",
+            "3.1 Input and Hashing",
+            "3.2 The Outer State Machine",
+            "3.3 The Virtual Machine Layer (The \"Babel\" Architecture)",
+            "The Primary VM (Register-based)",
+            "The Secondary VMs (Stack-based)",
+            "3.4 The Red Herrings",
+            "4. Solving Strategy: The Self-Solving Emulator",
+            "5. Keygen Implementation (Python)",
+            "6. Lessons Learned"
+        ],
+        "snippet": "Target: `babelvm.exe` Difficulty: Level 3-4 (Medium/Hard) Objective: Reverse engineer the custom multi-layer VM architecture and implement a functional Pytho..."
+    },
+    {
+        "title": "Bobs gambling Writeup",
+        "path": "_source_crackmesone/Bobs gambling/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Bobs gambling Writeup"
+        ],
+        "snippet": "================================================================ WRITEUP: Bob's Gambling Crackme ============================================================..."
+    },
+    {
+        "title": "BobxReal You Can't do it V2 ;) Writeup",
+        "path": "_source_crackmesone/BobxReal You Can't do it V2 ;)/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "BobxReal You Can't do it V2 ;) Writeup"
+        ],
+        "snippet": "main behavior: - seed setup from time/pid constants - vectored exception handler setup and trigger - internal table/program generation - user input read and ..."
+    },
+    {
+        "title": "cantcrack Writeup",
+        "path": "_source_crackmesone/cantcrack/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CantCrack.exe"
+        ],
+        "snippet": "loaded it in ida. checked strings first cause thats always the easiest way. found the success and fail messages. followed the xref from congratulations to th..."
+    },
+    {
+        "title": "Challenge #13 Writeup",
+        "path": "_source_crackmesone/Challenge #13/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Challenge #13 Writeup"
+        ],
+        "snippet": "the prompt string is referenced from fcn.1400caec0, which is the main challenge function ... 0x1400caf32 call fcn.140001920 0x1400caf3d call fcn.140001570 0x..."
+    },
+    {
+        "title": "Challenge #5 Writeup",
+        "path": "_source_crackmesone/Challenge #5/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Challenge #5 Writeup",
+            "Result: CTF{ASCII-mOre-lkke_BINASCII!!!}",
+            "Test result",
+            "Target pattern from challenge",
+            "Read target pattern from memory or file"
+        ],
+        "snippet": "================================================================================ CTF LEVEL 5 CHALLENGE - WRITEUP ============================================..."
+    },
+    {
+        "title": "Crack It! Writeup",
+        "path": "_source_crackmesone/Crack It!/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "Join my telegram channel - t.me/dimension59 for more reverse stuffs. Write-up for - Coder90's Crack It! - Сollectinginitialdata() { Operation system: Windows..."
+    },
+    {
+        "title": "crack me by whekees Writeup",
+        "path": "_source_crackmesone/crack me by whekees/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crack me by whekees Writeup",
+            "Result: \"Welcome to my crackme\"",
+            "Constants from binary",
+            "Extract bytes in little-endian order and XOR with 0x55",
+            "Convert to string"
+        ],
+        "snippet": "================================================================================ CRACKME5 TECHNICAL WRITEUP by MRK ==========================================..."
+    },
+    {
+        "title": "CrackMe By ZenithSouu Writeup",
+        "path": "_source_crackmesone/CrackMe By ZenithSouu/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "OMEGA CrackMe (2026 Edition) — Reverse Engineering Write-up",
+            "Table of Contents",
+            "1. Introduction",
+            "2. Challenge Overview",
+            "3. Tooling & Environment",
+            "4. Initial Binary Analysis",
+            "4.1 File Identification",
+            "4.2 String Extraction",
+            "4.3 Interesting Wide Strings",
+            "5. PE Section Architecture",
+            "Section Analysis",
+            "6. Defense Mechanism Analysis",
+            "6.1 Early Detection & Sandbox Evasion (OMEGA Mode)",
+            "6.2 Ghost Dropper & Mutation",
+            "6.3 Runtime Section Encryption (S-Box)",
+            "6.4 Anti-Debug Watchdog (The Bloodhound)",
+            "7. Bypassing the Anti-Analysis Layers",
+            "8. The `.pdata_c` Section — Deep Dive",
+            "8.1 Section Metadata",
+            "8.2 Structure Overview",
+            "8.3 Hex Dump (First 48 Bytes)",
+            "9. XOR Decryption Algorithm Reversal",
+            "9.1 Algorithm (Pseudocode)",
+            "9.2 Key Characteristics",
+            "9.3 Simplified Decryption (for strings < 1414 chars)",
+            "10. Password Recovery — Function 1 (`Check_Real`)",
+            "10.1 Function Disassembly (Annotated)",
+            "10.2 Encrypted Data Extraction",
+            "10.3 XOR Key",
+            "10.4 Byte-by-Byte Decryption",
+            "10.5 Result",
+            "11. Password Recovery — Function 2 (The Decoy)",
+            "11.1 Function Overview",
+            "11.2 Decryption Result",
+            "11.3 Why Function 2 is a Decoy",
+            "12. Verification & Proof of Correctness",
+            "12.1 Consistency Checks",
+            "12.2 Python Verification Script",
+            "Function 1: Check_Real",
+            "Function 2: Decoy",
+            "12.3 LCG Verification",
+            "Verify the LCG produces non-zero after 100 iterations",
+            "13. The Function Dispatch Mechanism",
+            "13.1 Call Chain",
+            "13.2 Indirect Call Setup",
+            "13.3 Anti-Timing Check",
+            "14. AY_OBFUSCATE — String Encryption System",
+            "14.1 Overview",
+            "14.2 Pattern",
+            "14.3 Identified Encrypted Strings",
+            "15. LCG Anti-Tamper Seed",
+            "16. Summary of Findings",
+            "Password",
+            "Decoy",
+            "Attack Vector",
+            "Key Insight",
+            "17. Conclusion"
+        ],
+        "snippet": "1. Introduction 2. Challenge Overview 3. Tooling & Environment 4. Initial Binary Analysis 5. PE Section Architecture 6. Defense Mechanism Analysis 7. Bypassi..."
+    },
+    {
+        "title": "CrackMe Hard Writeup",
+        "path": "_source_crackmesone/CrackMe Hard/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe Hard Writeup",
+            "WScript.Shell SendKeys special chars: + ^ % ~ ( ) { }",
+            "Use clipboard + Shift+Insert to avoid keyboard layout issues.",
+            "Direct SendKeys text depends on current layout (RU/EN) and may corrupt input.",
+            "Any valid-looking dummy key (>=8 chars from crackme alphabet) is enough."
+        ],
+        "snippet": "How we solved it We reversed the check path in crackme.exe and found the final validation compare at 0x1400B6779: cmp rbx, rax jne -> Access Denied From anal..."
+    },
+    {
+        "title": "Crackme hard Writeup",
+        "path": "_source_crackmesone/Crackme hard/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Reversing the Key Check — Solution Walkthrough",
+            "1. Finding the Key Prompt in the Disassembly",
+            "2. Extracting the Validation Logic",
+            "3. Understanding How `v7` Is Computed",
+            "4. Key Insight: The Last Character Can Be Solved Algebraically",
+            "5. Why This Means We Don’t Need Full Brute Force",
+            "6. Final Algorithm in Words",
+            "7. Result",
+            "Жадный подход: фиксируем первые 9 символов, подбираем 10-й",
+            "Вычисляем v7 после 9 итераций",
+            "Для i=9: v7_final = 11*9 + ((c << (9%3)) ^ v7) = 99 + (c ^ v7)",
+            "shift = 9 % 3 = 0, значит c << 0 = c",
+            "1337 = 99 + (c ^ v7)  =>  c = (1337 - 99) ^ v7 = 1238 ^ v7"
+        ],
+        "snippet": "While examining the binary in a disassembler (IDA, Ghidra, or similar), I searched for user‑facing strings to locate the key validation logic. One of the fir..."
+    },
+    {
+        "title": "CrackMe Hard 3 Writeup",
+        "path": "_source_crackmesone/CrackMe Hard 3/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe Hard 3 Writeup"
+        ],
+        "snippet": "Main is located at 140003f90. After decrypting some strings and printing them to the console it gets user input and runs the important functions: - 140002f00..."
+    },
+    {
+        "title": "CrackMe with password Writeup",
+        "path": "_source_crackmesone/CrackMe with password/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "rootaccess2011's CrackMe with password Introduction This writeup details the analysis and solution of a Windows x64 crackme challenge created by rootaccess20..."
+    },
+    {
+        "title": "CrackMe#1 Writeup",
+        "path": "_source_crackmesone/CrackMe#1/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "iseey0u-re CrackMe#1 Writeup Challenge Information Challenge Name: iseey0u-re's CrackMe#1 Platform: Windows x86-64 Difficulty: 2.0 Language: C/C++ Objective ..."
+    },
+    {
+        "title": "CrackMeBaby2 Writeup",
+        "path": "_source_crackmesone/CrackMeBaby2/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "CanYouCrackMeBaby2 - Writeup Crackme: https://crackmes.one/crackme/6a0bd0592b3df128c1df5c16 https://crackmes.one/crackme/6a0bd0592b3df128c1df5c16 Binary: Can..."
+    },
+    {
+        "title": "CrackmesForBeginners (CFB) #1 Writeup",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #1/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB1 — Crackmes for Beginners #1",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "3. Locating the serial check",
+            "3.1 Finding the entry point",
+            "3.2 Tracing the verify call",
+            "4. Reversing the algorithm",
+            "4.1 Full disassembly of `compute_serial` (`0x1400066E0`)",
+            "4.2 Algorithm in plain English",
+            "4.3 Why uppercase?",
+            "5. The keygen",
+            "6. Verification",
+            "6.1 Step-by-step for `admin`",
+            "6.2 More examples",
+            "7. Conclusion"
+        ],
+        "snippet": "- Algorithm: Per-character transform: `(index + 0x5A) XOR ord(char)`, add `0x13`, mask to byte, format as uppercase hex. - Goal: Keygen for any username ≥ 4 ..."
+    },
+    {
+        "title": "CrackmesForBeginners (CFB) #2 Writeup",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #2/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB2 — Crackmes for Beginners #2",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "3. Locating the maze in memory",
+            "3.1 Strategy",
+            "3.2 Scan result",
+            "4. Reversing the movement mechanics",
+            "4.1 WASD dispatch — disassembly @ `0x140006638`",
+            "4.2 Bounds check",
+            "4.3 Cell check",
+            "5. Extracting and rendering the maze",
+            "= wall (1)      . = open path (0)",
+            "6. BFS pathfinding",
+            "7. The solution",
+            "7.1 Step-by-step walkthrough",
+            "7.2 Solved maze (path marked `*`)",
+            "8. Solver script",
+            "Maze located at file offset 0x2A1C0 in .rdata",
+            "Encoding: 0=open, 1=wall, 2=finish",
+            "9. Conclusion"
+        ],
+        "snippet": "- Challenge: Navigate a hidden 10×10 maze stored in `.rdata` — find the WASD path from `(0,0)` to `(9,9)`. - Solution: `SDDSSASSDDSSDDDSSDDD` (20 steps, BFS ..."
+    },
+    {
+        "title": "CrackmesForBeginners (CFB) #3 Writeup",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #3/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB3 — Crackmes for Beginners #3",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "3. Locating the bytecode",
+            "3.1 Strategy",
+            "3.2 Scan result",
+            "4. Reversing the VM interpreter",
+            "4.1 Finding the dispatch loop",
+            "4.2 Full disassembly of the interpreter loop (`0x140003780`)",
+            "4.3 VM state (registers mapped to stack variables)",
+            "5. Instruction set architecture",
+            "6. Disassembling the bytecode",
+            "7. Solving the password",
+            "7.1 Verification",
+            "8. Solver script",
+            "Disassemble",
+            "Solve: invert each char's transform chain",
+            "9. Conclusion"
+        ],
+        "snippet": "- Architecture: Custom 9-opcode VM with 3-byte instructions; 40-instruction bytecode validates an 8-character password character-by-character. - Password: `p..."
+    },
+    {
+        "title": "CrackmesForBeginners (CFB) #4 Writeup",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #4/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB4 — Crackmes for Beginners #4",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "2.2 String Analysis",
+            "3. Locating the encryption routine",
+            "3.1 Finding the length check",
+            "3.2 The encryption loop entry point",
+            "4. Algorithm extraction",
+            "4.1 Byte 0 encryption sequence",
+            "4.2 Extracting all 13 encrypted target bytes",
+            "4.3 The CFB feedback mechanism",
+            "4.4 Position offsets extraction",
+            "5. Identifying the weakness",
+            "5.1 Complete reversibility",
+            "5.2 No secret key",
+            "5.3 Known ciphertext in binary",
+            "5.4 Deterministic CFB with known values",
+            "6. Building the decryption script",
+            "6.1 Reversing byte 0",
+            "6.2 Reversing bytes 1-12",
+            "6.3 Complete decryption function",
+            "Extracted from disassembly",
+            "Position offsets from disassembly",
+            "Decrypt byte 0",
+            "Initialize CFB states (from disassembly analysis)",
+            "Decrypt bytes 1-12",
+            "Update CFB states (simulate the feedback)",
+            "6.4 Running the decryption",
+            "7. Verification",
+            "7.1 Summary of attack steps",
+            "8. Conclusion"
+        ],
+        "snippet": "- Cipher: 3-rotor-like per-byte encryption with CFB (Ciphertext Feedback) state — but every operation is reversible and the encrypted target bytes are hardco..."
+    },
+    {
+        "title": "CrYP70NYM's CrackMe 3 Writeup",
+        "path": "_source_crackmesone/CrYP70NYM's CrackMe 3/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe3 Writeup",
+            "Overview",
+            "Step 1: Initial Reconnaissance",
+            "Step 2: Tracing the HWID Chain",
+            "Step 3: Identifying the HWID Gates",
+            "Step 4: Finding the OEP",
+            "Step 5: Understanding the Two-Phase CRT Startup",
+            "Step 6: Stolen Functions",
+            "Step 7: Key Validation Logic",
+            "Step 8: Key Generation (LCG)",
+            "Step 9: The Patch",
+            "Step 10: Keygen",
+            "Lessons Learned",
+            "Files"
+        ],
+        "snippet": "CrackMe3 is a 32-bit Windows GUI application protected with a custom packer/protector. The protector uses CPUID-based hardware fingerprinting (HWID) to lock ..."
+    },
+    {
+        "title": "Custom packed crackme Writeup",
+        "path": "_source_crackmesone/Custom packed crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "OUT.exe — Static Reverse Engineering Writeup (No Execution)",
+            "1) Scope",
+            "2) Sample fingerprint",
+            "3) High-level architecture",
+            "4) Embedded footer and payload extraction",
+            "5) AES-GCM decryption layer (static)",
+            "Key derivation",
+            "6) LZMA2 decompression layer (static)",
+            "7) Inner checker logic recovery",
+            "Stage A",
+            "Stage B (global constraints)",
+            "Stage C (bytewise affine-xor relation)",
+            "Stage D (cross-byte consistency checks)",
+            "8) Recovered correct key",
+            "9) Conclusion"
+        ],
+        "snippet": "Date: 2026-02-25 Method: Static-only (Binary Ninja + offline decoding/decompression + manual logic lift) --- This analysis was performed with a strict non-ex..."
+    },
+    {
+        "title": "EasiestEver Writeup",
+        "path": "_source_crackmesone/EasiestEver/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Exact character ranges from assembly",
+            "Get characters for each range",
+            "Create a systematic password with one from each range",
+            "We need 16 chars total, so 6 extra chars that don't interfere",
+            "Fill remaining 6 positions with safe characters (from range 1)",
+            "Verify all ranges are represented",
+            "Generate a few systematic variations",
+            "Fill remaining"
+        ],
+        "snippet": "Crakmes Crackme: EasiestEver by BadEngineer Challenge Overview Challenge: https://crackmes.one/crackme/697fd52a16739b40dcb5dabd This is a simple Windows PE32..."
+    },
+    {
+        "title": "Easy Rust crackme Writeup",
+        "path": "_source_crackmesone/Easy Rust crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Rust Crackme Easy - Dynamic Analysis Writeup",
+            "1. Introduction",
+            "2. Initial Analysis",
+            "3. Dynamic Analysis & Credential Extraction",
+            "3.1 Locating the Validation Logic",
+            "3.2 Register Inspection",
+            "3.3 Decoding Hex to ASCII",
+            "4. Execution Demo",
+            "5. Conclusion"
+        ],
+        "snippet": "Difficulty: Beginner Platform: Windows x64 Language: Rust Tools Used: x64dbg, PEAnalyzer (Custom Tool) --- This writeup documents the reverse engineering of ..."
+    },
+    {
+        "title": "EasyVM Writeup",
+        "path": "_source_crackmesone/EasyVM/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "CorpCons's EasyVM - original link to crackmes Author - Profile Language - C/C++ Arch - x86-64 Platform - Windows Main function starts at 2290 - a bit cleared..."
+    },
+    {
+        "title": "EZFTP_ByTOMUT Writeup",
+        "path": "_source_crackmesone/EZFTP_ByTOMUT/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Overview",
+            "Analysis",
+            "Solution",
+            "Conclusion"
+        ],
+        "snippet": "When the executable is launched, it prompts the user for a password. Entering an incorrect password results in an error message and the application immediate..."
+    },
+    {
+        "title": "Fatmike's Crackme #10 (crackmes.one CTF 2026) Writeup",
+        "path": "_source_crackmesone/Fatmike/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Fatmike's Crackme #10 (crackmes.one CTF 2026) Writeup"
+        ],
+        "snippet": "Fatmike's Crackme #10 (crackmes.one CTF 2026) https://crackmes.one/crackme/69a2c7347b3cc38c80464d8f To find the function of interest, check the import table ..."
+    },
+    {
+        "title": "Find the decryption key | Custom packer,no virtualization Writeup",
+        "path": "_source_crackmesone/Find the decryption key _ Custom packer,no virtualization/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "Write‐up: elevenpack.exe – Unpacking a Packed Binary and Recovering a Custom Cipher 1. Initial Observation The binary elevenpack.exe appeared packed: its ent..."
+    },
+    {
+        "title": "Find the decryption key | Custom packer,no virtualization #2 Writeup",
+        "path": "_source_crackmesone/Find the decryption key _ Custom packer,no virtualization #2/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Find the decryption key | Custom packer,no virtualization #2 Writeup"
+        ],
+        "snippet": "Password: x9K!7zPq4mNvR2bL Flag: FLAG{p3Wq8RnZmK4vYxT7Bc2J} Step by step 1. First run The program prints: === elevenpack crackme === Enter password: With a w..."
+    },
+    {
+        "title": "Find The Key Writeup",
+        "path": "_source_crackmesone/Find The Key/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Reverse Engineering Writeup: ActivateMe.exe",
+            "Table of Contents",
+            "1. Challenge Overview",
+            "2. Target Analysis — PE File Structure",
+            "2.1 File Identification",
+            "2.2 Section Analysis",
+            "2.3 Import Table Analysis",
+            "2.4 Entry Point",
+            "3. Initial Reconnaissance",
+            "3.1 Strings Extraction",
+            "3.2 DWORD-Stored Characters",
+            "3.3 Preliminary Hypothesis Formation",
+            "4. Deep Dive: String Analysis",
+            "4.1 Regex Pattern Breakdown",
+            "4.2 Encoded Payload Character Analysis",
+            "4.3 The Prefix: `Tjw4R`",
+            "5. Reverse Engineering Methodology",
+            "5.1 Approach Selection",
+            "5.2 Tools Used",
+            "5.3 Analysis Workflow",
+            "6. Program Logic Analysis",
+            "6.1 High-Level Control Flow",
+            "6.2 Detailed Assembly Analysis",
+            "6.3 Key Memory Regions",
+            "7. Cryptographic Primitive: XOR Cipher",
+            "7.1 How XOR Encryption Works",
+            "7.2 XOR Properties That Enable Decryption",
+            "7.3 Single-Byte XOR vs. Multi-Byte XOR",
+            "7.4 XOR Key Derivation in This Challenge",
+            "8. Payload Assembly & XOR Decryption",
+            "8.1 Assembly of the Full Encoded String",
+            "8.2 XOR Decryption — Complete Byte-by-Byte Table",
+            "9. Base64 Decoding",
+            "9.1 Base64 Encoding Primer",
+            "9.2 Decoding Process — Step by Step",
+            "9.3 Complete Decode Result",
+            "9.4 Interpreting the Decoded Output",
+            "10. Key Derivation: Magic Number to XOR Key",
+            "10.1 The Derivation Formula",
+            "10.2 Computing K for Example Magic Numbers",
+            "10.3 Valid Magic Number Space",
+            "11. Alternative Approaches",
+            "11.1 XOR Brute-Force (Without Full RE)",
+            "Check if result contains printable ASCII",
+            "11.2 Dynamic Analysis with a Debugger",
+            "11.3 Patching the Binary",
+            "12. Solution",
+            "12.1 Activation Key",
+            "12.2 Key Deconstruction",
+            "12.3 Example Valid Inputs",
+            "13. Full Recreation Scripts",
+            "13.1 Complete Solver (Python)",
+            "── Step 1: Known components extracted from .rdata ──",
+            "Five DWORD values stored separately (obfuscation technique)",
+            "Contiguous encoded payload from .rdata",
+            "Assemble full encoded string (as the program does)",
+            "── Step 2: Brute-force XOR key ──",
+            "Check if XOR result is valid Base64",
+            "Try to decode",
+            "Verify all characters are printable ASCII",
+            "── Step 3: Use correct key ──",
+            "── Step 4: Extract Activation Key ──",
+            "The prefix \"Tjw4R\" decodes to 3 garbage bytes at the start",
+            "13.2 XOR Key Space Analyzer",
+            "Check if valid Base64",
+            "Try to decode and check printability",
+            "14. Techniques & Tools Reference",
+            "14.1 Techniques Used"
+        ],
+        "snippet": "> Challenge Category: Reverse Engineering / Crackme > Difficulty: Intermediate > Objective: Reverse-engineer a Windows executable to recover the hidden Activ..."
+    },
+    {
+        "title": "FirstCrackMe Writeup",
+        "path": "_source_crackmesone/FirstCrackMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "FirstCrackMe Crackme: https://crackmes.one/crackme/6a160248d7ff92e1214c01ed 1. Initial Analysis & Bypassing the String Obfuscation When running a standard st..."
+    },
+    {
+        "title": "Fixed Easy Crackme Writeup",
+        "path": "_source_crackmesone/Fixed Easy Crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Fixed Easy Crackme Writeup"
+        ],
+        "snippet": "Writeup: Kanax01's Fixed Easy Crackme Author: Lazex Challenge Date: 2026-02-13 Difficulty: 1.0 (Easy) Platform: Windows x86-64 1. Challenge Overview This cha..."
+    },
+    {
+        "title": "Gadget Writeup",
+        "path": "_source_crackmesone/Gadget/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Gadget Writeup"
+        ],
+        "snippet": "when chall.exe starts: 1) opens gadget.hex 2) reads the full file into virtualalloc memory 3) runs tests by calling code loaded from gadget.hex at offset 0x4..."
+    },
+    {
+        "title": "GetToKnow-v0.1 Writeup",
+        "path": "_source_crackmesone/GetToKnow-v0.1/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "GetToKnow-v0.1 Writeup"
+        ],
+        "snippet": "1. Open exe file in IDA Pro in Graph mode. You will see four blocks. Take your look at the end of the first block and you will see, that after \"jnz short loc..."
+    },
+    {
+        "title": "GrannysQuest Writeup",
+        "path": "_source_crackmesone/GrannysQuest/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "GrannysQuest Writeup"
+        ],
+        "snippet": "GRANNY'S QUEST — CRACKME WRITEUP BY KANKER1337 ================================= Day 1 asked for granny's birthday in ddmmyyyy format. The validation functio..."
+    },
+    {
+        "title": "Hard CME Writeup",
+        "path": "_source_crackmesone/Hard CME/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe One Writeup",
+            "Metadata",
+            "Summary",
+            "admin: 6F734C07FEBA5004",
+            "Triage",
+            "Input Validation",
+            "Algorithm",
+            "Validation"
+        ],
+        "snippet": "- Target: `/Users/singularity/Downloads/crack/crackme.exe` - SHA-256: `7439b0fdf55c3bd169fde2c888210a64826b9803774dc078a3538aa80188772b` - Format: PE32+ cons..."
+    },
+    {
+        "title": "Hard CME 2 Writeup",
+        "path": "_source_crackmesone/Hard CME 2/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Crackme.exe writeup",
+            "summary",
+            "target files",
+            "tools used",
+            "first observations",
+            "binary triage",
+            "useful strings",
+            "main function overview",
+            "file loading structure",
+            "layer decode function",
+            "reproducing the decode",
+            "why those bytes are the key",
+            "verification",
+            "anti-debug notes",
+            "capa notes",
+            "final answer"
+        ],
+        "snippet": "the correct key is: this was solved without patching the binary. the key was recovered by statically analyzing how `Crackme.exe` reads and decodes the three ..."
+    },
+    {
+        "title": "High cortisol Writeup",
+        "path": "_source_crackmesone/High cortisol/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "deo's High cortisol",
+            "summary",
+            "target",
+            "first look",
+            "finding the real code",
+            "unpacking the copied payload",
+            "the rsa check",
+            "small recovery script",
+            "validation",
+            "notes"
+        ],
+        "snippet": "the key is: running the program with that key prints: file: `mbb.exe` sha256: the file is a 64 bit windows console pe. the first static pass showed no normal..."
+    },
+    {
+        "title": "impossible console crack me Writeup",
+        "path": "_source_crackmesone/impossible console crack me/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackmeh.exe — Writeup",
+            "Overview",
+            "Step 1 — Initial Triage",
+            "Step 2 — Discovering the Trailer",
+            "Step 3 — Reversing the Encryption Algorithm",
+            "Step 4 — Decryption and Verification",
+            "Step 5 — Analyzing the Inner Crackme",
+            "Step 6 — Finding the Password",
+            "Solution",
+            "Automated Solver",
+            "Artifacts Included"
+        ],
+        "snippet": "Analyst: RootRevenant Date: 2026-02-27 Category: Reverse Engineering / Unpacking Difficulty: Easy Tools: Binary Ninja, Python 3.12 --- `crackmeh.exe` is a Wi..."
+    },
+    {
+        "title": "JustTry crackme Writeup",
+        "path": "_source_crackmesone/JustTry crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "JustTry crackme Writeup"
+        ],
+        "snippet": "JustTry.exe Solution Writeup JustTry.exe is a small 32-bit Windows crackme with a dialog-based UI. The goal was to understand how the input is validated and ..."
+    },
+    {
+        "title": "Jörmungandr Writeup",
+        "path": "_source_crackmesone/Jörmungandr/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "jormungandr Crackme Writeup",
+            "Summary",
+            "Files",
+            "Dynamic Resolver",
+            "Parent Check",
+            "Decoy Serial",
+            "Anti-Debug and SMC",
+            "VM Key Recovery",
+            "Modular Division",
+            "Real Serial Gate",
+            "Payload Validation",
+            "Success Hash"
+        ],
+        "snippet": "The visible serial `1331D66091E9E2E5` is a decoy. It prints `DONE`, then starts a delayed crash thread. The real path is gated by a polymorphic ECC VM, a JIT..."
+    },
+    {
+        "title": "karity-crackme-B Writeup",
+        "path": "_source_crackmesone/karity-crackme-B/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "karity-crackme-B writeup",
+            "First look",
+            "The cipher (sub_1400011F0)",
+            "little-endian:",
+            "key = [0x9A,0x4C,0xFC,0x14,0x3D,0x70,0x6B,0x02,",
+            "0x81,0x55,0xA1,0xC7,0x33,0x19,0xE2,0x5F]",
+            "After 36 steps, state must equal:",
+            "0x7CD81D08347C7C08, 0x7C3140977C64EFA8 (little-endian)",
+            "First plan: linear system",
+            "The trap: the exp table is wrong",
+            "Wrong turns",
+            "The encoding that worked",
+            "25 unknown input bytes",
+            "Intermediate state vars: st[k][c] = cell c after processing input[10+k]",
+            "Step 0: from the known s9 state",
+            "Steps 1..24",
+            "The trailing '}' at step 35:",
+            "Takeaways"
+        ],
+        "snippet": "I finally finished this one. The journey was a bit sweet though, especially that \"looks-standard-but-isn't\" GF(2^8) table in the middle gave me a real headac..."
+    },
+    {
+        "title": "Keygen Crackme Writeup",
+        "path": "_source_crackmesone/Keygen Crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe.exe Reverse Engineering Writeup",
+            "Challenge Overview",
+            "Phase 1: Initial Reconnaissance",
+            "1.1 File Discovery and Basic Properties",
+            "1.2 PE Structure Analysis",
+            "1.3 String Extraction",
+            "Phase 2: Capability and Behavior Triage",
+            "2.1 Static Capability Analysis",
+            "2.2 Sandbox Simulation",
+            "Phase 3: Attempts at Dynamic Analysis",
+            "3.1 Frida Instrumentation (Failed)",
+            "3.2 PowerShell Redirect (Failed)",
+            "3.3 Reading the Local MachineGuid",
+            "Phase 4: Deep Static Analysis with Ghidra",
+            "4.1 Launching Ghidra Analysis",
+            "4.2 Finding the Verification Function",
+            "4.3 Decompiling the Registry Reader",
+            "4.4 Decompiling the Main Verification Routine",
+            "Step A: Character Transformation Loop",
+            "Step B: Big-Integer Division by 5",
+            "Step C: Strip Leading Zeros",
+            "Step D: Big-Integer Multiplication by 2",
+            "Step E: Digit-to-Letter Mapping",
+            "Step F: Comparison",
+            "Phase 5: Keygen Implementation",
+            "Keygen Algorithm (Python)",
+            "Step 1: Remove dashes and map letters to 1-based positions",
+            "Step 2: Divide by 5 (string-based long division)",
+            "Step 3: Multiply by 2 (string-based big-int multiplication)",
+            "Step 4: Map digits to custom alphabet",
+            "Keygen Features",
+            "Phase 6: Verification",
+            "6.1 Offline Test",
+            "6.2 Live Binary Verification",
+            "Phase 7: Dead Ends and Lessons Learned",
+            "7.1 The Base36 Red Herring",
+            "7.2 Dynamic Analysis Blockage",
+            "7.3 Recognizing Hand-Written Big-Integer Arithmetic",
+            "Tools Used",
+            "Conclusion"
+        ],
+        "snippet": "We were given a single Windows executable file, `CrackMe.exe`, with the goal of reverse engineering its verification code algorithm, building a working keyge..."
+    },
+    {
+        "title": "KeyGenMe! Writeup",
+        "path": "_source_crackmesone/KeyGenMe!/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "KeyGenMe.exe - Reverse Engineering Writeup",
+            "Table of Contents",
+            "1. Overview",
+            "2. Initial Reconnaissance",
+            "2.1 File Identification",
+            "2.2 Notable Imports",
+            "2.3 String Analysis",
+            "3. Entry Point & Main Function",
+            "3.1 High-Level Control Flow",
+            "4. Deep Analysis: The Hash Function",
+            "4.1 SHA-256 Verification",
+            "4.2 Hash Function Prototype",
+            "4.3 Hash-to-Hex Formatting",
+            "5. Deep Analysis: The Key Transformation",
+            "5.1 Transformation Loop",
+            "5.2 The Transformation Formula",
+            "5.3 Mapping Table",
+            "6. Key Validation",
+            "6.1 Input Collection",
+            "6.2 Comparison Logic",
+            "7. Complete Algorithm Summary",
+            "8. Proof-of-Concept KeyGen (Python)",
+            "Example Outputs"
+        ],
+        "snippet": "--- 1. Overview 2. Initial Reconnaissance - 2.1 File Identification - 2.2 Notable Imports - 2.3 String Analysis 3. Entry Point & Main Function - 3.1 High-Lev..."
+    },
+    {
+        "title": "KeygenMe_3_SWD Writeup",
+        "path": "_source_crackmesone/KeygenMe_3_SWD/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "KeygenMe_3_SWD — Reverse Engineering Writeup",
+            "TL;DR",
+            "1. Overview",
+            "2. Methodology",
+            "3. Program flow (main interactive routine)",
+            "4. Username constraints",
+            "5. Secret code — syntactic gate (`FUN_140001ec0`)",
+            "6. Secret code — semantic validation (`FUN_140002100`)",
+            "6.1 Username statistics",
+            "6.2 Segment targets (32-bit integers)",
+            "6.3 Base-36 decoding (`FUN_140001ff0`)",
+            "6.4 Equality checks",
+            "6.5 Encoding a valid secret for a username",
+            "7. Verification PIN — input parsing (`FUN_140001f80`)",
+            "8. Username–secret mixing hash (`FUN_1400025a0`)",
+            "8.1 Final avalanche (and the signed-`IMUL` trap)",
+            "9. PIN check (`FUN_140002910` / `FUN_1400028d0`)",
+            "10. Offline keygen recipe",
+            "11. Implementation pitfalls",
+            "12. Proof of concept",
+            "Worked examples",
+            "13. Function quick reference",
+            "14. Conclusion",
+            "Disclaimer"
+        ],
+        "snippet": "| Input | Role | |--------|------| | Username | Typed string, length 3–15. Drives expected secret via checksums on `toupper(username)`. | | Secret code | Fix..."
+    },
+    {
+        "title": "Leet Echo Chamber Writeup",
+        "path": "_source_crackmesone/Leet Echo Chamber/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "leet_echo_chamber - writeup",
+            "first look",
+            "what input does it want",
+            "the rabbit hole",
+            "the constant",
+            "the math",
+            "the test",
+            "the joke",
+            "stuff I didn't do",
+            "reference"
+        ],
+        "snippet": "so this one's the followup to whatever the author's previous crackme was. the description says \"find the elite superior number that will reflect itself into ..."
+    },
+    {
+        "title": "MCM 2.0 Writeup",
+        "path": "_source_crackmesone/MCM 2.0/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe \"MCM v2.0\" — Detailed Writeup",
+            "Overview",
+            "Step 1 — Initial Reconnaissance",
+            "Entry Point & main()",
+            "String Search",
+            "Step 2 — TLS Anti-Debug Callback",
+            "Step 3 — Parent Process Analysis (sub_140011400)",
+            "API Resolution",
+            "Debug Event Loop",
+            "The \"int 3\" Trap — sub_1400161F0",
+            "Step 4 — Child Process Flow",
+            "4.1 — VM Call 1: GetCurrentProcessId",
+            "4.2 — Password Input",
+            "4.3 — Anti-Debug Register Check",
+            "4.4 — Matrix Check (sub_140010A70)",
+            "Matrix Generation Details (sub_1400104D0)",
+            "4.5 — XOR Bytecode Transformation",
+            "4.6 — VM Call 2: The Final Check",
+            "4.7 — Success Message Decryption",
+            "Step 5 — The VM Interpreter (sub_140010020)",
+            "Instruction Format",
+            "Opcode Groups",
+            "VM Exit Conditions",
+            "Step 6 — The Patch",
+            "Patch Location",
+            "Applying the Patch",
+            "Result",
+            "Summary of Protection Architecture",
+            "Tools Used"
+        ],
+        "snippet": "This is my walkthrough for the MCM v2.0 CrackMe. The binary is a 64-bit Windows PE (`CrackMe.exe`) that employs several advanced protection layers: 1. Multi-..."
+    },
+    {
+        "title": "MCM 5.0 Writeup",
+        "path": "_source_crackmesone/MCM 5.0/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "MCM 5.0 Writeup"
+        ],
+        "snippet": "this crackme uses a parent-child debug protocol: - parent process runs as debugger/guardian - child intentionally executes UD2 instructions - parent catches ..."
+    },
+    {
+        "title": "MCM 6.0 - Project Mayhem Writeup",
+        "path": "_source_crackmesone/MCM 6.0 - Project Mayhem/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "MCM 6.0 - Project Mayhem Writeup"
+        ],
+        "snippet": "Having analyzed and fully restored the algorithm, I realized that calculating the key mathematically is impossible. (You can examine the key verification alg..."
+    },
+    {
+        "title": "medium http licence crackme Writeup",
+        "path": "_source_crackmesone/medium http licence crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "medium http licence crackme Writeup"
+        ],
+        "snippet": "using System; using System.IO; using System.Security.Cryptography; using System.Text; class Program { static void Main() { string ivBase64 = \"Dx0NVfqhxJuQX+6..."
+    },
+    {
+        "title": "Mirror Vault Writeup",
+        "path": "_source_crackmesone/Mirror Vault/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Mirror Vault Writeup",
+            "from asm at 0x140001c04:",
+            "mov %rdx,%r14",
+            "shr $0x20,%r14      --> r14 = upper32",
+            "xor %r14d,%edx      --> edx = lower32 ^ upper32"
+        ],
+        "snippet": "from the serial parsing code at 0x140001500 the serial must be exactly 32 bytes: bytes 0-7: \"DONCRIS{\" (fixed) bytes 8-30: 23 unknown printable ascii charact..."
+    },
+    {
+        "title": "Monsignors Crackme Writeup",
+        "path": "_source_crackmesone/Monsignors Crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Monsignors Crackme Writeup"
+        ],
+        "snippet": "I approached solving the crackme using the following steps: 1. I first downloaded, extracted and ran the crackme (hello.exe); it prompted for a password and ..."
+    },
+    {
+        "title": "Monster CrackMe 1.0 (MCM) Writeup",
+        "path": "_source_crackmesone/Monster CrackMe 1.0 (MCM)/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Monster CrackMe 1.0 (MCM) Writeup"
+        ],
+        "snippet": "child validation logic in FUN140004d00 parent debugger logic in FUN140005490 the binary launches a child process and the parent debugs it flow: parent proces..."
+    },
+    {
+        "title": "My First Crackme Writeup",
+        "path": "_source_crackmesone/My First Crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Lösung",
+            "Zusammenfassung",
+            "Solution",
+            "Summary"
+        ],
+        "snippet": "Die folgende Liste ist nach den Schritten in chronologischer Reihenfolge aufgeschrieben - Zunächst habe ich die .EXE Datei und die .dll in AvaloniaILSpy eing..."
+    },
+    {
+        "title": "my first low-medium crack me by whekkees Writeup",
+        "path": "_source_crackmesone/my first low-medium crack me by whekkees/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "my first low-medium crack me by whekkees Writeup"
+        ],
+        "snippet": "--------------------- 1 - Overview --------------------- First, to do static analysis, we open our program in IDA. When we reach the main function, we press ..."
+    },
+    {
+        "title": "NeuroVault Writeup",
+        "path": "_source_crackmesone/NeuroVault/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "NeuroVault Crackme Write-Up",
+            "Entry Point and Runtime Setup",
+            "Dispatcher",
+            "Decoy Check",
+            "Real Validator",
+            "Final Serial"
+        ],
+        "snippet": "The apparent entry point only performs CRT/runtime initialization and then eventually reaches the program controller. The important transition is: The first ..."
+    },
+    {
+        "title": "NiTiNOL CrackMe Writeup",
+        "path": "_source_crackmesone/NiTiNOL CrackMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "SimpleCrackMeForBeginners_ByKakao Writeup",
+            "Summary",
+            "Metadata",
+            "Initial Behavior",
+            "Unpacking",
+            "Checker Structure",
+            "Digest Recovery",
+            "Validation",
+            "Final Answer"
+        ],
+        "snippet": "The correct key is an 8-byte non-printable byte string: In escaped shell form for Wine/bash: No patching is required. With the correct key, the original exec..."
+    },
+    {
+        "title": "P4r4d0x of the P4l4nt1r Writeup",
+        "path": "_source_crackmesone/P4r4d0x of the P4l4nt1r/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "summary",
+            "target identifiers",
+            "static triage",
+            "validation notes",
+            "false trail",
+            "bytecode steering",
+            "validation run",
+            "reproduction steps",
+            "unresolved notes"
+        ],
+        "snippet": "the target is `p0tp.exe`, a pe64 crackme with a custom vm. i found an accepted pair of byte-string keys that makes the unmodified program print the success l..."
+    },
+    {
+        "title": "Pandora VM Writeup",
+        "path": "_source_crackmesone/Pandora VM/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "vm_crackme.exe Writeup",
+            "Result",
+            "Target Overview",
+            "IDA Triage",
+            "Finding the Decisive Comparison",
+            "Emulation Pass",
+            "Real-Process Debugging",
+            "Verification",
+            "Takeaways"
+        ],
+        "snippet": "Author: Codex The crackme accepts one unsigned 64-bit password: Hex: The binary is a 64-bit Windows PE crackme named `vmcrackme.exe`. It prints: Then it read..."
+    },
+    {
+        "title": "Password (Obfusacted) Writeup",
+        "path": "_source_crackmesone/Password (Obfusacted)/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe.obf.exe Writeup",
+            "Initial Triage",
+            "Self-decryption stub",
+            "Finding the User-Facing Logic",
+            "The Validation Loop",
+            "Table bytes",
+            "Recovering the Password",
+            "Important Bug: Prefixes Also Pass",
+            "Runtime Confirmation",
+            "Optional Easy Goal: Always Print `Correct`",
+            "Final Answer"
+        ],
+        "snippet": "The first pass in IDA was intentionally misleading: - imports were effectively hidden, - early functions disassembled as garbage, - normal string searches mo..."
+    },
+    {
+        "title": "PhantomGate Writeup",
+        "path": "_source_crackmesone/PhantomGate/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "PhantomGate v1.0 Writeup By lbx",
+            "Overview",
+            "Input Parsing",
+            "VM Check",
+            "Solver",
+            "Verification"
+        ],
+        "snippet": "The binary asks for a serial in this format: If the serial passes the check, it prints: The final valid serial I obtained is: The main function first checks ..."
+    },
+    {
+        "title": "PlsCrackMe Writeup",
+        "path": "_source_crackmesone/PlsCrackMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "PlsCrackMe Writeup"
+        ],
+        "snippet": "---------- INTRODUCTION ---------- When we open the program with IDA, we are directly greeted by the main function, and we see that a simple license check is..."
+    },
+    {
+        "title": "Project Obscura Writeup",
+        "path": "_source_crackmesone/Project Obscura/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Project Obscura Solution"
+        ],
+        "snippet": "This solution consists of the following image(s): !Screenshot2026-01-28155708.png"
+    },
+    {
+        "title": "Ragnarok Writeup",
+        "path": "_source_crackmesone/Ragnarok/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Ragnarok Writeup",
+            "Program Flow",
+            "The Yggdrasil Virtual Machine",
+            "VM Structure (0x140001850)",
+            "Opcode Table",
+            "Serial Validation (0x140001e10)",
+            "Bytecode Generator (0x140001bf0)",
+            "PRNG Seeding",
+            "LCG PRNG",
+            "Coefficient Extraction",
+            "Generated Bytecode Structure",
+            "The Equation",
+            "Solving for S4",
+            "Heimdall Anti-Debug (0x140001fc0)"
+        ],
+        "snippet": "I started by searching for interesting strings: The `[VM] Stack Overflow!` string led me to the VM dispatcher at `0x140001850`. Tracing from `main` (`0x14000..."
+    },
+    {
+        "title": "razkom_v1 Writeup",
+        "path": "_source_crackmesone/razkom_v1/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [],
+        "snippet": "Reverse Engineering Write-up – razkomv1 Overview This write-up describes how the key-checking logic of razkomv1.exe was reversed using Ghidra in order to gen..."
+    },
+    {
+        "title": "razkom_v1.1 Writeup",
+        "path": "_source_crackmesone/razkom_v1.1/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "razkom_v1.1 by [RAZKOM](https://crackmes.one/user/RAZKOM) - [\\[url\\]](https://crackmes.one/crackme/69968b7589af4192123d7aad)",
+            "Running the Executable",
+            "Program Analysis",
+            "Program Summary",
+            "Keygen"
+        ],
+        "snippet": "Difficulty: 2.0 Language: C/C++ Platform: Windows Arch: x86-64 --- Description: Goal: Reverse engineer the key validation algorithm and either find a valid k..."
+    },
+    {
+        "title": "RE02 Writeup",
+        "path": "_source_crackmesone/RE02/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Tooling & Environment",
+            "Defeating the Anti-Disassembly Traps (Opaque Predicates)",
+            "Bypassing the Dynamic Anti-Debug Trap:",
+            "Constraint"
+        ],
+        "snippet": "OS: Windows 10 Virtual Machine Static Analysis: Ghidra and IDA Dynamic Analysis: x64dbg Hex Editing: HxD Automation: Python 3 (z3-solver) The author utilized..."
+    },
+    {
+        "title": "SelfKey Writeup",
+        "path": "_source_crackmesone/SelfKey/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "SelfKey Writeup"
+        ],
+        "snippet": "Step-by-step write-up 1) What the program does - It prompts for a password and prints \"Correct\" or \"Wrong.\" - Input is normalized by removing spaces and dash..."
+    },
+    {
+        "title": "Simple login crackme Writeup",
+        "path": "_source_crackmesone/Simple login crackme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Simple login crackme Writeup"
+        ],
+        "snippet": "How I Achieved This Code Reconstruction: I analyzed the main function using IDA Pro. I noticed that the pseudocode was misleading and missed crucial steps. B..."
+    },
+    {
+        "title": "Simple Password Check Writeup",
+        "path": "_source_crackmesone/Simple Password Check/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackme_goodlucklol — Writeup",
+            "First Look",
+            "How main works",
+            "The Check Function — 8KB of Chaos",
+            "Extracting the Password",
+            "b'$%Yacking1234901'",
+            "Result",
+            "Summary"
+        ],
+        "snippet": "Platform: Windows x64 Tools: IDA Pro 9.3, Python We're greeted with a classic prompt: Wrong password gives \"Access denied!\", correct one — \"Access granted!\" ..."
+    },
+    {
+        "title": "SimpleCrackMe Writeup",
+        "path": "_source_crackmesone/SimpleCrackMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "SimpleCrackme.exe - Reverse Engineering Writeup",
+            "1. Introduction",
+            "2. Initial Reconnaissance",
+            "2.1 File Identification",
+            "2.2 Basic Execution Test",
+            "3. Static Analysis",
+            "3.1 PE Structure Analysis",
+            "3.2 String Search",
+            "3.3 Understanding the Construction Logic",
+            "4. Verification",
+            "4.1 Testing the Candidate Password",
+            "4.2 Success Confirmation",
+            "5. Technical Details",
+            "5.1 Why Fragment Storage?",
+            "5.2 Anti-Debugging Note",
+            "6. Alternative Approach: Binary Patching (For Educational Purposes)",
+            "6.1 Identifying the Check Logic",
+            "6.2 NOP Sled Patching",
+            "7. Conclusion",
+            "7.1 Solution Summary",
+            "7.2 Lessons Learned",
+            "8. Tools Reference",
+            "9. Final Verification Screenshot"
+        ],
+        "snippet": "Difficulty: 1.0 (Beginner) Platform: Windows PE32 Language: C++ Tools Used: Static Analysis (hex dump, disassembly), Dynamic Testing --- This writeup documen..."
+    },
+    {
+        "title": "The Alchemist's Lock Writeup",
+        "path": "_source_crackmesone/The Alchemist's Lock/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "The Alchemist's Lock Writeup"
+        ],
+        "snippet": "Хорошо, переводю: --- CodeBrewBeans's The Alchemist's Lock https://crackmes.one/crackme/69adaa15fbfe0ef21de946bd Tools used: x64dbg with Scylla plugin, IDA P..."
+    },
+    {
+        "title": "The Barista's Secret Writeup",
+        "path": "_source_crackmesone/The Barista's Secret/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "The Barista's Secret Writeup"
+        ],
+        "snippet": "the binary has very descriptive symbol names thanks to the debug info left in by mingw sym.antidebug sym.deobfunsignedcharconstunsignedlonglongunsignedcharch..."
+    },
+    {
+        "title": "TooManyChecks Writeup",
+        "path": "_source_crackmesone/TooManyChecks/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "TooManyChecks Writeup"
+        ],
+        "snippet": "From sub140008090, the flag is constructed by taking characters from: a1 + 280 (1 char, index 0) a1 + 568 (1 char, index 0) a1 + 184 (2 chars, index 0-1) a1 ..."
+    },
+    {
+        "title": "TryBypassMe Kernel Edition Writeup",
+        "path": "_source_crackmesone/TryBypassMe Kernel Edition/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "TryBypassMe Kernel Edition Writeup"
+        ],
+        "snippet": "The game consists of three primary components: the game executable (TBM.exe), a watchdog, and a kernel-mode driver (TBMKD.sys). The game implements many secu..."
+    },
+    {
+        "title": "Turbine Control KeyGenMe Writeup",
+        "path": "_source_crackmesone/Turbine Control KeyGenMe/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Write-up: TurbineControl.exe KeyGenMe",
+            "1. Challenge Overview",
+            "2. Initial Analysis",
+            "3. Reversing the Validation Logic",
+            "Part 1: XXXX (HWID-Based Mapping)",
+            "Part 2: YYYY (Chained Substitution)",
+            "Part 3: ZZZZ (Arithmetic Constraints)",
+            "Part 4: WWWW (Polynomial Hash)",
+            "4. KeyGen Implementation",
+            "5. Conclusion"
+        ],
+        "snippet": "The `TurbineControl.exe` challenge is a Windows KeyGenMe centered around an industrial SCADA/monitoring theme. Upon execution, the program generates a dynami..."
+    },
+    {
+        "title": "very easy crack me $$$ by whekkees Writeup",
+        "path": "_source_crackmesone/very easy crack me $$$ by whekkees/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "very easy crack me $$$ by whekkees Solution"
+        ],
+        "snippet": "This solution consists of the following image(s): !pic.png"
+    },
+    {
+        "title": "Willy Wonka's Chocolate Factory Writeup",
+        "path": "_source_crackmesone/Willy Wonka's Chocolate Factory/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Willy Wonka's Chocolate Factory Writeup"
+        ],
+        "snippet": "================================================================================ ChocolateFactory.exe — Crackme Writeup Platform: crackmes.one Author: CrackN..."
+    },
+    {
+        "title": "winkeygenme Writeup",
+        "path": "_source_crackmesone/winkeygenme/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Cr4ckM3 Writeup",
+            "Summary",
+            "Target",
+            "Triage",
+            "Activation Handler",
+            "Key Formatting",
+            "Key Generation",
+            "Keygen",
+            "Validation",
+            "Final Answer"
+        ],
+        "snippet": "`Cr4ckM3.exe` is a Windows x64 GUI crackme that mimics a Windows activation dialog. The native executable is mainly a .NET host. The real activation logic is..."
+    },
+    {
+        "title": "ZWARE Writeup",
+        "path": "_source_crackmesone/ZWARE/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Reverse execution of the recovered bytecode script"
+        ],
+        "snippet": "Writeup: MAS's ZWARE - Custom VM Architecture Reversing 1. Challenge Overview Platform: crackmes.one Difficulty: Tier 4 Protection Mechanisms: Custom Virtual..."
+    },
+    {
+        "title": "A Matter of Time",
+        "path": "_source_crackmesone/A_MatterOfTime/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Supported OS",
+            "Architecture",
+            "Language",
+            "Flag",
+            "Hash"
+        ],
+        "snippet": "Encrypted flag with AES-CBC-128, the key being the discoverable username and the IV being an amalgamated value from UNIX decimal timestamps. Requires educated brute force."
+    },
+    {
+        "title": "Fatmike Crackme #02",
+        "path": "_source_crackmesone/Fatmike_02/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Supported OS",
+            "Architecture",
+            "Language",
+            "Flag"
+        ],
+        "snippet": "The RE has to find the button handler of the play button and apply two patches: both mov dl,1 instructions must be patched to mov dl,0 to reveal the flag."
+    },
+    {
+        "title": "Matryoshka v2",
+        "path": "_source_crackmesone/Matryoshka v2/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Flag"
+        ],
+        "snippet": "Just like the nested Russian dolls after which this challenge is named, the deeper you dig, the more layers you will uncover. Multilayered unpacking challenge."
+    },
+    {
+        "title": "What did you type",
+        "path": "_source_crackmesone/What did you type/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Flag"
+        ],
+        "snippet": "An automotive security startup had its garage breached. Analyze the captured logs from the forensic agent to find out what was taken."
+    },
+    {
+        "title": "connected",
+        "path": "_source_crackmesone/connected/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackmes_one_ctf",
+            "Challenge description",
+            "The flag",
+            "About the challenge",
+            "The intended solution",
+            "Functionality for the other computers",
+            "Building"
+        ],
+        "snippet": "No matter where you go, everybody is connected. A network simulation crackme involving PCs, routers and switches communicating at L2/L3 levels with custom protocols."
+    },
+    {
+        "title": "cryptpad",
+        "path": "_source_crackmesone/cryptpad/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "cryptpad — crackmes.one RE CTF 2026",
+            "Challenge Description",
+            "Challenge Files",
+            "Solution"
+        ],
+        "snippet": "A cryptography-focused crackme challenge from the crackmes.one RE CTF 2026. Analyze the binary and recover the hidden flag through reverse engineering."
+    },
+    {
+        "title": "httpd",
+        "path": "_source_crackmesone/httpd/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "httpd — crackmes.one RE CTF 2026",
+            "Challenge Description",
+            "Challenge Files",
+            "Solution"
+        ],
+        "snippet": "A network/HTTP-focused crackme from the crackmes.one RE CTF 2026. Involves analyzing an HTTP daemon binary to discover the flag. Full solution available as PDF."
+    },
+    {
+        "title": "moment",
+        "path": "_source_crackmesone/moment/solution.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "moment — crackmes.one RE CTF 2026",
+            "Challenge Description",
+            "Challenge Files",
+            "Solution"
+        ],
+        "snippet": "A time/moment-themed crackme from the crackmes.one RE CTF 2026. Likely involves timing-based or timestamp-dependent validation logic."
+    },
+    {
+        "title": "Running a VM-Hostile Crackme Inside a VM",
+        "path": "_source_crackmesone/$1K Reward - AntiVM Challenge/Crackme_Bounty_Writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Running a VM-Hostile Crackme Inside a VM",
+            "So I picked up a reversing bounty, and the challenge sounded simple enough:",
+            "First contact: IDA won't even open it",
+            "Recon: what are we even dealing with",
+            "The obfuscation",
+            "Ruling out the usual anti-VM",
+            "Dynamic analysis",
+            "The crash, and the rdtsc discovery",
+            "Dead ends",
+            "The self-hash wall",
+            "The environment defeat",
+            "The lesson",
+            "Going after the password",
+            "The target"
+        ],
+        "snippet": "\"Successfully execute this sample inside a VM and publish a technical blog explaining how you did it.\""
+    },
+    {
+        "title": "guardsman.exe Writeup",
+        "path": "_source_crackmesone/A real test for a professional/guardsman_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "guardsman.exe Writeup",
+            "Overview",
+            "Environment",
+            "Finding the Interesting Code",
+            "Embedded File Names",
+            "Understanding the Runtime Checks",
+            "Final Password Comparison",
+            "Verification",
+            "Conclusion"
+        ],
+        "snippet": "guardsman.exe is a 64-bit Windows crackme that asks for a password and prints"
+    },
+    {
+        "title": "Handout",
+        "path": "_source_crackmesone/A_MatterOfTime/Handout/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Architecture",
+            "Language"
+        ],
+        "snippet": "Some things only make sense at the right moment. Are you willing to step into the machine? (Password: crackmes.one)"
+    },
+    {
+        "title": "\"Almost\" (AI - Almost Impossible) - Reverse Engineering Writeup",
+        "path": "_source_crackmesone/AI - Almost Impossible/Almost-Impossible.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "\"Almost\" (AI - Almost Impossible) - Reverse Engineering Writeup",
+            "Table of Contents",
+            "1. Overview",
+            "2. Binary Profiling",
+            "3. Imported Libraries & Their Roles",
+            "3.1 libcrypto.so.3 (OpenSSL 3.0)",
+            "3.2 libpng16.so.16",
+            "3.3 libzbar.so.0",
+            "3.4 libX11.so.6",
+            "4. Application Architecture",
+            "4.1 Startup Flow (Main Function at 0x65f9)",
+            "4.2 Key GUI Controls",
+            "5. Target Generation Algorithm",
+            "Step 1: Random Scalar Generation (0x6a76)"
+        ],
+        "snippet": "3. Imported Libraries & Their Roles"
+    },
+    {
+        "title": "b.exe — CrackMe Reverse Engineering Writeup",
+        "path": "_source_crackmesone/aola/Yippie-Ki-Yay.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "b.exe — CrackMe Reverse Engineering Writeup",
+            "1. Initial Reconnaissance",
+            "2. Section Analysis",
+            "3. Anti-Analysis Techniques Identified",
+            "3.1 XOR String Encryption (Key: 0xAA)",
+            "3.2 SSE2 SIMD XOR Decryption",
+            "3.3 Dead-Code Hash Chain",
+            "3.4 Dynamic DLL Loading via TLS Callback",
+            "3.5 Indirect API Calls",
+            "3.6 XOR-Obfuscated Output Messages",
+            "3.7 Separate Helper Functions for Hash Operations",
+            "4. String Decryption — XOR 0xAA",
+            "4.1 Encrypted Data in .data Section",
+            "4.2 XOR Key"
+        ],
+        "snippet": "Running file on the binary reveals a standard 64-bit Windows console executable compiled with GCC:"
+    },
+    {
+        "title": "quick answer",
+        "path": "_source_crackmesone/ASMe _ ASM CrackMe/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "quick answer",
+            "summary",
+            "initial recon",
+            "api resolution",
+            "runtime string decoding",
+            "window procedure",
+            "anti-debug and multiplier setup",
+            "hidden check routine",
+            "self modifying stub",
+            "recovering the serial (oh boy)",
+            "keygen? pls gurneyburner i dont like using pXi8 i want something longer or cooler",
+            "GPU search for serials"
+        ],
+        "snippet": "gurneyburner52 back at it AGAIN with another banger today we will be attempting the fresh ASMe | ASM CrackMe"
+    },
+    {
+        "title": "Write-up BABELVM CrackMe by w33d",
+        "path": "_source_crackmesone/Babel/CRACKMES_ONE_WRITEUP.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Write-up BABELVM CrackMe by w33d",
+            "1. Challenge Overview",
+            "2. Analysis Environment",
+            "3. Tools Used",
+            "3. Analysis Phase",
+            "3.1 Input and Hashing",
+            "3.2 The Outer State Machine",
+            "3.3 The Virtual Machine Layer (The \"Babel\" Architecture)",
+            "The Primary VM (Register-based)",
+            "The Secondary VMs (Stack-based)",
+            "3.4 The Red Herrings",
+            "4. Solving Strategy: The Self-Solving Emulator",
+            "5. Keygen Implementation (Python)",
+            "6. Lessons Learned"
+        ],
+        "snippet": "Difficulty: Level 3-4 (Medium/Hard)"
+    },
+    {
+        "title": "CantCrack.exe",
+        "path": "_source_crackmesone/cantcrack/cantcrack_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CantCrack.exe"
+        ],
+        "snippet": "loaded it in ida. checked strings first cause thats always the easiest way. found the success and fail messages."
+    },
+    {
+        "title": "catgirl.crack",
+        "path": "_source_crackmesone/catgirl.crack/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "catgirl.crack"
+        ],
+        "snippet": "CatgirlCrack.dll is a .NET assembly. The only check is a case-insensitive String.Equals against:"
+    },
+    {
+        "title": "Writeup: \"obfuscated\" Crackme",
+        "path": "_source_crackmesone/choose-your-own-adventure/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Writeup: \"obfuscated\" Crackme",
+            "Overview",
+            "Tools Used",
+            "Initial Analysis",
+            "Architecture",
+            "Overcoming Anti-Debug",
+            "Decoding the Overlapping Instructions",
+            "Finding the Success Condition",
+            "Handler Classification",
+            "XOR Handlers (modify r12d)",
+            "ADD Handlers (modify r14d)",
+            "Stack Handlers (for r13d)",
+            "CHECK Handler (0x1401)",
+            "Other Handlers"
+        ],
+        "snippet": "The binary is a 64-bit Linux ELF that prompts for a serial number and prints \"correct serial number!\" or \"wrong serial number!\". It uses a ptrace-based virtual machine with overlapping instruction encoding (nanomites pattern) to validate..."
+    },
+    {
+        "title": "main90",
+        "path": "_source_crackmesone/Crack It!/main90.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "main90"
+        ],
+        "snippet": "Join my telegram channel - t.me/dimension59 for more reverse stuffs."
+    },
+    {
+        "title": "OMEGA CrackMe (2026 Edition) — Reverse Engineering Write-up",
+        "path": "_source_crackmesone/CrackMe By ZenithSouu/WRITEUP.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "OMEGA CrackMe (2026 Edition) — Reverse Engineering Write-up",
+            "Table of Contents",
+            "1. Introduction",
+            "2. Challenge Overview",
+            "3. Tooling & Environment",
+            "4. Initial Binary Analysis",
+            "4.1 File Identification",
+            "4.2 String Extraction",
+            "4.3 Interesting Wide Strings",
+            "5. PE Section Architecture",
+            "Section Analysis",
+            "6. Defense Mechanism Analysis",
+            "6.1 Early Detection & Sandbox Evasion (OMEGA Mode)",
+            "6.2 Ghost Dropper & Mutation"
+        ],
+        "snippet": "7. Bypassing the Anti-Analysis Layers"
+    },
+    {
+        "title": "Reversing the Key Check — Solution Walkthrough",
+        "path": "_source_crackmesone/CrackMe Hard/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Reversing the Key Check — Solution Walkthrough",
+            "1. Finding the Key Prompt in the Disassembly",
+            "2. Extracting the Validation Logic",
+            "3. Understanding How v7 Is Computed",
+            "4. Key Insight: The Last Character Can Be Solved Algebraically",
+            "5. Why This Means We Don’t Need Full Brute Force",
+            "6. Final Algorithm in Words",
+            "7. Result"
+        ],
+        "snippet": "While examining the binary in a disassembler (IDA, Ghidra, or similar), I searched for user‑facing strings to locate the key validation logic."
+    },
+    {
+        "title": "CFB1 — Crackmes for Beginners 1",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #1/CFB1.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB1 — Crackmes for Beginners 1",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "3. Locating the serial check",
+            "3.1 Finding the entry point",
+            "3.2 Tracing the verify call",
+            "4. Reversing the algorithm",
+            "4.1 Full disassembly of computeserial (0x1400066E0)",
+            "4.2 Algorithm in plain English",
+            "4.3 Why uppercase?",
+            "5. The keygen",
+            "6. Verification"
+        ],
+        "snippet": "Algorithm: Per-character transform: (index + 0x5A) XOR ord(char), add 0x13, mask to byte, format as uppercase hex."
+    },
+    {
+        "title": "CFB2 — Crackmes for Beginners 2",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #2/CFB2.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB2 — Crackmes for Beginners 2",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "3. Locating the maze in memory",
+            "3.1 Strategy",
+            "3.2 Scan result",
+            "4. Reversing the movement mechanics",
+            "4.1 WASD dispatch — disassembly @ 0x140006638",
+            "4.2 Bounds check",
+            "4.3 Cell check",
+            "5. Extracting and rendering the maze",
+            "6. BFS pathfinding"
+        ],
+        "snippet": "Challenge: Navigate a hidden 10×10 maze stored in .rdata — find the WASD path from (0,0) to (9,9)."
+    },
+    {
+        "title": "CFB3 — Crackmes for Beginners 3",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #3/CFB3.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB3 — Crackmes for Beginners 3",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "3. Locating the bytecode",
+            "3.1 Strategy",
+            "3.2 Scan result",
+            "4. Reversing the VM interpreter",
+            "4.1 Finding the dispatch loop",
+            "4.2 Full disassembly of the interpreter loop (0x140003780)",
+            "4.3 VM state (registers mapped to stack variables)",
+            "5. Instruction set architecture",
+            "6. Disassembling the bytecode"
+        ],
+        "snippet": "Architecture: Custom 9-opcode VM with 3-byte instructions; 40-instruction bytecode validates an 8-character password character-by-character."
+    },
+    {
+        "title": "CFB4 — Crackmes for Beginners 4",
+        "path": "_source_crackmesone/CrackmesForBeginners (CFB) #4/CFB4.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CFB4 — Crackmes for Beginners 4",
+            "TL;DR",
+            "1. Overview",
+            "2. Initial reconnaissance",
+            "2.1 File Identification",
+            "2.2 String Analysis",
+            "3. Locating the encryption routine",
+            "3.1 Finding the length check",
+            "3.2 The encryption loop entry point",
+            "4. Algorithm extraction",
+            "4.1 Byte 0 encryption sequence",
+            "4.2 Extracting all 13 encrypted target bytes",
+            "4.3 The CFB feedback mechanism",
+            "4.4 Position offsets extraction"
+        ],
+        "snippet": "Cipher: 3-rotor-like per-byte encryption with CFB (Ciphertext Feedback) state — but every operation is reversible and the encrypted target bytes are hardcoded in cmp instructions."
+    },
+    {
+        "title": "CrackMe3 Writeup",
+        "path": "_source_crackmesone/CrYP70NYM's CrackMe 3/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe3 Writeup",
+            "Overview",
+            "Step 1: Initial Reconnaissance",
+            "Step 2: Tracing the HWID Chain",
+            "Step 3: Identifying the HWID Gates",
+            "Step 4: Finding the OEP",
+            "Step 5: Understanding the Two-Phase CRT Startup",
+            "Step 6: Stolen Functions",
+            "Step 7: Key Validation Logic",
+            "Step 8: Key Generation (LCG)",
+            "Step 9: The Patch",
+            "Step 10: Keygen",
+            "Lessons Learned",
+            "Files"
+        ],
+        "snippet": "CrackMe3 is a 32-bit Windows GUI application protected with a custom packer/protector. The protector uses CPUID-based hardware fingerprinting (HWID) to lock the executable to a specific machine. The goals are:"
+    },
+    {
+        "title": "handout",
+        "path": "_source_crackmesone/cryptpad/handout/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "handout"
+        ],
+        "snippet": "We found this on an old machine. Can you decrypt it?"
+    },
+    {
+        "title": "OUT.exe — Static Reverse Engineering Writeup (No Execution)",
+        "path": "_source_crackmesone/Custom packed crackme/OUT-static-writeup-2026-02-25.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "OUT.exe — Static Reverse Engineering Writeup (No Execution)",
+            "1) Scope",
+            "2) Sample fingerprint",
+            "3) High-level architecture",
+            "4) Embedded footer and payload extraction",
+            "5) AES-GCM decryption layer (static)",
+            "Key derivation",
+            "6) LZMA2 decompression layer (static)",
+            "7) Inner checker logic recovery",
+            "Stage A",
+            "Stage B (global constraints)",
+            "Stage C (bytewise affine-xor relation)",
+            "Stage D (cross-byte consistency checks)",
+            "8) Recovered correct key"
+        ],
+        "snippet": "Method: Static-only (Binary Ninja + offline decoding/decompression + manual logic lift)"
+    },
+    {
+        "title": "DebugMe — Reverse Engineering Write-up",
+        "path": "_source_crackmesone/DebugMe/DebugMe.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "DebugMe — Reverse Engineering Write-up",
+            "Overview",
+            "1. Initial Reconnaissance",
+            "2. Disassembly — Full Control-Flow Analysis",
+            "2.1 main — Entry Point (0x10e0)",
+            "2.2 SIGFPE Handler (0x1319)",
+            "2.3 checktracerpid Helper (0x1259)",
+            "3. Solution Design",
+            "Execution trace with the solution",
+            "4. Why Other Approaches Fail",
+            "Running under GDB / strace",
+            "PID namespace (TracerPid = 1)",
+            "No intervention (plain execution)",
+            "5. Exploit Code"
+        ],
+        "snippet": "Target: DebugMe — 64-bit ELF PIE executable, stripped, dynamically linked (GCC 15.2.1)"
+    },
+    {
+        "title": "Rust Crackme Easy - Dynamic Analysis Writeup",
+        "path": "_source_crackmesone/Easy Rust crackme/Crackme_Easy_Rust.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Rust Crackme Easy - Dynamic Analysis Writeup",
+            "1. Introduction",
+            "2. Initial Analysis",
+            "3. Dynamic Analysis & Credential Extraction",
+            "3.1 Locating the Validation Logic",
+            "3.2 Register Inspection",
+            "3.3 Decoding Hex to ASCII",
+            "4. Execution Demo",
+            "5. Conclusion"
+        ],
+        "snippet": "Tools Used: x64dbg, PEAnalyzer (Custom Tool)"
+    },
+    {
+        "title": "VM",
+        "path": "_source_crackmesone/EasyVM/chall/VM.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "VM"
+        ],
+        "snippet": "CorpCons's EasyVM - original link to crackmes"
+    },
+    {
+        "title": "Enigma CrackMe v1.0 — Solution",
+        "path": "_source_crackmesone/Enigma CrackMe v1.0/SOLUTION.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Enigma CrackMe v1.0 — Solution",
+            "TL;DR",
+            "Binary layout",
+            "Obfuscation",
+            "derivekey — FNV-1a + post-mix",
+            "transform — register VM (not re-implemented)",
+            "Keygen strategy",
+            "Verified outputs",
+            "Files",
+            "Reversing notes / pitfalls"
+        ],
+        "snippet": "Serial format: XXXX-XXXX-XXXX-XXXX (16 hex digits, four 16-bit chunks)."
+    },
+    {
+        "title": "TihiyOmut's EZFTP ByTOMUT Writeup",
+        "path": "_source_crackmesone/EZFTP_ByTOMUT/TihiyOmut's EZFTP_ByTOMUT Writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Overview",
+            "Analysis",
+            "Solution",
+            "Conclusion"
+        ],
+        "snippet": "When the executable is launched, it prompts the user for a password. Entering an incorrect password results in an error message and the application immediately terminates."
+    },
+    {
+        "title": "Handout",
+        "path": "_source_crackmesone/Fatmike/Handout/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Supported OS",
+            "Architecture",
+            "Language"
+        ],
+        "snippet": "I am excited to share my 9th crackme, created for the very first CTF hosted by crackmes.one."
+    },
+    {
+        "title": "Fatmike",
+        "path": "_source_crackmesone/Fatmike/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Supported OS",
+            "Architecture",
+            "Language",
+            "Serial",
+            "Flag"
+        ],
+        "snippet": "JIT Decryption combined with Nanomites."
+    },
+    {
+        "title": "Handout",
+        "path": "_source_crackmesone/Fatmike_02/Handout/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Description",
+            "Supported OS",
+            "Architecture",
+            "Language"
+        ],
+        "snippet": "Something’s wrong with this record player - the music doesn’t sound quite right."
+    },
+    {
+        "title": "Reverse Engineering Writeup: ActivateMe.exe",
+        "path": "_source_crackmesone/Find The Key/Find-The-Key.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Reverse Engineering Writeup: ActivateMe.exe",
+            "Table of Contents",
+            "1. Challenge Overview",
+            "2. Target Analysis — PE File Structure",
+            "2.1 File Identification",
+            "2.2 Section Analysis",
+            "2.3 Import Table Analysis",
+            "2.4 Entry Point",
+            "3. Initial Reconnaissance",
+            "3.1 Strings Extraction",
+            "3.2 DWORD-Stored Characters",
+            "3.3 Preliminary Hypothesis Formation",
+            "4. Deep Dive: String Analysis",
+            "4.1 Regex Pattern Breakdown"
+        ],
+        "snippet": "Challenge Category: Reverse Engineering / Crackme"
+    },
+    {
+        "title": "crackme 4.exe Writeup",
+        "path": "_source_crackmesone/FirstCrackMe/crackme4_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackme 4.exe Writeup",
+            "Summary",
+            "Triage",
+            "Static Analysis",
+            "Validation",
+            "Answer"
+        ],
+        "snippet": "Target: /Users/singularity/Downloads/crackme 4.exe"
+    },
+    {
+        "title": "FlipVM",
+        "path": "_source_crackmesone/FlipVM/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "FlipVM",
+            "Flag",
+            "SourceCode",
+            "Compiler",
+            "VM",
+            "VSCodeSyntaxHighlighter",
+            "Solution",
+            "patch.py",
+            "unmutate.py",
+            "Kuznyechik"
+        ],
+        "snippet": "The compiler of virtual plaintext code (.ptf) into virtual binary code (.flp)."
+    },
+    {
+        "title": "FlipVM crackme writeup",
+        "path": "_source_crackmesone/FlipVM/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "FlipVM crackme writeup",
+            "Result",
+            "Files",
+            "VM level idea",
+            "Keygen",
+            "Patch",
+            "Why this works"
+        ],
+        "snippet": "The challenge contains a tiny custom loader/interpreter and a bytecode file named code.flp."
+    },
+    {
+        "title": "FLRSCRNSVR",
+        "path": "_source_crackmesone/FLRSCRNSVR/FLRSCRNSVR/FLRSCRNSVR.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "FLRSCRNSVR"
+        ],
+        "snippet": "Purpose : Understand FLRSCRNSVR.SRC Execution Flow and Get Flag"
+    },
+    {
+        "title": "FLRSCRNSVR.SCR",
+        "path": "_source_crackmesone/FLRSCRNSVR/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "FLRSCRNSVR.SCR",
+            "Submission details",
+            "Flag"
+        ],
+        "snippet": "The challenge binary is a Windows screensaver that contains light anti-analysis components. The screensaver configuration mode (/c) sets the registry value (the flag) that is decoded during regular screensaver execution."
+    },
+    {
+        "title": "Crackme.exe writeup",
+        "path": "_source_crackmesone/Hard CME 2/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Crackme.exe writeup",
+            "summary",
+            "target files",
+            "tools used",
+            "first observations",
+            "binary triage",
+            "useful strings",
+            "main function overview",
+            "file loading structure",
+            "layer decode function",
+            "reproducing the decode",
+            "why those bytes are the key",
+            "verification",
+            "anti-debug notes"
+        ],
+        "snippet": "this was solved without patching the binary. the key was recovered by statically analyzing how Crackme.exe reads and decodes the three data files in j/, d/, and k/, then verified by running the program normally and entering the recovered..."
+    },
+    {
+        "title": "CrackMe One Writeup",
+        "path": "_source_crackmesone/Hard CME/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe One Writeup",
+            "Metadata",
+            "Summary",
+            "Triage",
+            "Input Validation",
+            "Algorithm",
+            "Validation"
+        ],
+        "snippet": "Target: /Users/singularity/Downloads/crack/crackme.exe"
+    },
+    {
+        "title": "KeygenMe 1 Writeup - Hecliet (2026-03-17)",
+        "path": "_source_crackmesone/hekliet keygenme #1/keygenme_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "KeygenMe 1 Writeup - Hecliet (2026-03-17)",
+            "Introduction",
+            "Initial Analysis",
+            "Binary Information",
+            "Program Behavior",
+            "Reverse Engineering with Ghidra",
+            "Key Functions Identified",
+            "Main Function Analysis",
+            "Name Processing Function",
+            "Key Validation Function",
+            "Mathematical Analysis",
+            "Factoring the Expression",
+            "The Quadratic Connection",
+            "Solution: Quadratic Formula"
+        ],
+        "snippet": "This writeup documents my approach to solving Hecliet's KeygenMe 1 challenge. The goal was to reverse engineer the key validation algorithm and create a keygen that generates valid serial keys for any given username."
+    },
+    {
+        "title": "deo's High cortisol",
+        "path": "_source_crackmesone/High cortisol/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "deo's High cortisol",
+            "summary",
+            "target",
+            "first look",
+            "finding the real code",
+            "unpacking the copied payload",
+            "the rsa check",
+            "small recovery script",
+            "validation",
+            "notes"
+        ],
+        "snippet": "running the program with that key prints:"
+    },
+    {
+        "title": "handout",
+        "path": "_source_crackmesone/httpd/handout/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "handout"
+        ],
+        "snippet": "This file was found on an infected host. Can you figure out what it does?"
+    },
+    {
+        "title": "crackmeh.exe — Writeup",
+        "path": "_source_crackmesone/impossible console crack me/crackmeh_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackmeh.exe — Writeup",
+            "Overview",
+            "Step 1 — Initial Triage",
+            "Step 2 — Discovering the Trailer",
+            "Step 3 — Reversing the Encryption Algorithm",
+            "Step 4 — Decryption and Verification",
+            "Step 5 — Analyzing the Inner Crackme",
+            "Step 6 — Finding the Password",
+            "Solution",
+            "Automated Solver",
+            "Artifacts Included"
+        ],
+        "snippet": "Category: Reverse Engineering / Unpacking"
+    },
+    {
+        "title": "InputPrinter writeup",
+        "path": "_source_crackmesone/InputPrinter/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "InputPrinter writeup",
+            "Program behavior",
+            "Static analysis"
+        ],
+        "snippet": "Crackme ID: 69fc5a3a3fba64e45dcea9ed"
+    },
+    {
+        "title": "flag.wasm Writeup",
+        "path": "_source_crackmesone/JavyFlag/flag_wasm_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "flag.wasm Writeup",
+            "Summary",
+            "Metadata",
+            "Environment",
+            "Triage",
+            "WASM Section Inspection",
+            "Data Segment Analysis",
+            "Extraction Script",
+            "Conclusion"
+        ],
+        "snippet": "The challenge file is a WebAssembly module built with Javy. The flag is embedded near the end of the module in the final data segment, close to the marker string flagencodedhexbytes."
+    },
+    {
+        "title": "jormungandr Crackme Writeup",
+        "path": "_source_crackmesone/Jörmungandr/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "jormungandr Crackme Writeup",
+            "Summary",
+            "Files",
+            "Dynamic Resolver",
+            "Parent Check",
+            "Decoy Serial",
+            "Anti-Debug and SMC",
+            "VM Key Recovery",
+            "Modular Division",
+            "Real Serial Gate",
+            "Payload Validation",
+            "Success Hash"
+        ],
+        "snippet": "The visible serial 1331D66091E9E2E5 is a decoy. It prints DONE, then starts"
+    },
+    {
+        "title": "karity-crackme-B writeup",
+        "path": "_source_crackmesone/karity-crackme-B/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "karity-crackme-B writeup",
+            "First look",
+            "The cipher (sub1400011F0)",
+            "First plan: linear system",
+            "The trap: the exp table is wrong",
+            "Wrong turns",
+            "The encoding that worked",
+            "Takeaways"
+        ],
+        "snippet": "I finally finished this one. The journey was a bit sweet though, especially that \"looks-standard-but-isn't\" GF(2^8) table in the middle gave me a real headache. Burned a few hours chasing a wrong assumption. Writing up my notes in case i..."
+    },
+    {
+        "title": "CrackMe.exe Reverse Engineering Writeup",
+        "path": "_source_crackmesone/Keygen Crackme/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe.exe Reverse Engineering Writeup",
+            "Challenge Overview",
+            "Phase 1: Initial Reconnaissance",
+            "1.1 File Discovery and Basic Properties",
+            "1.2 PE Structure Analysis",
+            "1.3 String Extraction",
+            "Phase 2: Capability and Behavior Triage",
+            "2.1 Static Capability Analysis",
+            "2.2 Sandbox Simulation",
+            "Phase 3: Attempts at Dynamic Analysis",
+            "3.1 Frida Instrumentation (Failed)",
+            "3.2 PowerShell Redirect (Failed)",
+            "3.3 Reading the Local MachineGuid",
+            "Phase 4: Deep Static Analysis with Ghidra"
+        ],
+        "snippet": "We were given a single Windows executable file, CrackMe.exe, with the goal of reverse engineering its verification code algorithm, building a working keygen, and producing a valid verification code for the target machine."
+    },
+    {
+        "title": "KeyGenMe.exe - Reverse Engineering Writeup",
+        "path": "_source_crackmesone/KeyGenMe!/KeyGenMe.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "KeyGenMe.exe - Reverse Engineering Writeup",
+            "Table of Contents",
+            "1. Overview",
+            "2. Initial Reconnaissance",
+            "2.1 File Identification",
+            "2.2 Notable Imports",
+            "2.3 String Analysis",
+            "3. Entry Point & Main Function",
+            "3.1 High-Level Control Flow",
+            "4. Deep Analysis: The Hash Function",
+            "4.1 SHA-256 Verification",
+            "4.2 Hash Function Prototype",
+            "4.3 Hash-to-Hex Formatting",
+            "5. Deep Analysis: The Key Transformation"
+        ],
+        "snippet": "4. Deep Analysis: The Hash Function"
+    },
+    {
+        "title": "KeygenMe3SWD — Reverse Engineering Writeup",
+        "path": "_source_crackmesone/KeygenMe_3_SWD/KeygenMe_3_SWD.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "KeygenMe3SWD — Reverse Engineering Writeup",
+            "TL;DR",
+            "1. Overview",
+            "2. Methodology",
+            "3. Program flow (main interactive routine)",
+            "4. Username constraints",
+            "5. Secret code — syntactic gate (FUN140001ec0)",
+            "6. Secret code — semantic validation (FUN140002100)",
+            "6.1 Username statistics",
+            "6.2 Segment targets (32-bit integers)",
+            "6.3 Base-36 decoding (FUN140001ff0)",
+            "6.4 Equality checks",
+            "6.5 Encoding a valid secret for a username",
+            "7. Verification PIN — input parsing (FUN140001f80)"
+        ],
+        "snippet": "The PIN check XORs two 32-bit words derived from FUN1400028d0. That transform is injective on 32 bits, so the PIN must match the hash exactly."
+    },
+    {
+        "title": "leetechochamber - writeup",
+        "path": "_source_crackmesone/Leet Echo Chamber/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "leetechochamber - writeup",
+            "first look",
+            "what input does it want",
+            "the rabbit hole",
+            "the constant",
+            "the math",
+            "the test",
+            "the joke",
+            "stuff I didn't do",
+            "reference"
+        ],
+        "snippet": "so this one's the followup to whatever the author's previous crackme was. the description says \"find the elite superior number that will reflect itself into the result\" which is just a fancy way of saying \"find a fixed point of this hash..."
+    },
+    {
+        "title": "luv4u Crackme Writeup",
+        "path": "_source_crackmesone/luv4u/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "luv4u Crackme Writeup",
+            "Overview",
+            "Tools Used",
+            "Static Analysis",
+            "Finding main",
+            "Function Discovery",
+            "Anti Debug / Anti Tamper Layers",
+            "License Generation (generatelicense at 0x1038d0)",
+            "S Box Construction (initsboxtables at 0x101a10)",
+            "Hash Function (hashinput at 0x103990)",
+            "Validation (validatelicense at 0x103ba0)",
+            "The VM Architecture",
+            "Solution Strategy",
+            "Bypassing Anti Debug"
+        ],
+        "snippet": "luv4u is a Linux x8664 PIE binary that generates a random 32 character uppercase license key, asks you to enter it, and validates your input. After three wrong attempts it generates a new license. The binary packs multiple anti debug and..."
+    },
+    {
+        "title": "CrackMe \"MCM v2.0\" — Detailed Writeup",
+        "path": "_source_crackmesone/MCM 2.0/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe \"MCM v2.0\" — Detailed Writeup",
+            "Overview",
+            "Step 1 — Initial Reconnaissance",
+            "Entry Point & main()",
+            "String Search",
+            "Step 2 — TLS Anti-Debug Callback",
+            "Step 3 — Parent Process Analysis (sub140011400)",
+            "API Resolution",
+            "Debug Event Loop",
+            "The \"int 3\" Trap — sub1400161F0",
+            "Step 4 — Child Process Flow",
+            "4.1 — VM Call 1: GetCurrentProcessId",
+            "4.2 — Password Input",
+            "4.3 — Anti-Debug Register Check"
+        ],
+        "snippet": "This is my walkthrough for the MCM v2.0 CrackMe. The binary is a 64-bit Windows PE (CrackMe.exe) that employs several advanced protection layers:"
+    },
+    {
+        "title": "handout",
+        "path": "_source_crackmesone/moment/handout/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "handout"
+        ],
+        "snippet": "A Windows CTF for anyone interested in dealing with a binary that requires a mixed approach and circumventing various anti-tamper mechanisms. Should be pretty straightforward to do once you do some initial RE."
+    },
+    {
+        "title": "Lösung",
+        "path": "_source_crackmesone/My First Crackme/billy_bats_My_First_Crackme.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Lösung",
+            "Zusammenfassung",
+            "Solution",
+            "Summary"
+        ],
+        "snippet": "Die folgende Liste ist nach den Schritten in chronologischer Reihenfolge aufgeschrieben"
+    },
+    {
+        "title": "NeuroVault Crackme Write-Up",
+        "path": "_source_crackmesone/NeuroVault/neurovault_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "NeuroVault Crackme Write-Up",
+            "Entry Point and Runtime Setup",
+            "Dispatcher",
+            "Decoy Check",
+            "Real Validator",
+            "Final Serial"
+        ],
+        "snippet": "The apparent entry point only performs CRT/runtime initialization and then eventually reaches the program controller."
+    },
+    {
+        "title": "SimpleCrackMeForBeginnersByKakao Writeup",
+        "path": "_source_crackmesone/NiTiNOL CrackMe/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "SimpleCrackMeForBeginnersByKakao Writeup",
+            "Summary",
+            "Metadata",
+            "Initial Behavior",
+            "Unpacking",
+            "Checker Structure",
+            "Digest Recovery",
+            "Validation",
+            "Final Answer"
+        ],
+        "snippet": "The correct key is an 8-byte non-printable byte string:"
+    },
+    {
+        "title": "summary",
+        "path": "_source_crackmesone/P4r4d0x of the P4l4nt1r/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "summary",
+            "target identifiers",
+            "static triage",
+            "validation notes",
+            "false trail",
+            "bytecode steering",
+            "validation run",
+            "reproduction steps",
+            "unresolved notes"
+        ],
+        "snippet": "the target is p0tp.exe, a pe64 crackme with a custom vm. i found an accepted pair of byte-string keys that makes the unmodified program print the success line and the flag buffer. the path i used is not a binary patch. it uses the fact t..."
+    },
+    {
+        "title": "vmcrackme.exe Writeup",
+        "path": "_source_crackmesone/Pandora VM/vm_crackme_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "vmcrackme.exe Writeup",
+            "Result",
+            "Target Overview",
+            "IDA Triage",
+            "Finding the Decisive Comparison",
+            "Emulation Pass",
+            "Real-Process Debugging",
+            "Verification",
+            "Takeaways"
+        ],
+        "snippet": "The crackme accepts one unsigned 64-bit password:"
+    },
+    {
+        "title": "CrackMe.obf.exe Writeup",
+        "path": "_source_crackmesone/Password (Obfusacted)/crackme_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CrackMe.obf.exe Writeup",
+            "Initial Triage",
+            "Self-decryption stub",
+            "Finding the User-Facing Logic",
+            "The Validation Loop",
+            "Table bytes",
+            "Recovering the Password",
+            "Important Bug: Prefixes Also Pass",
+            "Runtime Confirmation",
+            "Optional Easy Goal: Always Print Correct",
+            "Final Answer"
+        ],
+        "snippet": "The first pass in IDA was intentionally misleading:"
+    },
+    {
+        "title": "PhantomGate v1.0 Writeup By lbx",
+        "path": "_source_crackmesone/PhantomGate/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "PhantomGate v1.0 Writeup By lbx",
+            "Overview",
+            "Input Parsing",
+            "VM Check",
+            "Solver",
+            "Verification"
+        ],
+        "snippet": "The binary asks for a serial in this format:"
+    },
+    {
+        "title": "Prometheora — Reverse Engineering Writeup",
+        "path": "_source_crackmesone/Prometheora/prometheora_writeup/prometheora_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Prometheora — Reverse Engineering Writeup",
+            "1. Executive Summary",
+            "2. Binary Triage",
+            "3. Control-Flow Overview",
+            "3.1 Front-end input handler",
+            "3.2 Core verifier",
+            "4. Deterministic Validation Core (sub439610)",
+            "5. Stage-by-Stage Constraints",
+            "5.1 Format and character class (sub4396a0)",
+            "5.2 Positional constraints + 4-byte tail hash (sub439840 + sub439888)",
+            "5.3 Whole-key keyed hash checks (sub4398e0, sub439950, sub4399c0)",
+            "5.4 4×7-byte segment checks (sub439a30)",
+            "5.5 Polynomial fingerprint stage (sub439be0)",
+            "6. Additional High-Complexity Gate (sub435a20)"
+        ],
+        "snippet": "Target: prometheora (ELF64, stripped)"
+    },
+    {
+        "title": "razkomv1.1 by RAZKOM - \\url\\(https://crackmes.one/crackme/69968b7589af4192123d7aad)",
+        "path": "_source_crackmesone/razkom_v1.1/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "razkomv1.1 by RAZKOM - \\url\\(https://crackmes.one/crackme/69968b7589af4192123d7aad)",
+            "Running the Executable",
+            "Program Analysis",
+            "Program Summary",
+            "Keygen"
+        ],
+        "snippet": "Goal: Reverse engineer the key validation algorithm and either find a valid key"
+    },
+    {
+        "title": "Tooling & Environment",
+        "path": "_source_crackmesone/RE02/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Tooling & Environment",
+            "Defeating the Anti-Disassembly Traps (Opaque Predicates)",
+            "Bypassing the Dynamic Anti-Debug Trap:",
+            "Constraint"
+        ],
+        "snippet": "The author utilized a classic x86 variable-length instruction exploit to desynchronize static analysis tools. The pattern consisted of two complementary conditional jumps"
+    },
+    {
+        "title": "selfkey Writeup",
+        "path": "_source_crackmesone/selfkey/selfkey-writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "selfkey Writeup",
+            "Metadata",
+            "Result",
+            "Triage",
+            "Main Function",
+            "Password Generation Function",
+            "Solving",
+            "Runtime Verification",
+            "Final Answer"
+        ],
+        "snippet": "Source: https://github.com/opmr0/selfkey"
+    },
+    {
+        "title": "Simple Crackme by marco007 - \\url\\(https://crackmes.one/crackme/698a6214fb46458f1ef6cef5)",
+        "path": "_source_crackmesone/simple crackme/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Simple Crackme by marco007 - \\url\\(https://crackmes.one/crackme/698a6214fb46458f1ef6cef5)",
+            "Running the Executable",
+            "Program Analysis",
+            "Program Summary",
+            "Patch",
+            "Keygen"
+        ],
+        "snippet": "Password validation with basic obfuscation"
+    },
+    {
+        "title": "crackmegoodlucklol — Writeup",
+        "path": "_source_crackmesone/Simple Password Check/writeup_en.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "crackmegoodlucklol — Writeup",
+            "First Look",
+            "How main works",
+            "The Check Function — 8KB of Chaos",
+            "Extracting the Password",
+            "Result",
+            "Summary"
+        ],
+        "snippet": "We're greeted with a classic prompt:"
+    },
+    {
+        "title": "SimpleCrackme.exe - Reverse Engineering Writeup",
+        "path": "_source_crackmesone/SimpleCrackMe/SimpleCrackme_Writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "SimpleCrackme.exe - Reverse Engineering Writeup",
+            "1. Introduction",
+            "2. Initial Reconnaissance",
+            "2.1 File Identification",
+            "2.2 Basic Execution Test",
+            "3. Static Analysis",
+            "3.1 PE Structure Analysis",
+            "3.2 String Search",
+            "3.3 Understanding the Construction Logic",
+            "4. Verification",
+            "4.1 Testing the Candidate Password",
+            "4.2 Success Confirmation",
+            "5. Technical Details",
+            "5.1 Why Fragment Storage?"
+        ],
+        "snippet": "Tools Used: Static Analysis (hex dump, disassembly), Dynamic Testing"
+    },
+    {
+        "title": "aj21h's Spaghetti",
+        "path": "_source_crackmesone/Spaghetti/aj21h_spaghetti_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "aj21h's Spaghetti",
+            "Unpacking",
+            "VM",
+            "Finding the gate",
+            "Constraints",
+            "Verifying against the original"
+        ],
+        "snippet": "(I stink at writing, AI sanity explanation)"
+    },
+    {
+        "title": "OpenWiredSource's The Wired",
+        "path": "_source_crackmesone/The Wired/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "OpenWiredSource's The Wired",
+            "Program behaviour",
+            "File analysis"
+        ],
+        "snippet": "Also program creates .png file in current directory. On picture we can see anime character Lain from \"Experiments Lain\""
+    },
+    {
+        "title": "Write-up: TurbineControl.exe KeyGenMe",
+        "path": "_source_crackmesone/Turbine Control KeyGenMe/KeyGenMe/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Write-up: TurbineControl.exe KeyGenMe",
+            "1. Challenge Overview",
+            "2. Initial Analysis",
+            "3. Reversing the Validation Logic",
+            "Part 1: XXXX (HWID-Based Mapping)",
+            "Part 2: YYYY (Chained Substitution)",
+            "Part 3: ZZZZ (Arithmetic Constraints)",
+            "Part 4: WWWW (Polynomial Hash)",
+            "4. KeyGen Implementation",
+            "5. Conclusion"
+        ],
+        "snippet": "The TurbineControl.exe challenge is a Windows KeyGenMe centered around an industrial SCADA/monitoring theme. Upon execution, the program generates a dynamic 5-character Hardware ID (HWID) and requires a 16-character license key in the fo..."
+    },
+    {
+        "title": "UCan'tPass",
+        "path": "_source_crackmesone/U Can't Pass/U_Cant_Pass.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "UCan'tPass",
+            "Initial Analysis:"
+        ],
+        "snippet": "Using gdb to disassemble main, we get the following disassembly:"
+    },
+    {
+        "title": "CTF Writeup: a.out — Brainfuck in Disguise",
+        "path": "_source_crackmesone/Use your brain/Brain-Fuck.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "CTF Writeup: a.out — Brainfuck in Disguise",
+            "Table of Contents",
+            "Challenge Overview",
+            "Initial Reconnaissance",
+            "File Analysis",
+            "Strings & Imports",
+            "Running the Binary",
+            "Deep Reverse Engineering",
+            "Step 1: Disassembly Overview",
+            "Step 2: Identifying the Core Data Model",
+            "Step 3: Recognizing Obfuscation Patterns",
+            "Pattern 1: usleep(0) — Timing Noise",
+            "Pattern 2: getpid() + Sign Check — Dead Code",
+            "Pattern 3: XOR with 0xDEADBEEF — Junk Computation"
+        ],
+        "snippet": "Step 2: Identifying the Core Data Model"
+    },
+    {
+        "title": "Call Path: main → CheckPassword",
+        "path": "_source_crackmesone/VaultBreaker/vault_breaker_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Call Path: main → CheckPassword",
+            "CheckPassword Decompiled (0x1038a0)",
+            "The Encoded Table",
+            "Solution"
+        ],
+        "snippet": "main creates a QApplication and a MainWindow, then enters the Qt event loop. The constructor at 0x103d10 wires both the button's clicked signal and the line-edit's returnPressed signal to the same slot — OnUnlockClicked — via QObject::co..."
+    },
+    {
+        "title": "Crackmes.one RE CTF 2026 - wallpaper",
+        "path": "_source_crackmesone/wallpaper/README.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Crackmes.one RE CTF 2026 - wallpaper"
+        ],
+        "snippet": "This is a 15-puzzle over hex nibbles."
+    },
+    {
+        "title": "Cr4ckM3 Writeup",
+        "path": "_source_crackmesone/winkeygenme/Cr4ckM3_writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "Cr4ckM3 Writeup",
+            "Summary",
+            "Target",
+            "Triage",
+            "Activation Handler",
+            "Key Formatting",
+            "Key Generation",
+            "Keygen",
+            "Validation",
+            "Final Answer"
+        ],
+        "snippet": "Cr4ckM3.exe is a Windows x64 GUI crackme that mimics a Windows activation dialog. The native executable is mainly a .NET host. The real activation logic is inside an embedded .NET assembly named Cr4ckM3.dll."
+    },
+    {
+        "title": "X-0-R by stevemaxwell - \\url\\(https://crackmes.one/crackme/6976041d9bf7b8997653a6cf)",
+        "path": "_source_crackmesone/X-0-R/writeup.md",
+        "category": "Reverse Engineering",
+        "origin": "crackmes.one",
+        "headings": [
+            "X-0-R by stevemaxwell - \\url\\(https://crackmes.one/crackme/6976041d9bf7b8997653a6cf)",
+            "Running the Executable",
+            "Program Analysis",
+            "Program Summary",
+            "Solution"
+        ],
+        "snippet": "Every byte has been nudged in the same way. Reversing the process is easier than"
     }
 ]
