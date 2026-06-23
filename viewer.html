@@ -394,6 +394,53 @@
         padding: 18px 0 0;
       }
     }
+
+    .similar-panel {
+      margin-top: 24px;
+    }
+    
+    .similar-link-card {
+      display: block;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .similar-link-card:hover {
+      border-color: var(--accent);
+      background: var(--panel-2);
+    }
+    
+    .similar-title {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    
+    .similar-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    
+    .similar-tag-pill {
+      font-size: 0.65rem;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: rgba(92, 242, 169, 0.1);
+      border: 1px solid rgba(92, 242, 169, 0.2);
+      color: var(--accent);
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -423,9 +470,14 @@
 
   <main>
     <article id="content" class="status">Loading Markdown...</article>
-    <aside aria-label="Table of contents">
+    <aside aria-label="Table of contents and related pages">
       <h2>On This Page</h2>
       <nav id="toc"></nav>
+      
+      <div class="similar-panel" id="similar-panel" hidden>
+        <h2 style="margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--line);">Similar Challenges</h2>
+        <div class="similar-links" id="similar-links"></div>
+      </div>
     </aside>
   </main>
 
@@ -519,10 +571,82 @@
         content.innerHTML = DOMPurify.sanitize(html);
         rewriteMarkdownLinks(filePath);
         renderToc();
+        loadRecommendations(filePath);
       } catch (error) {
         content.className = "status";
         content.textContent = `Could not load ${filePath}: ${error.message}`;
       }
+    }
+
+    async function loadRecommendations(currentPath) {
+      const normalizedCurrent = normalizePath(currentPath).toLowerCase();
+      try {
+        const res = await fetch('writeups-index.json');
+        if (!res.ok) return;
+        const index = await res.json();
+        
+        // Find current writeup in the index to get its tags & category
+        const currentItem = index.find(item => normalizePath(item.path).toLowerCase() === normalizedCurrent);
+        if (!currentItem) return;
+        
+        const currentTags = currentItem.tags || [];
+        const currentCategory = currentItem.category;
+        
+        // Score all other writeups by tag overlap & category match
+        const recommendations = index
+          .filter(item => normalizePath(item.path).toLowerCase() !== normalizedCurrent)
+          .map(item => {
+            let score = 0;
+            if (item.category === currentCategory) {
+              score += 15;
+            }
+            if (item.tags && currentTags.length > 0) {
+              const intersection = item.tags.filter(t => currentTags.includes(t));
+              score += intersection.length * 10;
+            }
+            return { item, score };
+          })
+          .filter(rec => rec.score > 0)
+          .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title))
+          .slice(0, 4);
+          
+        const panel = document.getElementById('similar-panel');
+        const container = document.getElementById('similar-links');
+        
+        if (recommendations.length > 0) {
+          container.innerHTML = recommendations.map(rec => {
+            const item = rec.item;
+            const displayTitle = item.context_title || item.title.replace(/\*\*/g, '').replace(/\|\|/g, '').replace(/::/g, '').replace(/::.*/, '').trim();
+            const tagString = item.tags && item.tags.length > 0 
+              ? `<span class="similar-tag-pill">${escapeHtml(item.tags[0])}</span>`
+              : '';
+            return `
+              <a class="similar-link-card" href="viewer.html?file=${encodeURIComponent(item.path)}">
+                <span class="similar-title">${escapeHtml(displayTitle)}</span>
+                <span class="similar-meta">
+                  <span>${escapeHtml(item.origin)} &bull; ${escapeHtml(item.category)}</span>
+                  ${tagString}
+                </span>
+              </a>
+            `;
+          }).join('');
+          panel.hidden = false;
+        } else {
+          panel.hidden = true;
+        }
+      } catch (err) {
+        console.error('Failed to load recommendations:', err);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     copyLink.addEventListener("click", async () => {
