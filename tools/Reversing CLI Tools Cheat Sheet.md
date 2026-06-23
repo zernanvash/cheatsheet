@@ -255,7 +255,12 @@ Use Python to parse PBM/bitmap rows and recover bit order; see [REV Python Toolk
 | trace libc calls | `ltrace` |
 | patch bytes | Python, Vim+xxd, Ghidra/Scalpel |
 | Python bytecode | `dis`, uncompyle/decompyle, PyLingual |
-| APK/JAR | `jadx`, `javap` |
+| Python decompiler | `pycdc`, `python-exe-unpacker` |
+| APK/JAR / Android RE | `jadx`, `javap`, `apk.sh`, `Apktool`, `ReverseAPK` |
+| JS deobfuscation | `synchrony` |
+| Hex editing | `ImHex`, `hexedit`, Vim+xxd |
+| Malware sandbox | `Limon`, `DRAKVUF Sandbox`, `Freki`, `Aleph` |
+| Emulation / DBI | `qiling`, `QBDI` |
 | WASM | WABT |
 | constraints | Z3, NumPy |
 | pwn | pwntools, ROPgadget, ropper |

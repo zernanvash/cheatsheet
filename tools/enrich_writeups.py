@@ -261,7 +261,8 @@ def main():
             "headings": w.get("headings", []),
             "snippet": w.get("snippet", ""),
             "summary": summary,
-            "tags": tags
+            "tags": tags,
+            "text": content
         }
         if context_title:
             enriched_item["context_title"] = context_title
