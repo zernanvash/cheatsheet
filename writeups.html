@@ -278,6 +278,104 @@
     .chip[data-cat="forensics"]{ --chip-color: var(--color-forensics); --chip-bg: rgba(20,184,166,0.1); --chip-glow: rgba(20,184,166,0.15); }
     .chip[data-cat="general"]  { --chip-color: var(--color-reporting); --chip-bg: rgba(100,116,139,0.1); --chip-glow: rgba(100,116,139,0.15); }
 
+    /* ─── Concept Explorer ───────────────────────────── */
+    .concept-filter-bar {
+      margin-bottom: 28px;
+    }
+
+    .concept-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .concept-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .concept-pill:hover {
+      border-color: rgba(92, 242, 169, 0.3);
+      color: var(--text);
+      background: rgba(92, 242, 169, 0.03);
+    }
+
+    .concept-pill.active {
+      color: #fff;
+      border-color: var(--accent);
+      background: rgba(92, 242, 169, 0.08);
+      box-shadow: 0 0 8px rgba(92, 242, 169, 0.1);
+    }
+
+    .concept-count {
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    .concept-pill.active .concept-count {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    /* ─── Card Title context & Tags ───────────────────── */
+    .card-title-context {
+      display: block;
+      margin-bottom: 2px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+      transition: color 0.2s;
+    }
+
+    .card-title-sub {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 7px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 12px;
+    }
+
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tag-badge:hover {
+      border-color: var(--accent);
+      background: rgba(92, 242, 169, 0.05);
+      color: var(--accent);
+    }
+
     /* ─── Main Layout ─────────────────────────────────── */
     .dashboard-layout {
       display: grid;
@@ -656,6 +754,14 @@
       </div>
     </div>
 
+    <!-- ─── Technical Concepts (below categories) ── -->
+    <div class="concept-filter-bar" aria-label="Filter by technical concept">
+      <div class="category-filter-label">Technical Concepts (Target-Centric)</div>
+      <div class="concept-tags" id="concept-tags-container">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
     <!-- ─── Main Layout ───────────────────────── -->
     <div class="dashboard-layout">
 
@@ -752,6 +858,7 @@
     let filteredWriteups = [];
     let selectedCat    = 'all';   // stored as short key: 'rev','machine',etc.
     let selectedOrigin = 'all';   // stored as raw origin string: 'HackMyVM', etc.
+    let selectedConcept = 'all';  // stored as tag string e.g. 'WordPress'
     let searchQuery    = '';
     let visibleCount   = 30;
 
@@ -822,12 +929,66 @@
         const res = await fetch('writeups-index.json');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         allWriteups = await res.json();
+        populateConceptExplorer(allWriteups);
         updateBadgeCounts(allWriteups);
         applyFilters();
       } catch (err) {
         console.error('Database load error:', err);
         searchCount.textContent = 'Could not load writeups database. Ensure writeups-index.json exists.';
       }
+    }
+
+    // ─── Concept Explorer population ──────────────────────
+    function populateConceptExplorer(items) {
+      const tagCounts = {};
+      items.forEach(item => {
+        if (item.tags) {
+          item.tags.forEach(t => {
+            tagCounts[t] = (tagCounts[t] || 0) + 1;
+          });
+        }
+      });
+
+      // Sort by count descending, select top 18 concepts
+      const sortedTags = Object.entries(tagCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 18)
+        .map(entry => entry[0]);
+
+      const container = document.getElementById('concept-tags-container');
+      if (!container) return;
+
+      container.innerHTML = `
+        <button class="concept-pill active" data-concept="all">
+          All Concepts
+        </button>
+      ` + sortedTags.map(tag => `
+        <button class="concept-pill" data-concept="${escapeHtml(tag)}">
+          ${escapeHtml(tag)} <span class="concept-count">${tagCounts[tag]}</span>
+        </button>
+      `).join('');
+
+      // Add click listeners to concept pills
+      document.querySelectorAll('.concept-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.concept-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedConcept = btn.getAttribute('data-concept');
+          applyFilters();
+        });
+      });
+    }
+
+    function selectConceptFilter(tagVal) {
+      document.querySelectorAll('.concept-pill').forEach(b => {
+        if (b.getAttribute('data-concept') === tagVal) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
+      selectedConcept = tagVal;
+      applyFilters();
     }
 
     // ─── Badge count update ───────────────────────────────
@@ -878,11 +1039,17 @@
           if ((item.origin || 'Other') !== selectedOrigin) return false;
         }
 
-        // 3. Full-text search
+        // 3. Concept filter
+        if (selectedConcept !== 'all') {
+          if (!item.tags || !item.tags.includes(selectedConcept)) return false;
+        }
+
+        // 4. Full-text search
         if (terms.length > 0) {
           const haystack = [
-            item.title, item.category, item.origin,
-            item.path, item.snippet,
+            item.title, item.context_title || '', item.category, item.origin,
+            item.path, item.summary || item.snippet || '',
+            (item.tags || []).join(' '),
             (item.headings || []).join(' ')
           ].join(' ').toLowerCase();
           return terms.every(t => haystack.includes(t));
@@ -913,6 +1080,7 @@
         const label = Object.entries(catMap).find(([,v]) => v === selectedCat)?.[0] || selectedCat;
         parts.push(`Type: ${label}`);
       }
+      if (selectedConcept !== 'all') parts.push(`Concept: ${selectedConcept}`);
       searchStats.textContent = parts.length ? `Filters: ${parts.join(' · ')}` : '';
     }
 
@@ -936,15 +1104,41 @@
         card.className = `card ${getCatClass(item.category)}`;
         card.href = `viewer.html?file=${encodeURIComponent(item.path)}`;
 
+        let tagsHtml = '';
+        if (item.tags && item.tags.length > 0) {
+          tagsHtml = `<div class="card-tags">` + 
+            item.tags.map(t => `<span class="tag-badge" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('') +
+            `</div>`;
+        }
+
+        let titleHtml = `<span class="card-title">${escapeHtml(cleanTitle(item.title))}</span>`;
+        if (item.context_title) {
+          titleHtml = `
+            <span class="card-title-context">${escapeHtml(item.context_title)}</span>
+            <span class="card-title-sub">${escapeHtml(cleanTitle(item.title))}</span>
+          `;
+        }
+
         card.innerHTML = `
           <div class="card-content">
-            <span class="card-title">${escapeHtml(cleanTitle(item.title))}</span>
-            <span class="card-desc">${escapeHtml(item.snippet)}</span>
+            ${titleHtml}
+            <span class="card-desc">${escapeHtml(item.summary || item.snippet)}</span>
+            ${tagsHtml}
           </div>
           <div class="card-footer">
             <span class="badge badge-category">${escapeHtml(item.category)}</span>
             <span class="badge badge-origin ${getOriginClass(item.origin)}">${escapeHtml(item.origin)}</span>
           </div>`;
+
+        // Intercept concept badge clicks to filter without navigating
+        card.querySelectorAll('.tag-badge').forEach(badge => {
+          badge.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const tagVal = badge.getAttribute('data-tag');
+            selectConceptFilter(tagVal);
+          });
+        });
 
         writeupsContainer.appendChild(card);
       });
