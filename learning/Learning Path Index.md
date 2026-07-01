@@ -13,6 +13,7 @@ Use learning notes when the terminology is the blocker. Use [Blueprint Index](..
 | Red team terms, engagement types, cells, kill chain | [Red Team Fundamentals](Red%20Team%20Fundamentals.md) | [Machine Exploit Blueprint](../blueprints/Machine%20Exploit%20Blueprint.md) |
 | File types, strings, GDB, disassembly, byte transforms | [Reverse Engineering Fundamentals](Reverse%20Engineering%20Fundamentals.md) | [Reverse Engineering Blueprint](../blueprints/Reverse%20Engineering%20Blueprint.md) |
 | Stego, encodings, hashes, classical ciphers, crypto triage | [Steganography And Cryptography Fundamentals](Steganography%20And%20Cryptography%20Fundamentals.md) | [Steganography Blueprint](../blueprints/Steganography%20Blueprint.md), [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md) |
+| RSA, AES, stream ciphers, MACs, TLS, GPG — full crypto depth | [Crypto101](Crypto101.md) | [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md) |
 
 ## Rule
 

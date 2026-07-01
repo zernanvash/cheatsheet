@@ -91,6 +91,7 @@ Static and dynamic analysis of compiled binaries, bytecode, managed code, and ob
 ### Playbooks & Blueprints
 * **[Reverse Engineering Playbook](Reverse%20Engineering%20Playbook.md)** — Full standalone playbook: CPU registers, assembly primer, control flow patterns, static vs dynamic analysis, solver cookbook (XOR, Z3, angr, matrix), and tool reference.
 * **[Reverse Engineering Blueprint](blueprints/Reverse%20Engineering%20Blueprint.md)** — Decision-tree workflow for ELF, PE, APK/JAR, Python bytecode, WebAssembly, and exotic targets.
+* **[Reverse Engineering Tool Workflow](guides/Reverse%20Engineering%20Tool%20Workflow.md)** - Situation-driven tool selection for Kali plus Windows-host PE challenge workflows, based on the NTHW reverse engineering tool catalog.
 
 ### Disassembler Cheatsheets (Static Analysis)
 * [IDA Pro Cheat Sheet](tools/IDA%20Pro%20Cheat%20Sheet.md) — Navigation, XREFs, type refactoring, structures, patching, and IDAPython.
@@ -170,6 +171,7 @@ Solving ciphers, breaking encodings, and cracking hashes.
 
 ### Learning
 * [Steganography And Cryptography Fundamentals](learning/Steganography%20And%20Cryptography%20Fundamentals.md)
+* [Crypto101 — Full Textbook](learning/Crypto101.md) — Crypto 101 by lvh: XOR, AES, stream ciphers, RSA, hash functions, MACs, TLS, GPG, OTR, and more (CC BY-NC 4.0).
 
 ---
 
