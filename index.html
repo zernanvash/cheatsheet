@@ -1359,17 +1359,18 @@
             </div>
             <div class="category-title-wrap">
               <h2 class="category-title">Cryptography</h2>
-              <p class="category-desc">Analyzing and breaking ciphers. Custom XOR solves, RSA public key recovery, ciphers, and hash cracking.</p>
+              <p class="category-desc">Analyzing and breaking ciphers. XOR, AES, RSA, stream ciphers, hash functions, MACs, TLS, and custom crypto attacks.</p>
             </div>
           </div>
 
+          <!-- Playbooks & Blueprints -->
           <div class="subtopic-group">
-            <h3 class="subtopic-title">Playbooks & Blueprints</h3>
+            <h3 class="subtopic-title">Playbooks &amp; Blueprints</h3>
             <div class="cards-grid">
               <a class="card" href="viewer.html?file=blueprints%2FCryptography%20Blueprint.md">
                 <div class="card-content">
                   <span class="card-title">Cryptography Blueprint</span>
-                  <span class="card-desc">Decrypting repeating-key XORs, RSA factorization, and base encoding/decoding matrices.</span>
+                  <span class="card-desc">Solvers for XOR ciphers, RSA factorization, classical ciphers, hash ID, and custom source-code reversal. Decision-tree triage workflow.</span>
                 </div>
                 <div class="card-footer">
                   <span class="badge badge-highlight">Core Blueprint</span>
@@ -1378,12 +1379,238 @@
               </a>
               <a class="card" href="viewer.html?file=guides%2FPassword%20Attacks%20Playbook.md">
                 <div class="card-content">
-                  <span class="card-title">Hash Cracking & Password Attacks</span>
-                  <span class="card-desc">Syntax mapping for hashcat rules, John the Ripper wordlist mutations.</span>
+                  <span class="card-title">Hash Cracking &amp; Password Attacks</span>
+                  <span class="card-desc">Syntax mapping for hashcat rules, John the Ripper wordlist mutations, NTLM, NTLMv2, Kerberoast, and zip cracking.</span>
                 </div>
                 <div class="card-footer">
                   <span class="badge">hashcat / john</span>
                   <span class="badge">Playbook</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FREV%20Python%20Toolkit.md">
+                <div class="card-content">
+                  <span class="card-title">Crypto Python Solvers</span>
+                  <span class="card-desc">Template scripts for XOR brute-force, RSA with pycryptodome, AES-CBC decrypt, Z3 constraint solving, and hash cracking loops.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Python</span>
+                  <span class="badge">Solver Templates</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Crypto101 featured card -->
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Crypto101 &mdash; Full Textbook (lvh, CC BY-NC 4.0)</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md" style="border-color: var(--color-crypto); background: rgba(99, 102, 241, 0.04); grid-column: 1 / -1;">
+                <div class="card-content">
+                  <span class="card-title" style="color: #c7d2fe;">Crypto 101 &mdash; Complete Textbook</span>
+                  <span class="card-desc">223-page cryptography primer by Laurens Van Houtven. Covers XOR &rarr; block ciphers (AES, DES) &rarr; stream ciphers (CBC, CTR, RC4, Salsa20) &rarr; key exchange (DH, ECDH) &rarr; RSA &amp; ECC &rarr; hash functions &rarr; MACs (HMAC, GCM) &rarr; signatures (DSA, ECDSA) &rarr; KDFs &rarr; RNGs &rarr; complete systems (TLS, GPG, OTR). Start here for deep crypto understanding.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight" style="color: #c7d2fe; background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.35);">Full Textbook</span>
+                  <span class="badge">17 Chapters</span>
+                  <span class="badge">CC BY-NC 4.0</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Crypto101 Part II: Building Blocks -->
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Building Blocks (Crypto101 &mdash; Part II)</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.5 &mdash; XOR &amp; One-Time Pads</span>
+                  <span class="card-desc">XOR as a programmable inverter, bitwise XOR, one-time pad construction, perfect secrecy proof, and attacks when the pad is reused.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">XOR</span>
+                  <span class="badge">One-Time Pad</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.6 &mdash; Block Ciphers (AES / DES)</span>
+                  <span class="card-desc">Block cipher permutations, AES S-boxes and rounds, DES and 3DES structure, key sizes, and why ECB mode leaks patterns.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">AES</span>
+                  <span class="badge">DES / 3DES</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.7 &mdash; Stream Ciphers &amp; Modes</span>
+                  <span class="card-desc">CBC mode, predictable-IV attacks, bit-flipping, PKCS#7 padding oracle, RC4, Salsa20, CTR mode, and authenticated operation modes.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">CBC / CTR</span>
+                  <span class="badge">RC4 / Salsa20</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.8 &mdash; Key Exchange (DH / ECDH)</span>
+                  <span class="card-desc">Abstract Diffie-Hellman, discrete logarithm hardness, ECDH over elliptic curves, and forward secrecy motivation.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Diffie-Hellman</span>
+                  <span class="badge">ECDH</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.9 &mdash; Public-Key Encryption (RSA / ECC)</span>
+                  <span class="card-desc">RSA key generation and math, why textbook RSA is broken, OAEP padding, and elliptic curve cryptography basics.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">RSA</span>
+                  <span class="badge">ECC</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.10 &mdash; Hash Functions</span>
+                  <span class="card-desc">MD5, SHA-1, SHA-2, SHA-3/Keccak, collision attacks, pre-image resistance, password storage, and length extension attacks.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">MD5 / SHA</span>
+                  <span class="badge">Length Extension</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.11 &mdash; MACs (HMAC / GCM / OCB)</span>
+                  <span class="card-desc">MAC authentication, encrypt-then-MAC ordering, HMAC construction, Carter-Wegman, GCM, and OCB authenticated encryption modes.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">HMAC</span>
+                  <span class="badge">GCM / OCB</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.12 &mdash; Signature Algorithms (DSA / ECDSA)</span>
+                  <span class="card-desc">RSA signatures, DSA construction, ECDSA nonce reuse vulnerability (the PS3 exploit), and repudiable authenticators.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">DSA</span>
+                  <span class="badge">ECDSA nonce reuse</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.13 &mdash; Key Derivation Functions</span>
+                  <span class="card-desc">Password stretching with PBKDF2, bcrypt, scrypt, and HKDF for deriving subkeys from shared secrets or passwords.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">PBKDF2 / bcrypt</span>
+                  <span class="badge">scrypt / HKDF</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.14 &mdash; Random Number Generators</span>
+                  <span class="card-desc">True RNGs vs CSPRNGs, Yarrow entropy pool, Blum Blum Shub, the Dual_EC_DRBG NSA backdoor story, and Mersenne Twister weaknesses.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">CSPRNG</span>
+                  <span class="badge">Dual_EC / Mersenne</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Crypto101 Part III: Complete Cryptosystems -->
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Complete Cryptosystems (Crypto101 &mdash; Part III)</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.15 &mdash; SSL &amp; TLS</span>
+                  <span class="card-desc">TLS handshake, certificate authorities, perfect forward secrecy, BEAST, CRIME, POODLE, Lucky13, HSTS, and certificate pinning.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">TLS</span>
+                  <span class="badge">BEAST / POODLE</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.16 &mdash; OpenPGP &amp; GPG</span>
+                  <span class="card-desc">PGP architecture, web of trust model, key signing, key servers, and practical GPG usage for encrypted communication and file signing.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">GPG</span>
+                  <span class="badge">Web of Trust</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Ch.17 &mdash; Off-The-Record Messaging (OTR)</span>
+                  <span class="card-desc">OTR protocol design, authenticated key exchange, Socialist Millionaire Protocol, deniability, and perfect forward secrecy in messaging.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">OTR</span>
+                  <span class="badge">Deniability / PFS</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Appendices -->
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Math Foundations (Crypto101 &mdash; Appendices)</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Appendix A &mdash; Modular Arithmetic</span>
+                  <span class="card-desc">Clock arithmetic, prime numbers, modular inverse, Fermat's little theorem, modular exponentiation by squaring, and the discrete log problem.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Number Theory</span>
+                  <span class="badge">RSA Math</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Appendix B &mdash; Elliptic Curves</span>
+                  <span class="card-desc">Weierstrass form, point addition and doubling, Abelian groups on curves, ECDLP hardness, and why ECC gives smaller keys than RSA.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">ECC</span>
+                  <span class="badge">ECDLP</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=learning%2FCrypto101.md">
+                <div class="card-content">
+                  <span class="card-title">Appendix C &mdash; Side-Channel Attacks</span>
+                  <span class="card-desc">Timing attacks on modular exponentiation, power measurement analysis (DPA/SPA), and Montgomery ladder countermeasures.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Timing Attacks</span>
+                  <span class="badge">Power Analysis</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Fundamentals -->
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Fundamentals</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=learning%2FSteganography%20And%20Cryptography%20Fundamentals.md">
+                <div class="card-content">
+                  <span class="card-title">Stego &amp; Crypto Basics</span>
+                  <span class="card-desc">Quick-triage guide: classify encoding vs encryption vs hashing vs custom code. Decide which tool or blueprint to open next.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Triage</span>
+                  <span class="badge">Learning</span>
                 </div>
               </a>
             </div>
