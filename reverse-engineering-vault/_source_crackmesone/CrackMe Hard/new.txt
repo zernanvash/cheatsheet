@@ -1,0 +1,186 @@
+How we solved it
+We reversed the check path in crackme.exe and found the final validation compare at 0x1400B6779:
+
+cmp rbx, rax
+jne -> Access Denied
+From analysis of the parser and transforms, the activation code is decoded with a custom alphabet:
+
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_
+and converted into a 64-bit value, then transformed before compare:
+
+target = ROL64(parsed ^ 0xDEADBEEFCAFEBABE, 23)
+So to build a valid key we need the runtime target (RBX) and invert it:
+
+parsed = ROR64(RBX, 23) ^ 0xDEADBEEFCAFEBABE
+then encode parsed back with the custom alphabet.
+The tricky part: this crackme’s internal state changes at runtime (srand/rand effects), and console input through normal pipes was unreliable due to layout/console behavior.
+So the final keygen is dynamic:
+
+Launches crackme.exe.
+Hooks 0x1400B6779 with Frida.
+Inputs username + dummy key via clipboard + Shift+Insert (layout-safe).
+Captures RBX.
+Computes and prints the real key.
+Keygen file
+Saved here: keygen.py
+
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import queue
+import re
+import subprocess
+import sys
+import time
+
+try:
+    import frida
+except Exception as exc:  # pragma: no cover
+    print("frida is required: python -m pip install frida frida-tools", file=sys.stderr)
+    raise SystemExit(1) from exc
+
+MASK64 = (1 << 64) - 1
+CONST_XOR = 0xDEADBEEFCAFEBABE
+ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
+CREATE_NEW_CONSOLE = 0x00000010
+
+
+def ror64(x: int, n: int) -> int:
+    x &= MASK64
+    return ((x >> n) | (x << (64 - n))) & MASK64
+
+
+def encode_custom_base64_u64(value: int) -> str:
+    value &= MASK64
+    if value == 0:
+        out = "0"
+    else:
+        chars = []
+        while value:
+            chars.append(ALPHABET[value & 0x3F])
+            value >>= 6
+        out = "".join(reversed(chars))
+    if len(out) < 8:
+        out = ("0" * (8 - len(out))) + out
+    return out
+
+
+def escape_sendkeys(text: str) -> str:
+    # WScript.Shell SendKeys special chars: + ^ % ~ ( ) { }
+    replacements = {
+        "+": "{+}",
+        "^": "{^}",
+        "%": "{%}",
+        "~": "{~}",
+        "(": "{(}",
+        ")": "{)}",
+        "{": "{{}",
+        "}": "{}}",
+        "[": "{[}",
+        "]": "{]}",
+    }
+    return "".join(replacements.get(ch, ch) for ch in text)
+
+
+def send_console_input(pid: int, username: str, dummy_key: str) -> None:
+    # Use clipboard + Shift+Insert to avoid keyboard layout issues.
+    # Direct SendKeys text depends on current layout (RU/EN) and may corrupt input.
+    safe_user = username.replace("'", "''")
+    safe_key = dummy_key.replace("'", "''")
+    ps = (
+        "$ws=New-Object -ComObject WScript.Shell; "
+        f"$null=$ws.AppActivate({pid}); "
+        "Start-Sleep -Milliseconds 350; "
+        f"Set-Clipboard -Value '{safe_user}'; "
+        "$ws.SendKeys('+{INSERT}{ENTER}'); "
+        "Start-Sleep -Milliseconds 350; "
+        f"Set-Clipboard -Value '{safe_key}'; "
+        "$ws.SendKeys('+{INSERT}{ENTER}')"
+    )
+    subprocess.run(
+        ["powershell", "-NoProfile", "-Command", ps],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def capture_target_hash(username: str, crackme_path: str, timeout_sec: float = 10.0) -> int:
+    proc = subprocess.Popen([crackme_path], creationflags=CREATE_NEW_CONSOLE)
+    q: queue.Queue[int] = queue.Queue()
+
+    session = frida.attach(proc.pid)
+    script = session.create_script(
+        r"""
+        var base = Process.getModuleByName('crackme.exe').base;
+        var fired = false;
+        Interceptor.attach(base.add(0xB6779), {
+          onEnter: function () {
+            if (fired) return;
+            fired = true;
+            send("RBX:" + this.context.rbx.toString());
+          }
+        });
+        """
+    )
+
+    def on_message(message, _data):
+        if message.get("type") != "send":
+            return
+        payload = str(message.get("payload", ""))
+        if payload.startswith("RBX:"):
+            rbx = int(payload.split(":", 1)[1], 16)
+            q.put(rbx)
+
+    script.on("message", on_message)
+    script.load()
+
+    try:
+        # Any valid-looking dummy key (>=8 chars from crackme alphabet) is enough.
+        send_console_input(proc.pid, username, "00000000")
+        rbx = q.get(timeout=timeout_sec)
+        return rbx
+    finally:
+        try:
+            session.detach()
+        except Exception:
+            pass
+        try:
+            proc.wait(timeout=1.5)
+        except Exception:
+            proc.kill()
+
+
+def generate_key(username: str, crackme_path: str) -> str:
+    target = capture_target_hash(username, crackme_path)
+    raw = ror64(target, 23) ^ CONST_XOR
+    return encode_custom_base64_u64(raw)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Working keygen for lbx crackme (dynamic, frida-backed)."
+    )
+    parser.add_argument("username", help="Username to generate key for")
+    parser.add_argument(
+        "--exe",
+        default="crackme.exe",
+        help="Path to crackme executable (default: crackme.exe)",
+    )
+    args = parser.parse_args()
+
+    if not (3 <= len(args.username.encode("utf-8")) <= 32):
+        print("Username length must be 3..32 bytes (UTF-8).", file=sys.stderr)
+        return 1
+    if re.search(r"[\r\n\t]", args.username):
+        print("Username must not contain newlines or tabs.", file=sys.stderr)
+        return 1
+
+    key = generate_key(args.username, args.exe)
+    print(key)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

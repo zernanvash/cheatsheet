@@ -1,0 +1,309 @@
+================================================================================
+  ChocolateFactory.exe — Crackme Writeup
+  Platform: crackmes.one
+  Author:   CrackNotMe
+  Solution: Ch0c-M1lk-CrMe-!(L>
+================================================================================
+
+OVERVIEW
+--------
+ChocolateFactory.exe is a 64-bit Windows console application (PE32+, x86-64).
+It prompts the user for a "Golden Ticket" in the format XXXX-XXXX-XXXX-XXXX
+(16 characters, dashes stripped internally). The program validates the ticket
+against four independent checks, each named after a station in a chocolate
+factory. All four must pass to print "PASS".
+
+Tools used: objdump (disassembly), Python 3 (constraint solving + keygen).
+
+
+--------------------------------------------------------------------------------
+STEP 1 — INITIAL RECON
+--------------------------------------------------------------------------------
+
+  $ file ChocolateFactory.exe
+  PE32+ executable (console) x86-64, for MS Windows, 6 sections
+
+  $ strings ChocolateFactory.exe | grep -i ticket
+  Enter your Golden Ticket (16 characters, format XXXX-XXXX-XXXX-XXXX):
+
+Interesting strings found:
+  - "HELPHELPHELPHELP" and "HELP"  -> blacklisted inputs
+  - "WONK"                         -> Easter egg charset
+  - "Cocoa Plantation", "Milk River", "Caramel Oven", "Packaging Line"
+    -> names of the four validation stations
+  - "PASS" / "FAIL"                -> outcome strings
+
+Image base: 0x140000000 (standard PE32+ default)
+Six sections: .text, .rdata, .data, .pdata, .fptable, .reloc
+
+
+--------------------------------------------------------------------------------
+STEP 2 — INPUT PARSING
+--------------------------------------------------------------------------------
+
+The main validation function lives at VA 0x140002870. After printing the UI,
+it reads a line of input (max 128 chars) into a buffer at rbp-0x60, then:
+
+  1. Strips dashes (0x2D) and spaces (0x20) from the input into rsp+0x50,
+     keeping only non-separator characters.
+
+  2. Terminates the stripped string and checks its length == 16.
+     If not 16 chars → "Error: Ticket must be exactly 16 characters" and exit.
+
+  3. WONK Easter egg check (0x2B60):
+     Each character at position pos is compared against a 4-byte table at VA
+     0x14001C03C = ['W','O','N','K']. The check is: char == table[pos & 3].
+     If ALL 16 chars match this pattern (i.e. the input is "WONKWONKWONKWONK"),
+     the program prints a hint message and exits without validating further.
+     This is not the solution — it's a breadcrumb left by the author.
+
+  4. All-zeros check: if all 16 chars are '0', the program takes a different
+     branch. Also blacklisted.
+
+  5. Blacklist check via strcasecmp (0x140006300):
+     Fails if stripped ticket == "HELPHELPHELPHELP" or == "HELP".
+
+  6. Timing gate (0x140002C65): GetTickCount() must show less than 0x1D4C0 ms
+     (120 seconds) elapsed since program start. Just run it normally.
+
+After passing these guards, the 16 bytes are laid out in memory as follows
+(relative to rsp):
+
+  rsp+0x30 .. rsp+0x33  = ticket[ 0.. 3]  (Group 1)
+  rsp+0x34 .. rsp+0x37  = ticket[ 4.. 7]  (Group 2)
+  rsp+0x38 .. rsp+0x3B  = ticket[ 8..11]  (Group 3)
+  rsp+0x3C .. rsp+0x3F  = ticket[12..15]  (Group 4)
+
+Additionally bytes 8-11 are mirrored into rsp+0x20..0x23 with a swap:
+  rsp+0x20 = ticket[10], rsp+0x21 = ticket[11]
+  rsp+0x22 = ticket[ 8], rsp+0x23 = ticket[ 9]
+
+Four checks are then run in sequence. Each produces a boolean result stored on
+the stack. At the display loop (0x140003110), all four flags are read and each
+group is reported as PASS or FAIL individually.
+
+
+--------------------------------------------------------------------------------
+STEP 3 — CHECK 1: COCOA PLANTATION (S-Box Substitution)
+--------------------------------------------------------------------------------
+
+Code: 0x140002DFC – 0x140002E6C
+
+A 256-byte S-Box (lookup table) lives at VA 0x14001B560 in .rdata:
+
+  LUT[0..31] = [236,202,14,243,8,240,42,162,59,24,43,92,55,189,18,168,
+                5,211,161,87,79,150,252,245,167,20,25,102,88,155,191,180, ...]
+
+The algorithm:
+  1. Read IsDebuggerPresent() result. Under normal execution (no debugger):
+     NEG(0) → CF=0; SBB ECX,ECX → ECX=0; AND ECX,0x37 → ECX=0.
+     Check PEB.NtGlobalFlag debugger bit → also 0 in normal execution.
+     Result: the XOR mask ECX = 0 (no obfuscation applied).
+
+  2. For each of the 4 bytes b[0]..b[3] of Group 1:
+       r14d = (r14d << 8) | LUT[ b[i] XOR 0 ]
+             = (r14d << 8) | LUT[ b[i] ]
+
+  3. Compare r14d against the constant 0xC3811DEB.
+
+Solving (reverse the LUT — it is a bijection):
+
+  Target byte 0xC3  →  LUT⁻¹[0xC3] = 67  = 'C'
+  Target byte 0x81  →  LUT⁻¹[0x81] = 104 = 'h'
+  Target byte 0x1D  →  LUT⁻¹[0x1D] = 48  = '0'
+  Target byte 0xEB  →  LUT⁻¹[0xEB] = 99  = 'c'
+
+  GROUP 1 = "Ch0c"   (the only valid ASCII solution)
+
+
+--------------------------------------------------------------------------------
+STEP 4 — CHECK 2: MILK RIVER (Dot-Product mod 256)
+--------------------------------------------------------------------------------
+
+Code: 0x140002E83 – 0x140002F7F
+
+A coefficient table lives at VA 0x14001B660 in .rdata:
+  coeffs = [3, 7, 2, 5,   5, 3, 8, 1,   2, 9, 1, 4,   6, 1, 4, 7]
+
+The algorithm uses SSE4.1 PMULLD for efficiency (when CPU has ≥2 logical cores):
+  1. Load Group 2 as a DWORD: r13d = ticket[4] | ticket[5]<<8 |
+                                     ticket[6]<<16 | ticket[7]<<24
+  2. PMOVZXBD xmm1, xmm0: zero-extend each byte to a 32-bit lane:
+       xmm1 = [ticket[4], ticket[5], ticket[6], ticket[7]]
+  3. For each group index g in {0,1,2,3}:
+       Load 4 coefficients into xmm2 = coeffs[g*4 .. g*4+3]
+       PMULLD xmm2, xmm1  (element-wise 32-bit multiply)
+       Horizontal sum → result
+       result & 0xFF must equal expected[g]
+
+  expected = [0x2D, 0xDF, 0x6B, 0x9C]
+
+This yields 4 simultaneous linear equations over Z/256Z:
+  3*t4 + 7*t5 + 2*t6 + 5*t7 ≡ 0x2D (mod 256)
+  5*t4 + 3*t5 + 8*t6 + 1*t7 ≡ 0xDF (mod 256)
+  2*t4 + 9*t5 + 1*t6 + 4*t7 ≡ 0x6B (mod 256)
+  6*t4 + 1*t5 + 4*t6 + 7*t7 ≡ 0x9C (mod 256)
+
+Brute-force over printable ASCII (one unique solution):
+  t4=77='M', t5=49='1', t6=108='l', t7=107='k'
+
+  GROUP 2 = "M1lk"   (the only valid printable ASCII solution)
+
+
+--------------------------------------------------------------------------------
+STEP 5 — CHECK 3: CARAMEL OVEN (Hash Transform)
+--------------------------------------------------------------------------------
+
+Code: 0x140002FA1 – 0x140003028
+
+The algorithm operates on bytes 8–11 with a specific swap:
+  b8  = ticket[8],  b9 = ticket[9]   (stored at rsp+0x22, rsp+0x23)
+  b10 = ticket[10], b11= ticket[11]  (stored at rsp+0x20, rsp+0x21)
+
+  r8d = (b10 << 8) | b11      (16-bit word from bytes 10,11)
+  t89 = (b8  << 8) | b9       (16-bit word from bytes  8, 9)
+
+Step-by-step transform:
+
+  temp = (r8d - 0x3502) & 0xFFFF
+  temp = rotl16(temp, 5)              // (temp<<5 | temp>>11) & 0xFFFF
+  temp = (temp * 0x7A69) & 0xFFFF
+  cx   = temp
+
+  edx  = t89 XOR (cx >> 7) XOR cx    // two-round XOR mix
+  edx  = edx & 0xFFFF
+  edx2 = edx << 16                   // save upper 16 bits
+
+  temp2 = (edx - 0x3F40) & 0xFFFF
+  temp2 = rotl16(temp2, 5)
+  temp2 = (temp2 * 0x7A69) & 0xFFFF
+  cx2   = temp2
+
+  ebx  = cx2 XOR (cx2 >> 7)
+  ebx  = ebx XOR r8d
+  ebx  = ebx OR edx2
+  ebx  = ebx & 0xFFFFFFFF
+
+  CHECK: ebx == 0x016CB7CB
+
+Brute-force over printable ASCII (unique solution):
+  b8=67='C', b9=114='r', b10=77='M', b11=101='e'
+
+  GROUP 3 = "CrMe"   (the only valid printable ASCII solution)
+
+
+--------------------------------------------------------------------------------
+STEP 6 — CHECK 4: PACKAGING LINE (CRC-16/CCITT)
+--------------------------------------------------------------------------------
+
+Code: function at VA 0x1400025F0, called from 0x140003055
+
+Calling convention (Windows x64): rcx=&G4, rdx=&G1, r8=&G2, r9=&G3
+
+The function:
+
+  1. Compute byte sums of each group:
+       sum1 = (G1[0]+G1[1]+G1[2]+G1[3]) & 0xFF  =  (67+104+48+99) & 0xFF  = 0x0C  [for Ch0c]
+       sum2 = (G2[0]+...) & 0xFF
+       sum3 = (G3[0]+...) & 0xFF
+       init = sum1 XOR sum2 XOR sum3  (= 0x0C for our Groups 1-3)
+
+  2. CRC-16 seed: cx = NOT(init) as 16-bit  = (~0x0C) & 0xFFFF  = 0xFFF3
+
+  3. Process each of the 4 bytes of Group 4 using a CRC-16/CCITT step
+     (polynomial 0x1021, 8 iterations per byte):
+
+       cx = CRC16_STEP(cx  XOR (G4[0] << 8))
+       ax = CRC16_STEP(ax  XOR (G4[1] << 8))   // ax was cx after step above
+       cx = CRC16_STEP(cx  XOR (G4[2] << 8))   // cx was ax
+       ax = CRC16_STEP(ax  XOR (G4[3] << 8))   // final result
+
+     Where CRC16_STEP(val):
+       for bit in 0..7:
+         if val & 0x8000: val = ((val<<1) ^ 0x1021) & 0xFFFF
+         else:            val = (val<<1) & 0xFFFF
+
+  4. CHECK: final ax == 0x0000
+
+Key insight: crc16_step(x)==0 only when x==0 (preimage of 0 is 0).
+So after processing G4[0..2], the intermediate state cx2 must have low byte 0x00,
+and then G4[3] = cx2 >> 8 (the high byte), which makes (G4[3]<<8) XOR cx2 = 0x0000,
+and crc16_step(0) = 0.
+
+The correct answer uses:
+  G4[0] = 0x21 = '!'
+  G4[1] = 0x28 = '('
+  G4[2] = 0x4C = 'L'
+  G4[3] = 0x3E = '>'
+
+Verification: cx2 after processing '!','(','L' = 0x3E00. Low byte = 0.
+G4[3] = 0x3E00 >> 8 = 0x3E = '>'. CRC16_STEP(0x3E00 XOR 0x3E00) = CRC16_STEP(0) = 0. ✓
+
+  GROUP 4 = "!(L>"   (one of ~1200+ valid solutions, 202 pure-alphanumeric)
+
+
+--------------------------------------------------------------------------------
+STEP 7 — FINAL ANSWER
+--------------------------------------------------------------------------------
+
+  Golden Ticket:  Ch0c-M1lk-CrMe-!(L>
+
+  Group 1  "Ch0c"  →  Cocoa Plantation   (S-Box, target 0xC3811DEB)    ✓
+  Group 2  "M1lk"  →  Milk River         (Dot-product mod 256)          ✓
+  Group 3  "CrMe"  →  Caramel Oven       (Hash transform, target 0x016CB7CB) ✓
+  Group 4  "!(L>"  →  Packaging Line     (CRC-16/CCITT, residual 0x0000) ✓
+
+The author embedded the solution in the algorithm constants: the checks are
+designed so that "Chocolate", "Milk", and "Creme" are the unique ASCII
+solutions to checks 1-3 respectively. Groups 1-3 are fully determined.
+Group 4 has ~1200 valid solutions (the CRC has many satisfying inputs).
+
+
+--------------------------------------------------------------------------------
+KEYGEN ALGORITHM
+--------------------------------------------------------------------------------
+
+Groups 1–3 are constants (unique solutions):
+  G1 = [0x43, 0x68, 0x30, 0x63]  -> "Ch0c"
+  G2 = [0x4D, 0x31, 0x6C, 0x6B]  -> "M1lk"
+  G3 = [0x43, 0x72, 0x4D, 0x65]  -> "CrMe"
+
+For Group 4, given any seed:
+  1. Derive b12, b13 from seed (e.g. hash-based, any value in 0x00–0xFF).
+  2. Compute CRC seed: init = (sum(G1) ^ sum(G2) ^ sum(G3)) & 0xFF
+  3. cx  = CRC16_STEP( (~init & 0xFFFF) XOR (b12 << 8) )
+  4. ax  = CRC16_STEP( (b13 << 8) XOR cx )
+  5. Scan b14 in 0–255: find b14 such that CRC16_STEP((b14<<8) XOR ax) has low byte = 0.
+     Call that value cx2.
+  6. b15 = (cx2 >> 8) & 0xFF
+  7. G4  = [b12, b13, b14, b15]
+
+Final serial: format bytes as "{G1}-{G2}-{G3}-{G4}" (raw bytes, not hex).
+
+
+--------------------------------------------------------------------------------
+ANTI-DEBUG NOTE
+--------------------------------------------------------------------------------
+
+Check 1 contains a subtle anti-debug trap. The XOR mask used before S-Box
+lookup is derived from:
+  - IsDebuggerPresent() return value
+  - PEB.NtGlobalFlag debugger detection (offset 0xBC, bits 0x70)
+
+Under a debugger the mask becomes 0x42 instead of 0x00, changing every byte
+lookup and causing Check 1 to always fail. The comparand 0xC3811DEB is only
+reachable with the mask = 0 (no debugger). This means you cannot simply set a
+breakpoint and read the expected value — it's only correct in a clean run.
+
+
+--------------------------------------------------------------------------------
+REFERENCES
+--------------------------------------------------------------------------------
+
+  Binary:     ChocolateFactory.exe (crackmes.one ID 69b4768cf2d49d8512f649ff)
+  Author:     CrackNotMe
+  Arch:       x86-64, Windows PE32+, 6 sections, not stripped
+  Protections: anti-debug (IsDebuggerPresent + PEB.NtGlobalFlag), timing gate
+  Keygen:     ChocolateFactory_keygen.html (self-contained, runs in browser)
+
+================================================================================

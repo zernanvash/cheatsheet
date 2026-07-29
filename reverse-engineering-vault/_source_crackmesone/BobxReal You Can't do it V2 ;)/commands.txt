@@ -1,0 +1,25 @@
+this setup was developed/tested mainly on my linux environment with wine + python
+the "from-pid" / "launch" keygen modes rely on linux "/proc/<pid>/mem"
+
+
+method 1 - "python3 random_method/measure_acceptance.py --exe bobxREAL.exe --trials 40 --password AAAAAAAAAAAAAAAA --password 1234567890ABCDEF"
+--trials - number of launches per password
+--password - 16-char input, can be repeated multiple times
+
+
+method 2
+key from known exc seed - "python3 keygen_method/keygen.py from-exc --exc-seed 0xa8d94c7a"
+
+key from known tick + pid - "python3 keygen_method/keygen.py from-tick-pid --tick 0x12345678 --pid 0x1234"
+
+key from running pid memory - "python3 keygen_method/keygen.py from-pid --pid 12345 --show-targets
+--pid - linux pid
+--timeout - seed read timeout
+--exe-name - process name hint
+--no-resolve - disable child-pid resolving
+--show-targets - print target dwords too
+
+full run (launch + derive + feed) - "python3 keygen_method/keygen.py launch --exe bobxREAL.exe --attempts 20"
+--attempts - relaunch attempts
+--proc-timeout - process completion timeout
+--no-quiet-wine - show wine debug output

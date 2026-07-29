@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santiago Uribe Guiza</title>
+    <link rel="stylesheet" href=/assets/css/styles.css>
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'  https://code.jquery.com">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="horiz-cent">
+<div id="writeup-content">
+<h1>were all to blame <span class="category-tag">rev</span></h1>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In the end, every fracture is of our own making. What we build to protect us, turns to test us. There’s no innocence in creation — only choices, and the weight they leave behind.
+</code></pre></div></div>
+<p>chall:
+<img src="/files/watb1.png" alt="watb1" /></p>
+
+<h2 id="input-args">Input args</h2>
+<p><img src="/files/watb2.png" alt="watb2" /></p>
+
+<p>From the beginning of <code class="language-plaintext highlighter-rouge">main()</code>, we can see that the executable takes one argument, which is the flag</p>
+
+<p><img src="/files/watb3.png" alt="watb3" /></p>
+
+<p>This tells us the flag is length <code class="language-plaintext highlighter-rouge">0x24 = 36</code></p>
+
+<h2 id="logic-overview">Logic overview</h2>
+
+<p>Most of the executable’s logic falls within the body of main and can be broken down into _ sections</p>
+
+<h3 id="1-anti-debugging-check">1. Anti-debugging check</h3>
+
+<p><img src="/files/watb4.png" alt="watb4" />
+<img src="/files/watb5.png" alt="watb5" /></p>
+
+<p>First, the executable spawns a thread that calls <code class="language-plaintext highlighter-rouge">sub_12840</code> in a busy loop. Within <code class="language-plaintext highlighter-rouge">sub_12840</code>, <code class="language-plaintext highlighter-rouge">/proc/self/status</code> is opened and checked for it’s <code class="language-plaintext highlighter-rouge">TracerPid</code>. Whenever a process is being traced/debugged, this value is set to the tracing process’ PID, otherwise it’s 0. If <code class="language-plaintext highlighter-rouge">sub_12840</code> detects a <code class="language-plaintext highlighter-rouge">TracerPid != 0</code>, then it exits the program, effectively preventing the executable from running while being debugged. This can be easily patched out by removing the function call to <code class="language-plaintext highlighter-rouge">sub_12840</code> in <code class="language-plaintext highlighter-rouge">busy_loop</code></p>
+
+<h3 id="2-state-function-indexing">2. State Function Indexing</h3>
+
+<p><img src="/files/watb6.png" alt="watb6" /></p>
+
+<p>For each char in the input flag, variable <code class="language-plaintext highlighter-rouge">i</code> is set to the char’s relative index in this data string, which tells us the flag’s charset:</p>
+
+<p><img src="/files/watb7.png" alt="watb7" /></p>
+
+<h3 id="3-state-functions">3. State Functions</h3>
+
+<p><img src="/files/watb8.png" alt="watb8" />
+<br /></p>
+<h2>…</h2>
+<h2 id="-1">…</h2>
+<p><br />
+<img src="/files/watb9.png" alt="watb9" /></p>
+
+<p>There are 32 state functions that when indexed correctly will return the code for the following state function. For example, starting at 0, if the first char of the input flag is correct, the assembly starting at <code class="language-plaintext highlighter-rouge">FUNC_0[i]</code> will return <code class="language-plaintext highlighter-rouge">0x1</code>, the code for the next state function. If <code class="language-plaintext highlighter-rouge">i</code> is incorrect, the assembly will return <code class="language-plaintext highlighter-rouge">0x22</code> and exit immediately. Using this logic, we can guess each flag char: for a given char’s flag index <code class="language-plaintext highlighter-rouge">x</code> and charset index <code class="language-plaintext highlighter-rouge">i</code> it is correct if <code class="language-plaintext highlighter-rouge">FUNC_x[i]</code> returns <code class="language-plaintext highlighter-rouge">x+1</code>. We can generalize this with: for each input flag guess, the first <code class="language-plaintext highlighter-rouge">x</code> chars are correct if <code class="language-plaintext highlighter-rouge">x-1</code> state functions are executed (<code class="language-plaintext highlighter-rouge">x</code> correct returns + 1 incorrect return of <code class="language-plaintext highlighter-rouge">0x22</code> which exits the executable)</p>
+
+<h3 id="4-sha256-check">4. SHA256 Check</h3>
+
+<p>The final section of the executable hashes the input flag and compares it to the correct flag’s SHA256 hash.
+<br />
+Since the flag is <code class="language-plaintext highlighter-rouge">0x24</code> in length and there are only <code class="language-plaintext highlighter-rouge">0x20</code> of these state functions, we are left with 4 characters to guess, which in reality only is 3 since we know the flag must end in <code class="language-plaintext highlighter-rouge">}</code>. We can brute force these remaining 3 characters by using the flag’s SHA256 hash from the executable: <code class="language-plaintext highlighter-rouge">841e7dcc3a9c6adbb74e8b710a085ee914f9bc641b430d4bc3849ea679bf522d</code></p>
+
+<h3 id="solution">Solution</h3>
+<p>The solution consists of counting the number of times the program breaks at a state function call, and then brute forcing the final 3 characters.</p>
+
+<p>sol.py:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+</span><span class="kn">import</span> <span class="n">subprocess</span>
+<span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">import</span> <span class="n">hashlib</span>
+<span class="kn">import</span> <span class="n">itertools</span>
+
+<span class="k">def</span> <span class="nf">count_breakpoint_hits</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+    <span class="c1"># Use multiple continue commands to handle multiple breakpoint hits
+</span>    <span class="n">cont</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-ex'</span><span class="p">,</span> <span class="s">'continue'</span><span class="p">]</span>
+    <span class="n">gdb_cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">'gdb'</span><span class="p">,</span> <span class="s">'-batch'</span><span class="p">,</span> <span class="s">'-q'</span><span class="p">,</span>
+        <span class="s">'-ex'</span><span class="p">,</span> <span class="s">'set pagination off'</span><span class="p">,</span>
+        <span class="s">'-ex'</span><span class="p">,</span> <span class="sa">f</span><span class="s">'break *0x55555556243a'</span><span class="p">,</span>
+        <span class="s">'-ex'</span><span class="p">,</span> <span class="sa">f</span><span class="s">'run </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s">'</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">expected</span><span class="p">):</span>
+        <span class="n">gdb_cmd</span> <span class="o">+=</span> <span class="n">cont</span>
+
+    <span class="n">gdb_cmd</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="s">"./chall.patch"</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">gdb_cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c1"># Count breakpoint hits
+</span>    <span class="n">output</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">stdout</span> <span class="o">+</span> <span class="n">result</span><span class="p">.</span><span class="n">stderr</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s">'Breakpoint 1,'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">count</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">"QnQSec{aaaaaaaaaaaaaaaaaaaaaaaaaaaa}"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"template flag </span><span class="si">{</span><span class="s">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">charset</span> <span class="o">=</span> <span class="s">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}-"</span>
+
+    <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">charset</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="si">:</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">"</span><span class="se">\r</span><span class="s">"</span><span class="p">)</span>
+            <span class="n">flag</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+            <span class="k">if</span> <span class="nf">count_breakpoint_hits</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="s">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">flag</span><span class="p">))</span> <span class="o">==</span> <span class="n">expected</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="nf">print</span><span class="p">(</span><span class="s">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">flag</span><span class="p">[:</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s">"</span><span class="se">\r</span><span class="s">"</span><span class="p">)</span>
+                <span class="n">expected</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">brute_len</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span><span class="o">-</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Found </span><span class="si">{</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">, starting SHA256 brute force </span><span class="si">{</span><span class="n">brute_len</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">sha256</span> <span class="o">=</span> <span class="s">'841e7dcc3a9c6adbb74e8b710a085ee914f9bc641b430d4bc3849ea679bf522d'</span>
+    <span class="n">total_combinations</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span> <span class="o">**</span> <span class="n">brute_len</span>
+    <span class="n">tries</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">combo</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="nf">product</span><span class="p">(</span><span class="n">charset</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">brute_len</span><span class="p">):</span>
+        <span class="n">tries</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">missing_chars</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span>
+        <span class="n">test_flag</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">flag</span><span class="p">[:</span><span class="n">index</span><span class="p">])</span> <span class="o">+</span> <span class="n">missing_chars</span> <span class="o">+</span> <span class="s">'}'</span>
+        <span class="n">calculated</span> <span class="o">=</span> <span class="n">hashlib</span><span class="p">.</span><span class="nf">sha256</span><span class="p">(</span><span class="n">test_flag</span><span class="p">.</span><span class="nf">encode</span><span class="p">()).</span><span class="nf">hexdigest</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">tries</span> <span class="o">%</span> <span class="mi">100000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Tried </span><span class="si">{</span><span class="n">tries</span><span class="si">:</span><span class="p">,</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">total_combinations</span><span class="si">:</span><span class="p">,</span><span class="si">}</span><span class="s"> combinations... Current: </span><span class="si">{</span><span class="n">test_flag</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">calculated</span> <span class="o">==</span> <span class="n">sha256</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\n</span><span class="s">🎯 FOUND THE FLAG!"</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Missing characters: </span><span class="si">{</span><span class="n">missing_chars</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Full flag: </span><span class="si">{</span><span class="n">test_flag</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"SHA256: </span><span class="si">{</span><span class="n">sha256</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+            <span class="nf">exit</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\n</span><span class="s">❌ No match found after </span><span class="si">{</span><span class="n">tries</span><span class="si">:</span><span class="p">,</span><span class="si">}</span><span class="s"> combinations"</span><span class="p">)</span>
+</code></pre></div></div>
+<p><br />
+<br />
+<code class="language-plaintext highlighter-rouge">QnQSec{InCh00singB0thYouLoseB0th--Q}</code></p>
+
+</div>
+</div>
+<div class="footer">
+    <a class="footer_link" href="https://gitlab.com/guizaa-projects/guiza.dev" target="_blank">src</a>
+</div>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"055c7dad4ea44af3a79a0e2d7f7de619","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+# AGENTS.md - OpenCode Reverse Engineering Agent
+
+This folder is a portable reverse engineering workspace extracted from the H4G CTF vault for use on Kali Linux with OpenCode, Ghidra, and GhidraMCP.
+
+Use this file as the local operating guide when solving legal CTF, crackme, malware-lab, and training binaries. Root vault policies still apply when this folder is copied back into the full vault.
+
+## Mission
+
+Act as an evidence-first reverse engineering co-pilot.
+
+Your job is to:
+
+- Triage binaries and classify the challenge type.
+- Use Ghidra/GhidraMCP, CLI tools, and debuggers to gather evidence.
+- Maintain target notes under `RE-Targets/`.
+- Produce solvers, patches, breakpoint plans, or next-step analysis only when supported by observed evidence.
+
+Do not invent flags, offsets, function names, patch bytes, constraints, hashes, or hidden strings.
+
+## Start Here
+
+Read these files before working a target:
+
+1. `README.md` - portable folder map and usage.
+2. `Reverse Engineering Playbook.md` - main workflow and solver cookbook.
+3. `blueprints/Reverse Engineering Blueprint.md` - decision tree.
+4. `references/CODEX_SYSTEM_PROMPT.md` - target note and evidence workflow.
+5. `RE-Targets/_TARGET_TEMPLATE.md` - required note template.
+
+Use these quick references as needed:
+
+- `tools/Ghidra Cheat Sheet.md`
+- `tools/Reversing CLI Tools Cheat Sheet.md`
+- `tools/GDB Cheat Sheet.md`
+- `tools/x64dbg Cheat Sheet.md`
+- `tools/REV Python Toolkit.md`
+- `tools/C Reversing Cheat Sheet.md`
+- `tools/Rizin Radare2 Cheat Sheet.md`
+
+## GhidraMCP Workflow
+
+When GhidraMCP is available, use it to inspect the loaded program before drawing conclusions.
+
+Minimum evidence to gather:
+
+- Binary format, architecture, bitness, endianness, and entry point.
+- Imported functions and suspicious APIs.
+- Strings and cross-references to success/failure messages.
+- Candidate `main`, validation, decode, crypto, VM, or dispatch functions.
+- Decompiled pseudo-code for candidate functions.
+- Disassembly around branches, comparisons, calls, loops, and indirect jumps.
+- Relevant constants, tables, buffers, and data references.
+
+If GhidraMCP output is incomplete or uncertain, say what is missing and request the exact evidence needed.
+
+## Target Notes
+
+Create or update one note per target in `RE-Targets/`.
+
+Every target note must begin with the YAML frontmatter from `RE-Targets/_TARGET_TEMPLATE.md`.
+
+Allowed `logic_type` values:
+
+- `math`
+- `api-driven`
+- `crypto`
+- `state-machine`
+- `vm`
+- `anti-debug`
+- `mixed`
+- `unknown`
+
+Append dated entries under `## Analysis Log`. Never overwrite previous history.
+
+Use this entry shape:
+
+```markdown
+### YYYY-MM-DD - Analysis Update
+
+Evidence:
+- Source:
+- Key facts:
+
+Decision:
+- entropy_status:
+- logic_type:
+- tools:
+- block:
+- confidence:
+
+Next action:
+- One concrete next step.
+```
+
+## Triage Order
+
+For every binary, start with:
+
+```bash
+file ./challenge
+sha256sum ./challenge
+strings -n 8 ./challenge
+checksec --file ./challenge
+binwalk ./challenge
+```
+
+Then inspect:
+
+- Format: ELF, PE, .NET, APK/JAR, Python bytecode, WASM, or unknown.
+- Protections: PIE, NX, canary, RELRO, stripping, ASLR assumptions.
+- Section layout and section entropy.
+- Imports, symbols, strings, resources, and embedded files.
+- Runtime behavior only after static triage and only in an isolated lab.
+
+Treat high entropy as a warning, not proof. Mark `entropy_status: packed` only with supporting evidence such as unusual section permissions, tiny imports, packer signatures, runtime unpacking, or entrypoint jumps into suspicious sections.
+
+## Solver Rules
+
+Generate Python, Z3, angr, or emulation scripts only from evidence-backed logic.
+
+For Z3 and Python solvers:
+
+- Preserve variable widths from the binary: 8-bit, 16-bit, 32-bit, or 64-bit.
+- Use `BitVec` when overflow, masks, shifts, casts, or machine-width arithmetic matter.
+- Track signedness explicitly when comparisons are signed.
+- Add printable/input bounds only when supported by the challenge or user intent.
+- Verify the solver output against the original binary or checker when possible.
+
+If widths, signedness, table contents, or branch conditions are unknown, do not guess. Record `unknown` and request the missing disassembly or decompiler evidence.
+
+## Patching And Debugging
+
+Prefer reversible analysis first:
+
+- Breakpoints
+- Runtime register/memory edits
+- Function return forcing
+- Trace logging
+- Scripted debugger checks
+
+Only suggest permanent patches when file offsets, virtual addresses, and patch bytes are known from evidence.
+
+For anti-debug behavior:
+
+- Compare normal run versus debugger run.
+- Identify the API, syscall, timing check, exception trick, or child-debugger behavior.
+- Mark `logic_type: anti-debug` or `mixed` only when evidence supports it.
+
+## Practice Material
+
+The crackmes.one CTF 2026 practice set is under `_source_crackmesone/`.
+
+Use `REV Practice.md` to choose targets and track progress. Challenge binaries normally live in each challenge's `Handout/` or `handout/` directory.
+
+The browser-based Z3 practice set is:
+
+- `rev_source/z3_practice.html`
+
+## Editing Rules
+
+- Write new analysis notes under `RE-Targets/`.
+- Keep source challenge material under `_source_crackmesone/` intact unless the user explicitly asks for a derived working copy.
+- Do not edit `.obsidian/` if this folder is placed back into the larger vault.
+- Do not claim a solve without verifying it.
+- Do not delete or collapse existing notes, guides, commands, or references.
+
+## Completion Criteria
+
+A target analysis is useful when it has:
+
+- Evidence-backed metadata in YAML.
+- A clear logic classification.
+- Key functions, strings, imports, and constants recorded.
+- A current blocker or next action.
+- A solver, patch plan, debugger plan, or explanation tied directly to evidence.

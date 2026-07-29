@@ -1,0 +1,10 @@
+FlipVM solution
+===============
+
+Password: $?$__LeT_Th#_h@ck!ng_b3g1n__$?$
+Flag:     CMO{<-~~-~~~~-.1'm++In.-~~~~-~~ ->}
+
+Run:
+  python3 keygen.py
+  python3 patch.py code.flp patched.flp
+  ./FlipVM patched.flp

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name='description' content='A full reverse-engineering case study of the Schizo crackme, covering PIE binaries, runtime-loaded libraries, STL internals in memory, anti-debugging checks, and byte-for-byte verification of a custom transformation routine.'>
+    <meta name='generator' content='Xeniria — https://github.com/0xh4ty/xeniria'>
+    <title>Schizo Crackme Writeup: A Reverse Engineering Deep Dive</title>
+
+    <!-- Canonical URL -->
+    <link rel='canonical' href='https://0xh4ty.github.io/posts/schizo-crackme-writeup-a-reverse-engineering-deep-dive.html'>
+
+    <!-- Open Graph (OG) meta -->
+    <meta property='og:title' content='Schizo Crackme Writeup: A Reverse Engineering Deep Dive'>
+    <meta property='og:description' content='A full reverse-engineering case study of the Schizo crackme, covering PIE binaries, runtime-loaded libraries, STL internals in memory, anti-debugging checks, and byte-for-byte verification of a custom transformation routine.'>
+    <meta property='og:type' content='article'>
+    <meta property='og:url' content='https://0xh4ty.github.io/posts/schizo-crackme-writeup-a-reverse-engineering-deep-dive.html'>
+    <meta property='og:image' content='https://0xh4ty.github.io/assets/img/og-default.png'>
+
+    <!-- Twitter meta -->
+    <meta name='twitter:card' content='summary_large_image'>
+    <meta name='twitter:title' content='Schizo Crackme Writeup: A Reverse Engineering Deep Dive'>
+    <meta name='twitter:description' content='A full reverse-engineering case study of the Schizo crackme, covering PIE binaries, runtime-loaded libraries, STL internals in memory, anti-debugging checks, and byte-for-byte verification of a custom transformation routine.'>
+    <meta name='twitter:image' content='https://0xh4ty.github.io/assets/img/og-default.png'>
+
+    <link rel='stylesheet' href='https://0xh4ty.github.io/assets/css/pico.min.css'>
+    <link rel='stylesheet' href='https://0xh4ty.github.io/assets/styles.css'>
+    <link rel='stylesheet' href='https://0xh4ty.github.io/assets/prism-custom-theme.css'>
+    <link rel='stylesheet' href='https://0xh4ty.github.io/assets/prism/prism-line-numbers.min.css'>
+
+    <script src='https://0xh4ty.github.io/assets/prism/prism.min.js'></script>
+    <script src='https://0xh4ty.github.io/assets/prism/prism-solidity.min.js'></script>
+    <script src='https://0xh4ty.github.io/assets/prism/prism-line-numbers.min.js'></script>
+
+</head>
+<body>
+<header class='container'>
+</header>
+<main class='container'>
+<h1>Schizo Crackme Writeup: A Reverse Engineering Deep Dive</h1>
+                                         <p><strong>By 0xh4ty</strong> - 2026-02-26 - 10 min read</p>
+                                         <p><div class='shimmer aspect-ratio' style='--aspect-ratio:650 / 269'><img src="https://0xh4ty.github.io/assets/img/schizo/schizophrenic-cat-art.jpg" alt="Schizophrenic Cat Art"/></div></p>
+<h2>Overview</h2>
+<p>This challenge required navigating a C++ PIE binary, tracking data flow by reading from raw memory, handling subtle validation semantics, bypassing anti debugger checks, and combining static analysis with dynamic debugging. The theme revolves around HTTP interaction, paranoia, and unemployment, with a final success message hinting at an encoded URL.</p>
+<h2>Initial Behavior and Recon</h2>
+<p>When extracting the downloaded archive, we end up with three interesting files: <code>schizo</code>, <code>lib.so</code>, and <code>srv.py</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:964 / 367'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo1.png" alt="Schizo Writeup Screenshot 1"/></div></p>
+<p>Running the binary prints the below message and then exits.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:958 / 215'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo2.png" alt="Schizo Writeup Screenshot 2"/></div></p>
+<p>At this point, things get interesting, as the file command does not recognize <code>lib.so</code> as an ELF binary.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:958 / 239'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo3.png" alt="Schizo Writeup Screenshot 3"/></div></p>
+<p>The Python script starts an HTTP server and responds with <code>b"SILLY"</code> for every request it receives, indicating that the binary expects the script to be running simultaneously and that two way communication is taking place.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:958 / 715'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo4.png" alt="Schizo Writeup Screenshot 4"/></div></p>
+<p>Running the binary while the Python script is active prints HTTP request logs containing five different <code>X-Fragment-Keys</code>, always appearing in the same order.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:958 / 649'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo5.png" alt="Schizo Writeup Screenshot 5"/></div></p>
+<p>Running the binary under GDB produces a taunting message and then crashes with a segmentation fault.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:958 / 234'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo6.png" alt="Schizo Writeup Screenshot 6"/></div></p>
+<h2>Bypassing the Anti-debugger</h2>
+<p>Let us open Ghidra and try to pinpoint the exact location where the anti debugger check occurs. Ghidra lands us in the entry function of the binary. As we know, the first parameter passed to <code>__libc_start_main</code> must be the main function, so we rename it to main.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:654 / 234'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo7.png" alt="Schizo Writeup Screenshot 7"/></div></p>
+<p>In gdb, I placed a breakpoint at main and continued execution. As you can see, the program crashed before even entering the main function. This narrows our scope to <code>.init_array</code> constructors.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:965 / 659'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo8.png" alt="Schizo Writeup Screenshot 8"/></div></p>
+<p>There are only two functions present in the .init_array section.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:863 / 286'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo9.png" alt="Schizo Writeup Screenshot 9"/></div></p>
+<p><code>_INIT_0</code> and the function it calls both return nothing, so we do not need to worry about them.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 286'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo10.png" alt="Schizo Writeup Screenshot 10"/></div></p>
+<p>This further narrows the scope, meaning the anti debugger logic must reside inside <code>_INIT_1</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 286'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo11.png" alt="Schizo Writeup Screenshot 11"/></div></p>
+<p>In <code>FUN_0010b06f</code> at line 17, we see an if condition that checks whether a memory address in the <code>.data</code> section holds the boolean value false, then sets it to true and calls the function inside the conditional block.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 627'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo12.png" alt="Schizo Writeup Screenshot 12"/></div></p>
+<p>Let us inspect <code>FUN_00129766</code> next.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 142'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo13.png" alt="Schizo Writeup Screenshot 13"/></div></p>
+<p>Let us inspect <code>FUN_001b80a9</code> next.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 249'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo14.png" alt="Schizo Writeup Screenshot 14"/></div></p>
+<p>Following the function calls, we can see <code>FUN_001b80a9</code> calling another function and checking whether the returned value is 0. Let us open <code>FUN_001b7e18</code> and inspect it next.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 660'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo15.png" alt="Schizo Writeup Screenshot 15"/></div></p>
+<p>Oh yeah! we have found the logic that scans the environment in which the program is being executed. We can now confidently say that this is the anti debugger logic. Let us go back to <code>FUN_0010b06f</code> and rename <code>FUN_00129766</code> to <code>debugger_kill_switch</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:652 / 339'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo16.png" alt="Schizo Writeup Screenshot 16"/></div></p>
+<p>Here, we need to skip the statements inside the if branch to bypass the kill switch.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:890 / 339'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo17.png" alt="Schizo Writeup Screenshot 17"/></div></p>
+<p>And just like that, we flip the instruction from <code>JNZ</code> to <code>JZ</code> and export the patched binary.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:890 / 285'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo18.png" alt="Schizo Writeup Screenshot 18"/></div></p>
+<p>Hell yeah! now we can confirm that our patch worked as expected. With the debugger working, let us dive into the actual challenge.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:961 / 270'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo19.png" alt="Schizo Writeup Screenshot 19"/></div></p>
+<p>In <code>main</code>, the first thing that grabs our attention is the use of the string <code>lib.so</code> as a parameter to <code>FUN_0011361c</code>. This must be the point where the <code>lib.so</code> file provided in the challenge is used. By going through the functions one by one, we can easily understand what is happening here.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:655 / 619'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo20.png" alt="Schizo Writeup Screenshot 20"/></div></p>
+<p><code>FUN_0012894f</code> decrypts the <code>lib.so</code> file.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:655 / 619'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo21.png" alt="Schizo Writeup Screenshot 21"/></div></p>
+<p><code>FUN_00108d3a</code> copies the decrypted data into the <code>/tmp/.trojanXXXXXX</code> file after replacing the <code>XXXXXX</code> with random characters using <code>mkstemp</code>, returns a file descriptor, and then deletes the created temporary file using <code>unlink</code> after obtaining the file descriptor.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:655 / 619'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo22.png" alt="Schizo Writeup Screenshot 22"/></div></p>
+<p>So, to extract the decrypted binary, we can use GDB to break before the call to <code>unlink</code> and copy <code>/tmp/.trojanXXXXXX</code> from disk.</p>
+<p>The call to <code>unlink</code> that we need is at offset <code>00108e4f</code> in Ghidra, and Ghidra adds an extra <code>00100000</code> offset for this binary. Next, we will obtain the dynamic start address of the binary using GDB.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:809 / 242'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo23.png" alt="Schizo Writeup Screenshot 23"/></div></p>
+<p>Running the command <code>info proc mappings</code> gives us the start address of the dynamically loaded binary.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:957 / 260'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo24.png" alt="Schizo Writeup Screenshot 24"/></div></p>
+<p>Let us use a calculator to compute the dynamic address precisely, as we will be using this method to calculate dynamic addresses going forward.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:925 / 666'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo25.png" alt="Schizo Writeup Screenshot 25"/></div></p>
+<p>We then use the command <code>x/s $rdi</code> to read the data stored in <code>RDI</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:809 / 160'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo26.png" alt="Schizo Writeup Screenshot 26"/></div></p>
+<p>Then we copy the file to our directory for further investigation.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:959 / 160'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo27.png" alt="Schizo Writeup Screenshot 27"/></div></p>
+<p>By inspecting the symbol tree itself, we can see that this code implements some form of obfuscation and deobfuscation logic.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:580 / 410'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo28.png" alt="Schizo Writeup Screenshot 28"/></div></p>
+<p>Now let us go back to <code>main</code> and start investigating the logic. The three <code>dlsym</code> calls resolve the symbols of three functions from the shared object library.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:667 / 328'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo29.png" alt="Schizo Writeup Screenshot 29"/></div></p>
+<p>The values stored in those <code>.data</code> memory addresses are <code>___1</code>, <code>___2</code>, and <code>___3</code>. Let us rename them to make it easier to identify calls into the shared object library from the <code>schizo</code> binary.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:814 / 580'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo30.png" alt="Schizo Writeup Screenshot 30"/></div></p>
+<p>Looks much better now. The obfuscated string at line 50 is being transformed using <code>___4</code>. Let us read its value.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:669 / 330'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo31.png" alt="Schizo Writeup Screenshot 31"/></div></p>
+<p>And here we go, the obfuscated string passed to <code>___4</code> has been deobfuscated and returned, and it matches the first two lines of the taunting message. We can now hypothesize that solving the challenge will produce a different third line corresponding to the success message.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:962 / 364'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo32.png" alt="Schizo Writeup Screenshot 32"/></div></p>
+<p>Let’s go back to main and find out the success and failure paths.</p>
+<p>We know that the <code>___4</code> function is used for deobfuscation. Inspecting the <code>.data</code> offset of <code>___4</code> shows that it is referenced in three different functions. Excluding <code>main</code>, the remaining two functions are <code>FUN_00109653</code> and <code>FUN_0010a286</code>, both of which use it multiple times. These are likely the success and failure paths. Let us inspect them next and determine which corresponds to success and which to failure by placing breakpoints in the middle of both functions and observing which one executes.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:859 / 364'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo33.png" alt="Schizo Writeup Screenshot 33"/></div></p>
+<p>I was wrong with my hypothesis, as <code>FUN_00109653</code> returns a value.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:1050 / 364'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo34.png" alt="Schizo Writeup Screenshot 34"/></div></p>
+<p>And <code>FUN_0010a286</code> does not return anything.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:1050 / 364'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo35.png" alt="Schizo Writeup Screenshot 35"/></div></p>
+<p>Let us read the value returned by <code>FUN_00109653</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:960 / 236'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo36.png" alt="Schizo Writeup Screenshot 36"/></div></p>
+<p>So, <code>FUN_00109653</code> returns the response sent by the Python HTTP server, which suggests that this function is responsible for building requests and propagating responses.</p>
+<p>Next, let us inspect <code>FUN_0010a286</code>. With a single glance, we can see that this function contains both the success and failure paths, as it includes multiple control flow statements.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:786 / 549'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo37.png" alt="Schizo Writeup Screenshot 37"/></div></p>
+<p>At line 73, we see an obfuscated string being printed directly, but we did not observe this when executing the binary. Hence, the success path must be this if branch and the failure path the else branch. Let us rename this function to <code>success_checker</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:786 / 253'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo38.png" alt="Schizo Writeup Screenshot 38"/></div></p>
+<p>Now it gets interesting, as <code>success_checker</code> reads the values stored in <code>DAT_00204630</code> and <code>DAT_00204650</code> and performs some processing on them.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:786 / 534'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo39.png" alt="Schizo Writeup Screenshot 39"/></div></p>
+<p>It also performs several checks and increments the value of <code>local_168</code>, which acts as a counter determining the success path.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:786 / 534'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo40.png" alt="Schizo Writeup Screenshot 40"/></div></p>
+<p>Next we inspect the cross references of <code>DAT_00204630</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:840 / 377'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo41.png" alt="Schizo Writeup Screenshot 41"/></div></p>
+<p><code>FUN_0010b06f</code> is called by <code>_INIT_1</code>, and a pointer to an obfuscated string is passed in <code>RSI</code> to <code>FUN_0012bc2a</code> along with <code>DAT_00204630</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:840 / 377'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo42.png" alt="Schizo Writeup Screenshot 42"/></div></p>
+<p>Clicking on the pointer takes us to the other string values, which indicates that these values are initialized inside <code>DAT_00204630</code> before execution ever reaches <code>main</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:840 / 314'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo43.png" alt="Schizo Writeup Screenshot 43"/></div></p>
+<p>Let us confirm this using GDB. The strings we observed in Ghidra at <code>DAT_00204630</code> match the values seen in the GDB dump.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:960 / 366'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo44.png" alt="Schizo Writeup Screenshot 44"/></div></p>
+<p>We also now know that the values propagated by <code>FUN_00109653</code> are written to <code>DAT_00204650</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:680 / 366'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo45.png" alt="Schizo Writeup Screenshot 45"/></div></p>
+<p>Next, I tried sending the strings dumped from <code>DAT_00204630</code> as responses after modifying <code>srv.py</code>, but it did not work as expected. There is some transformation occurring that prevents us from reaching the success path.</p>
+<p>Let us walk through the <code>success_checker</code> logic and see how the values in <code>DAT_00204630</code> and <code>DAT_00204650</code> are transformed.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:680 / 366'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo46.png" alt="Schizo Writeup Screenshot 46"/></div></p>
+<ul>
+<li><code>FUN_0011aa76</code> implements assignment logic, so we rename it to <code>assignment</code>.</li>
+<li><code>FUN_00109cc9</code> implements splitter logic that separates the index and value from the vector, so we rename it to <code>splitter</code>.</li>
+<li><code>FUN_0012cb14</code> implements cleanup logic, so we rename it to <code>cleanup</code>.</li>
+<li><code>FUN_0013dada</code> extracts the index, so we rename it to <code>index_extractor</code>.</li>
+<li><code>FUN_0013db0c</code> extracts the value, so we rename it to <code>value_extractor</code>.</li>
+</ul>
+<p>We can see that the transformation applied to <code>DAT_00204650</code> is similar, but it goes through additional preprocessing before undergoing the same transformation as the values in <code>DAT_00204630</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:686 / 498'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo47.png" alt="Schizo Writeup Screenshot 47"/></div></p>
+<p><code>FUN_0010a1b0</code> calls <code>___1</code> from the <code>lib.so</code> file and obfuscates the provided value, so let us rename it to <code>obfuscator</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:686 / 443'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo48.png" alt="Schizo Writeup Screenshot 48"/></div></p>
+<p>Let us understand and rename a few more functions.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:686 / 466'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo49.png" alt="Schizo Writeup Screenshot 49"/></div></p>
+<ul>
+<li><code>FUN_0013db54</code> converts an integer into a typed object, so let us rename it to <code>int_to_wrapper</code>.</li>
+<li><code>FUN_001091af</code> converts the typed object into a string, so let us rename it to <code>wrapper_to_string</code>.</li>
+<li><code>FUN_00137afb</code> concatenates the string index as the payload prefix, so let us rename it to <code>payload_index_concat</code>.</li>
+</ul>
+<p>Now we have the full picture of what is going on. Time to crack SCHIZO!!</p>
+<h2>Cracking SCHIZO</h2>
+<p>First, let us patch the instruction that calls <code>obfuscator</code> by replacing it with the address of <code>assignment</code>.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:819 / 466'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo50.png" alt="Schizo Writeup Screenshot 50"/></div></p>
+<p>Now let us run the newly patched binary in GDB and observe the values that get concatenated to the payload after the <code>payload_index_concat</code> call.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:965 / 736'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo51.png" alt="Schizo Writeup Screenshot 51"/></div></p>
+<p>That is a clean read. Now we know which values are concatenated as prefixes, and they match the first few characters of the expected values dumped from <code>DAT_00204630</code>.</p>
+<p>As the next step, we will remove these prefixes from the values, modify the <code>srv.py</code> file, and craft an exploit that sends the stripped payloads as responses.</p>
+<p>Now let us run the <code>schizo</code> binary with the exploit script running in the background.</p>
+<p><div class='shimmer aspect-ratio' style='--aspect-ratio:965 / 231'><img src="https://0xh4ty.github.io/assets/img/schizo/schizo52.png" alt="Schizo Writeup Screenshot 52"/></div></p>
+<p>Voila, we cracked Schizo and successfully reached the hidden success path, confirming that our understanding of the validation logic, transformations, and control flow was correct.</p>
+<h2>Final Thoughts</h2>
+<p>This crackme turned out to be a well designed reverse engineering challenge that tested much more than basic static analysis. The real difficulty came from understanding subtle runtime behavior, tracking data flow across the program, and correctly interpreting how transformed values were validated.</p>
+<p>Key takeaways from this challenge include the importance of carefully handling PIE binaries, tracking multiple base addresses when dlopen is involved, and not blindly trusting decompiler output without validating it against runtime behavior in GDB.</p>
+<p>Overall, Schizo was a rewarding exercise that tied together static analysis, dynamic debugging, patching, and protocol level reasoning. It served as a strong practical step forward in developing a disciplined reverse engineering methodology.</p>
+<p>See you in the next one. Cheers!</p>
+
+</main>
+<footer class='container' style='text-align: center;'>
+    <p>
+        <a href='https://github.com/0xh4ty'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-github'><path d='M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'></path></svg></a>
+        &nbsp;|&nbsp;
+        <a href='https://x.com/0xh4ty'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-twitter'><path d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path></svg></a>
+    </p>
+    <p class='footer-credit'>
+        © 2025 <a href='https://x.com/0xh4ty'>0xh4ty</a>. Powered by <a href='https://github.com/0xh4ty/xeniria'>Xeniria</a>.
+    </p>
+</footer>
+<script>
+  function toggleMenu() {
+    let nav = document.getElementById('navLinks');
+    nav.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
