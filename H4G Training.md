@@ -175,7 +175,7 @@ Solving ciphers, breaking encodings, and cracking hashes.
 
 ### Learning
 * [Steganography And Cryptography Fundamentals](learning/Steganography%20And%20Cryptography%20Fundamentals.md)
-* [Crypto 101 — Searchable Course](crypto101-course.html) — 16 digestible lessons derived from the local book, with search, objectives, checkpoints, and exact PDF page citations. The [course note](learning/Crypto101.md) and [full-text archive](references/Crypto101%20Full%20Text%20Archive.md) remain available offline.
+* [Crypto 101 — Searchable Course Book](crypto101-course.html) — 16 guided lessons plus the complete migrated book text across 22 chapters and 96 sections, with search, objectives, checkpoints, glossary, references, and retained figures. The [course note](learning/Crypto101.md) and [source archive](references/Crypto101%20Full%20Text%20Archive.md) remain available offline; no PDF reader is required.
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-source: Crypto101.pdf
+source: "Crypto 101 version 0.6.0-95-g64e8ccf (local PDF migrated and removed)"
 author: Laurens Van Houtven (lvh)
 license: "CC BY-NC 4.0 - https://creativecommons.org/licenses/by-nc/4.0/"
 original_url: "https://www.crypto101.io/"

@@ -1,5 +1,5 @@
 window.CRYPTO101_COURSE = {
-  source: "Crypto101.pdf",
+  source: "Crypto101 Full Text Archive.md",
   author: "Laurens Van Houtven (lvh)",
   license: "CC BY-NC 4.0",
   modules: [
