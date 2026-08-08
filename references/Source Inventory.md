@@ -27,6 +27,12 @@ Local source folders retained for future restructuring and writeup mining. These
 
 ## Existing Sources
 
+- `references/dcode-cryptography` and `references/dcode-images`
+  - Upstream: https://www.dcode.fr/tools-list
+  - Use for: Offline personal-study reference for cipher definitions, recognition clues, examples, variants, and available reference images.
+  - Scope: Educational FAQ/reference content only; converters, solvers, forms, scripts, APIs, and implementation code are excluded.
+  - Attribution: dCode.fr under the CC BY notice displayed on each captured source page.
+  - Folded into: [dCode Cryptography Reference Index](dCode%20Cryptography%20Index.md) and [offline cryptography reference](../cryptography-reference.html).
 - `_source_0xrefs`
   - Upstream: https://github.com/0xrefs/0xrefs.github.io
   - Use for: Interactive command cheatsheet queries, variable injection, and shell history generation.

@@ -169,6 +169,10 @@ Solving ciphers, breaking encodings, and cracking hashes.
 ### Cheatsheets
 * [Password Attacks Playbook](guides/Password%20Attacks%20Playbook.md) — Hashcat rules and cracking modes (NTLM, NTLMv2, Kerberoast, ASREP, md5, zip).
 
+### Offline References
+* [dCode Cryptography Reference](cryptography-reference.html) — Searchable offline cipher atlas with 319 attributed reference pages and locally stored symbol samples.
+* [dCode Cryptography Markdown Index](references/dCode%20Cryptography%20Index.md) — Obsidian-friendly categorized index for the same reference collection.
+
 ### Learning
 * [Steganography And Cryptography Fundamentals](learning/Steganography%20And%20Cryptography%20Fundamentals.md)
 * [Crypto101 — Full Textbook](learning/Crypto101.md) — Crypto 101 by lvh: XOR, AES, stream ciphers, RSA, hash functions, MACs, TLS, GPG, OTR, and more (CC BY-NC 4.0).

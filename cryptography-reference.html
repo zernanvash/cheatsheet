@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>H4G Offline Cryptography Reference</title>
+  <style>
+    :root{--paper:#f5edcf;--paper2:#fffaf0;--ink:#302918;--olive:#68700d;--red:#b91f12;--line:#c8b77a;--shadow:#5c4a2526}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:17px/1.55 Georgia,"Times New Roman",serif;background:#cabd91}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;background:radial-gradient(circle at 18% 10%,#fff 0 2px,transparent 3px),radial-gradient(circle at 72% 42%,#816c2c 0 1px,transparent 2px);background-size:83px 71px,109px 97px}
+    header{position:sticky;top:0;z-index:5;padding:16px 22px;background:#efe3b9ee;border-bottom:1px solid var(--line);box-shadow:0 4px 18px var(--shadow);backdrop-filter:blur(8px)}
+    .head{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}.brand{min-width:max-content}.brand h1{margin:0;font-size:1.55rem;font-variant:small-caps;letter-spacing:.04em}.brand small{color:#6a5a34}
+    input{width:100%;padding:12px 15px;border:1px solid #a49155;border-radius:4px;background:#fffdf5;color:#292310;font:inherit;box-shadow:inset 0 1px 4px #65551e22}input:focus{outline:3px solid #88912744}
+    .layout{max-width:1400px;margin:auto;display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 85px);background:linear-gradient(90deg,var(--paper),var(--paper2) 20%,var(--paper2) 80%,var(--paper));box-shadow:0 0 35px #3d321d4d}
+    aside{padding:24px 16px;border-right:1px solid var(--line)}aside h2,.section-title{margin:0 0 12px;color:#58470f;font-size:1.1rem;font-variant:small-caps;letter-spacing:.06em}
+    #categories{display:grid;gap:5px}.cat{appearance:none;border:0;border-left:3px solid transparent;padding:7px 9px;text-align:left;background:transparent;color:#534819;font:inherit;cursor:pointer}.cat:hover,.cat.active{color:var(--red);border-color:var(--red);background:#fff8dc}
+    main{padding:26px clamp(18px,4vw,52px)}.intro{padding:18px 20px;margin-bottom:24px;border:1px solid var(--line);background:#fff8dd;box-shadow:3px 3px 0 var(--shadow)}.intro h2{margin:0;color:#554715;font-variant:small-caps}.intro p{margin:.45rem 0 0}
+    .toolbar{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-bottom:12px}.count{color:#6b5d34;font-size:.92rem}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:15px}
+    article{border:1px solid var(--line);background:#fffdf6;padding:16px;box-shadow:3px 3px 0 var(--shadow)}article h3{margin:0 0 4px;color:#65700b;font-size:1.08rem;font-variant:small-caps}article .crumb{color:#8a281d;font-size:.8rem}.excerpt{margin:12px 0;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}.links{display:flex;gap:12px;flex-wrap:wrap}.links button,.links a{border:0;background:none;padding:0;color:var(--red);font:700 .88rem Georgia,serif;text-decoration:none;cursor:pointer}.thumbs{display:flex;gap:8px;overflow:auto;margin-top:12px}.thumbs img{height:72px;max-width:210px;object-fit:contain;background:white;border:1px solid #cdbd82}
+    dialog{width:min(850px,94vw);max-height:88vh;padding:0;border:1px solid #8f7c43;background:var(--paper2);color:var(--ink);box-shadow:0 18px 70px #0008}dialog::backdrop{background:#2b2419b8}.modal-head{position:sticky;top:0;display:flex;justify-content:space-between;gap:15px;padding:15px 20px;background:#eadca9;border-bottom:1px solid var(--line)}.modal-head h2{margin:0;font-variant:small-caps}.close{border:0;background:none;font-size:1.6rem;cursor:pointer}.modal-body{padding:20px 26px}.modal-body h3{color:#65700b;border-bottom:1px dashed var(--line)}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.gallery img{width:100%;max-height:240px;object-fit:contain;background:white;border:1px solid var(--line)}.empty{padding:40px;text-align:center;color:#776a45}
+    footer{margin-top:28px;padding-top:15px;border-top:1px solid var(--line);font-size:.85rem;color:#70633d}
+    @media(max-width:760px){header{position:relative}.head{align-items:stretch;flex-direction:column;gap:10px}.layout{display:block}aside{border-right:0;border-bottom:1px solid var(--line)}#categories{display:flex;overflow:auto}.cat{min-width:max-content;border-left:0;border-bottom:3px solid transparent}.cards{grid-template-columns:1fr}main{padding:20px 14px}}
+  </style>
+</head>
+<body>
+  <header><div class="head"><div class="brand"><h1>H4G Cryptography Reference</h1><small>Offline cipher atlas and study notes</small></div><input id="search" type="search" placeholder="Search names, clues, methods, symbols…" autocomplete="off"></div></header>
+  <div class="layout">
+    <aside><h2>Cryptography</h2><nav id="categories"></nav></aside>
+    <main>
+      <section class="intro"><h2>Cryptography and Ciphers</h2><p>A personal offline reference derived from dCode’s attributed educational pages. Browse recognition clues, principles, examples, variants, and available cipher imagery. Interactive solvers and converters are intentionally excluded.</p></section>
+      <div class="toolbar"><h2 class="section-title" id="sectionTitle">All references</h2><div class="count" id="count"></div></div>
+      <section class="cards" id="cards"></section>
+      <footer>Source material: <a href="https://www.dcode.fr/tools-list">dCode.fr</a>, retrieved <span id="retrieved">—</span>. Each local record links to its original page. Attribution follows the CC BY notice displayed by dCode.</footer>
+    </main>
+  </div>
+  <dialog id="detail"><div class="modal-head"><h2 id="detailTitle"></h2><button class="close" aria-label="Close">×</button></div><div class="modal-body" id="detailBody"></div></dialog>
+  <script src="references/dcode-cryptography-data.js"></script>
+  <script>
+    (()=>{
+      const data=window.DCODE_CRYPTO_DATA||{retrieved:'not yet generated',records:[]};
+      const records=data.records||[], cats=['All references',...new Set(records.map(x=>x.category))];
+      const nav=document.querySelector('#categories'),cards=document.querySelector('#cards'),search=document.querySelector('#search'),count=document.querySelector('#count'),title=document.querySelector('#sectionTitle'),dialog=document.querySelector('#detail'),body=document.querySelector('#detailBody');
+      let active='All references'; document.querySelector('#retrieved').textContent=data.retrieved;
+      const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      cats.forEach(c=>{const b=document.createElement('button');b.className='cat'+(c===active?' active':'');b.textContent=c;b.onclick=()=>{active=c;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('active',x===b));render()};nav.append(b)});
+      function open(item){document.querySelector('#detailTitle').textContent=item.title;body.innerHTML=(item.sections||[]).map(s=>`<section><h3>${esc(s.heading)}</h3>${esc(s.text).split('\n\n').map(p=>`<p>${p}</p>`).join('')}</section>`).join('')+((item.images||[]).length?`<h3>Reference Images</h3><div class="gallery">${item.images.map(i=>`<figure><img src="${esc(i.src)}" alt="${esc(i.alt)}"><figcaption>${esc(i.alt)}</figcaption></figure>`).join('')}</div>`:'')+`<p><a href="${esc(item.url)}">Open original dCode page</a></p>`;dialog.showModal()}
+      function render(){const q=search.value.trim().toLowerCase();const shown=records.filter(r=>(active==='All references'||r.category===active)&&(!q||[r.title,r.category,...(r.sections||[]).flatMap(s=>[s.heading,s.text])].join(' ').toLowerCase().includes(q)));title.textContent=active;count.textContent=`${shown.length} of ${records.length} references`;cards.innerHTML='';shown.forEach(item=>{const text=(item.sections||[]).map(s=>s.text).join(' ')||'Reference entry saved; no FAQ text was available.';const el=document.createElement('article');el.innerHTML=`<div class="crumb">${esc(item.category)}</div><h3>${esc(item.title)}</h3><p class="excerpt">${esc(text)}</p>${(item.images||[]).length?`<div class="thumbs">${item.images.slice(0,3).map(i=>`<img src="${esc(i.src)}" alt="${esc(i.alt)}" loading="lazy">`).join('')}</div>`:''}<div class="links"><button>Read offline reference</button><a href="${esc(item.url)}">Original ↗</a></div>`;el.querySelector('button').onclick=()=>open(item);cards.append(el)});if(!shown.length)cards.innerHTML='<div class="empty">No matching reference found.</div>'}
+      search.addEventListener('input',render);dialog.querySelector('.close').onclick=()=>dialog.close();dialog.onclick=e=>{if(e.target===dialog)dialog.close()};render();
+    })();
+  </script>
+</body>
+</html>
