@@ -175,7 +175,7 @@ Solving ciphers, breaking encodings, and cracking hashes.
 
 ### Learning
 * [Steganography And Cryptography Fundamentals](learning/Steganography%20And%20Cryptography%20Fundamentals.md)
-* [Crypto101 — Full Textbook](learning/Crypto101.md) — Crypto 101 by lvh: XOR, AES, stream ciphers, RSA, hash functions, MACs, TLS, GPG, OTR, and more (CC BY-NC 4.0).
+* [Crypto 101 — Searchable Course](crypto101-course.html) — 16 digestible lessons derived from the local book, with search, objectives, checkpoints, and exact PDF page citations. The [course note](learning/Crypto101.md) and [full-text archive](references/Crypto101%20Full%20Text%20Archive.md) remain available offline.
 
 ---
 
