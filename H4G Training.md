@@ -163,8 +163,9 @@ Extracting hidden data from images, audio, archives, and metadata.
 
 Solving ciphers, breaking encodings, and cracking hashes.
 
-### Blueprints
+### Playbooks & Blueprints
 * **[Cryptography Blueprint](blueprints/Cryptography%20Blueprint.md)** — Solvers for XOR ciphers, RSA public keys, and custom encodings.
+* **[RsaCtfTool Weak RSA Analysis Guide](learning/RsaCtfTool%20Guide.md)** — Evidence-driven attack selection, key recovery, ciphertext handling, validation, and failure diagnosis.
 
 ### Cheatsheets
 * [Password Attacks Playbook](guides/Password%20Attacks%20Playbook.md) — Hashcat rules and cracking modes (NTLM, NTLMv2, Kerberoast, ASREP, md5, zip).
