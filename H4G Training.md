@@ -207,5 +207,6 @@ Documenting findings professionally.
 * **[0xrefs Interactive Reference](0xrefs.html)** — Dynamic parameter cheatsheet with search, filter, and offline compatibility.
 * **[Tools Index](tools/Tools%20Index.md)** — All cheatsheets organized by CTF category.
 * **[References Index](references/References%20Index.md)** — Long-form source links, syscall tables, and external documentation.
+* **[Not The Hidden Wiki Mirror](nthw/)** — Searchable, attributed non-commercial snapshot of the NTHW cybersecurity link repository.
 * **[Learning Path Index](learning/Learning%20Path%20Index.md)** — Modular paths to learn the fundamentals first.
 * **[Challenge Use Cases](references/Challenge%20Use%20Cases.md)** — Worked examples across multiple challenge types.
