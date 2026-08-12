@@ -171,6 +171,7 @@ Solving ciphers, breaking encodings, and cracking hashes.
 * [Password Attacks Playbook](guides/Password%20Attacks%20Playbook.md) — Hashcat rules and cracking modes (NTLM, NTLMv2, Kerberoast, ASREP, md5, zip).
 
 ### Offline References
+* [Cipher Identifier](cipher-identifier/) — Algorithm-first cipher family ranking with measured evidence and an optional constrained OpenCode review.
 * [Offline ASCII Workbench](ascii-code.html) — Local ASCII encoder/decoder for binary, octal, decimal, and hexadecimal, with CSV export inspection and a searchable 0–127 table.
 * [dCode Cryptography Reference](cryptography-reference.html) — Searchable offline cipher atlas with 319 attributed reference pages and locally stored symbol samples.
 * [dCode Cryptography Markdown Index](references/dCode%20Cryptography%20Index.md) — Obsidian-friendly categorized index for the same reference collection.

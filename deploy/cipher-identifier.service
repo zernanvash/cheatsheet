@@ -1,0 +1,26 @@
+[Unit]
+Description=H4G deterministic cipher identifier API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=h4g-cipher
+Group=h4g-cipher
+WorkingDirectory=/var/www/h4g
+EnvironmentFile=-/etc/h4g-cipher-identifier.env
+Environment=PYTHONUNBUFFERED=1
+Environment=HOME=/var/lib/h4g-cipher
+Environment=XDG_CONFIG_HOME=/var/lib/h4g-cipher/config
+ExecStart=/usr/bin/python3 -m services.cipher_identifier.server
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+StateDirectory=h4g-cipher
+CacheDirectory=h4g-cipher
+
+[Install]
+WantedBy=multi-user.target
