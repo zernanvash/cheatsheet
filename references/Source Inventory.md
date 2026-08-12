@@ -27,6 +27,11 @@ Local source folders retained for future restructuring and writeup mining. These
 
 ## Existing Sources
 
+- `_source_e0sec_ctf_writeups`
+  - Upstream: https://github.com/e0sec/ctf-writeups
+  - Local snapshot: commit `d510aba023ecff221d017cf920c6f95dd95f2193` (2026-08-10).
+  - Local contents observed: 78 Markdown files covering 2026 events including GPN CTF, KaliTeam, Operation Heist, Salt Crown, TheMCTF, and V1T CTF, plus an OSINT knowledge-base section and challenge artifacts.
+  - Use later for: multi-category CTF technique mining across cryptography, forensics, hardware, OSINT, pwn, reverse engineering, web, Web3, and AI/ML challenges.
 - `references/dcode-cryptography` and `references/dcode-images`
   - Upstream: https://www.dcode.fr/tools-list
   - Use for: Offline personal-study reference for cipher definitions, recognition clues, examples, variants, and available reference images.

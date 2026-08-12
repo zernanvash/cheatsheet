@@ -2,5 +2,6 @@
 #_source_*/**
 #!_source_*/**/
 #!_source_*/**/*.md
+_source_e0sec_ctf_writeups/
 .obsidian/workspace.json
 .obsidian/plugins/

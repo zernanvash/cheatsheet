@@ -1,279 +1,361 @@
-import os
+"""Build the static writeup database used by writeups.html.
+
+The source mirrors are read-only. This script discovers Markdown beneath every
+``_source_*`` directory and writes one deterministic, browser-ready JSON file.
+"""
+
+from __future__ import annotations
+
+import argparse
 import json
 import re
-import urllib.parse
+import subprocess
+import sys
+from pathlib import Path
 
-workspace_dir = r"g:\HackForGov2025\h4g"
-index_path = os.path.join(workspace_dir, "writeups-index.json")
 
-# Define cybersecurity tag mappings
+VAULT_ROOT = Path(__file__).resolve().parents[1]
+INDEX_PATH = VAULT_ROOT / "writeups-index.json"
+
+CATEGORIES = (
+    "Machine Exploitation",
+    "Web Exploitation",
+    "PWN / Binary Exploit",
+    "Reverse Engineering",
+    "Cryptography",
+    "Forensics",
+    "OSINT",
+    "Steganography",
+    "General",
+)
+
+CATEGORY_HINTS = (
+    ("PWN / Binary Exploit", ("binary_exploitation", "binary exploitation", "/pwn/", " pwn ")),
+    ("Reverse Engineering", ("reverse_engineering", "reverse engineering", "/rev/", " crackme", "keygen")),
+    ("Web Exploitation", ("web_exploitation", "web exploitation", "/web/", " web challenge", " sqli", " xss")),
+    ("Cryptography", ("cryptography", "/crypto/", " crypto challenge", " cipher", " rsa ", " aes ")),
+    ("Forensics", ("forensics", "/forensic/", " pcap", " volatility")),
+    ("OSINT", ("/osint/", " osint", "whois")),
+    ("Steganography", ("steganography", "/stego/", " stego", "steghide")),
+    ("Machine Exploitation", ("machine exploitation", "boot2root", "privilege escalation", " privesc")),
+)
+
 TAG_KEYWORDS = {
-    "WordPress": [r"wordpress", r"wp-", r"wpscan"],
-    "SQLi": [r"sqli", r"sql injection", r"sql-injection", r"mysql", r"postgres", r"sqlite"],
-    "LFI": [r"lfi", r"local file inclusion", r"file inclusion"],
-    "RCE": [r"rce", r"remote code execution", r"command injection", r"exec\("],
-    "SSTI": [r"ssti", r"server-side template injection", r"jinja2", r"mako", r"thymeleaf"],
-    "XXE": [r"xxe", r"xml external entity"],
-    "SSRF": [r"ssrf", r"server-side request forgery"],
-    "XSS": [r"xss", r"cross-site scripting", r"cross site scripting"],
-    "CSRF": [r"csrf", r"cross-site request forgery"],
-    "Directory Traversal": [r"directory traversal", r"path traversal", r"\.\./\.\."],
-    "File Upload": [r"file upload", r"upload shell", r"upload bypass"],
-    "XOR": [r"xor", r"exclusive or", r"xor encryption"],
-    "RSA": [r"rsa", r"openssl rsautl", r"id_rsa"],
-    "AES": [r"aes", r"aes-128", r"aes-256"],
-    "Assembly": [r"assembly", r"x86", r"x64", r"asm", r"registers", r"mov ", r"jmp ", r"cmp "],
-    "IDA Pro": [r"ida pro", r"ida", r"decompiler"],
-    "Ghidra": [r"ghidra"],
-    "GDB": [r"gdb", r"gnu debugger"],
-    "Keygen": [r"keygen", r"key generator", r"key validation"],
-    "Patching": [r"patch", r"patching", r"binary patch"],
-    "Obfuscation": [r"obfuscated", r"obfuscation", r"deobfuscate"],
-    "Golang": [r"golang", r"go binary", r"go build"],
-    "Rust": [r"rust", r"cargo"],
-    ".NET": [r"\.net", r"dnspy", r"ilspy", r"c#", r"mono "],
-    "Anti-Debugging": [r"anti-debug", r"anti-debugging", r"ptrace", r"isdebuggerpresent"],
-    "Buffer Overflow": [r"buffer overflow", r"bof", r"stack overflow", r"vuln\("],
-    "ROP": [r"rop chain", r"rop", r"return-oriented"],
-    "Format String": [r"format string", r"printf\("],
-    "Privilege Escalation": [r"privilege escalation", r"privesc", r"escalate", r"root access"],
-    "Sudo PrivEsc": [r"sudo -l", r"sudo privilege", r"sudoers"],
-    "Cronjob PrivEsc": [r"cronjob", r"cron", r"/etc/crontab"],
-    "SUID": [r"suid", r"setuid", r"perm -4000"],
-    "Active Directory": [r"active directory", r"kerberos", r"kerberoast", r"bloodhound", r"domain controller"],
-    "Nmap": [r"nmap", r"port scan"],
-    "Reverse Shell": [r"reverse shell", r"revshell", r"nc -e", r"bash -i"],
-    "SSH": [r"ssh", r"id_rsa", r"authorized_keys"],
-    "FTP": [r"ftp", r"anonymous ftp"],
-    "SMB": [r"smb", r"samba", r"smbclient", r"smbget"],
-    "RPC": [r"rpc", r"rpcclient"],
-    "NFS": [r"nfs", r"showmount"],
-    "LDAP": [r"ldap"],
-    "Redis": [r"redis", r"redis-cli"],
-    "WebDAV": [r"webdav"],
-    "Tomcat": [r"tomcat"],
-    "Jenkins": [r"jenkins"],
-    "Wireshark": [r"wireshark", r"pcap", r"tshark"],
-    "Volatility": [r"volatility"],
-    "Steghide": [r"steghide"],
-    "Binwalk": [r"binwalk"],
-    "Metadata": [r"metadata", r"exiftool"]
+    "WordPress": (r"wordpress", r"wp-", r"wpscan"),
+    "SQLi": (r"\bsqli\b", r"sql injection", r"sql-injection", r"\bmysql\b", r"\bpostgres\b", r"\bsqlite\b"),
+    "LFI": (r"\blfi\b", r"local file inclusion", r"file inclusion"),
+    "RCE": (r"\brce\b", r"remote code execution", r"command injection", r"\bexec\s*\("),
+    "SSTI": (r"\bssti\b", r"server-side template injection", r"\bjinja2\b"),
+    "XXE": (r"\bxxe\b", r"xml external entity"),
+    "SSRF": (r"\bssrf\b", r"server-side request forgery"),
+    "XSS": (r"\bxss\b", r"cross-site scripting", r"cross site scripting"),
+    "CSRF": (r"\bcsrf\b", r"cross-site request forgery"),
+    "Directory Traversal": (r"directory traversal", r"path traversal", r"\.\./\.\."),
+    "File Upload": (r"file upload", r"upload shell", r"upload bypass"),
+    "XOR": (r"\bxor\b", r"exclusive or", r"xor encryption"),
+    "RSA": (r"\brsa\b", r"openssl rsautl", r"id_rsa"),
+    "AES": (r"\baes\b", r"aes-128", r"aes-256"),
+    "Assembly": (r"\bassembly\b", r"\bx86\b", r"\bx64\b", r"\basm\b", r"\bregisters?\b"),
+    "IDA Pro": (r"ida pro", r"\bida\b", r"decompiler"),
+    "Ghidra": (r"\bghidra\b",),
+    "GDB": (r"\bgdb\b", r"gnu debugger"),
+    "Keygen": (r"\bkeygen\b", r"key generator", r"key validation"),
+    "Patching": (r"\bpatch(?:ing|ed)?\b", r"binary patch"),
+    "Obfuscation": (r"obfuscat", r"deobfuscat"),
+    "Golang": (r"\bgolang\b", r"go binary", r"go build"),
+    "Rust": (r"\brust\b", r"\bcargo\b"),
+    ".NET": (r"\.net\b", r"dnspy", r"ilspy", r"\bc#\b", r"\bmono\b"),
+    "Anti-Debugging": (r"anti-debug", r"ptrace", r"isdebuggerpresent"),
+    "Buffer Overflow": (r"buffer overflow", r"\bbof\b", r"stack overflow"),
+    "ROP": (r"rop chain", r"return-oriented", r"\brop\b"),
+    "Format String": (r"format string", r"printf\s*\("),
+    "Privilege Escalation": (r"privilege escalation", r"\bprivesc\b", r"root access"),
+    "Sudo PrivEsc": (r"sudo -l", r"sudoers"),
+    "Cronjob PrivEsc": (r"cronjob", r"/etc/crontab"),
+    "SUID": (r"\bsuid\b", r"setuid", r"perm -4000"),
+    "Active Directory": (r"active directory", r"kerberoast", r"bloodhound", r"domain controller"),
+    "Nmap": (r"\bnmap\b", r"port scan"),
+    "Reverse Shell": (r"reverse shell", r"revshell", r"bash -i"),
+    "SSH": (r"\bssh\b", r"id_rsa", r"authorized_keys"),
+    "FTP": (r"\bftp\b", r"anonymous ftp"),
+    "SMB": (r"\bsmb\b", r"samba", r"smbclient"),
+    "RPC": (r"\brpc\b", r"rpcclient"),
+    "NFS": (r"\bnfs\b", r"showmount"),
+    "LDAP": (r"\bldap\b",),
+    "Redis": (r"\bredis\b", r"redis-cli"),
+    "WebDAV": (r"\bwebdav\b",),
+    "Tomcat": (r"\btomcat\b",),
+    "Jenkins": (r"\bjenkins\b",),
+    "Wireshark": (r"\bwireshark\b", r"\bpcap\b", r"\btshark\b"),
+    "Volatility": (r"\bvolatility\b",),
+    "Steghide": (r"\bsteghide\b",),
+    "Binwalk": (r"\bbinwalk\b",),
+    "Metadata": (r"\bmetadata\b", r"\bexiftool\b"),
 }
 
-def get_referenced_file(content, current_dir):
-    # Markdown links: [label](path)
-    links = re.findall(r'\[([^\]]*)\]\(([^)]+)\)', content)
-    for label, path in links:
-        if path.startswith("http://") or path.startswith("https://") or path.startswith("#"):
+
+def normalize_path(path: Path | str) -> str:
+    return str(path).replace("\\", "/").lstrip("./")
+
+
+def tracked_paths() -> set[str]:
+    result = subprocess.run(
+        ["git", "ls-files", "-z"], cwd=VAULT_ROOT, capture_output=True, check=False
+    )
+    if result.returncode:
+        print("WARNING: git ls-files failed; embedding source Markdown for all records", file=sys.stderr)
+        return set()
+    return {p.decode("utf-8", "surrogateescape") for p in result.stdout.split(b"\0") if p}
+
+
+def parse_frontmatter(markdown: str) -> tuple[dict[str, object], str]:
+    text = markdown.lstrip("\ufeff")
+    if not text.startswith("---\n"):
+        return {}, text
+    end = text.find("\n---", 4)
+    if end < 0:
+        return {}, text
+    raw, body = text[4:end], text[end + 4 :].lstrip("\r\n")
+    data: dict[str, object] = {}
+    active_list: str | None = None
+    for line in raw.splitlines():
+        item = re.match(r"^\s*-\s+(.+)$", line)
+        if item and active_list:
+            cast = data.setdefault(active_list, [])
+            if isinstance(cast, list):
+                cast.append(item.group(1).strip(" '\""))
             continue
-        path = path.split("?")[0].split("#")[0]
-        path = urllib.parse.unquote(path)
-        ref_path = os.path.abspath(os.path.join(current_dir, path))
-        if ref_path.startswith(os.path.abspath(workspace_dir)):
-            return ref_path
-            
-    # Check for raw local file paths
-    words = content.split()
-    for word in words:
-        if ("/" in word or "\\" in word) and any(word.endswith(ext) for ext in [".md", ".txt", ".py", ".c", ".sol", ".json", ".png", ".jpg", ".zip", ".exe"]):
-            clean_word = word.strip("`'\"(),.:;")
-            ref_path = os.path.abspath(os.path.join(current_dir, clean_word))
-            if os.path.exists(ref_path) and os.path.isfile(ref_path) and ref_path.startswith(os.path.abspath(workspace_dir)):
-                return ref_path
-    return None
-
-def clean_markdown_for_summary(content):
-    # Remove code blocks
-    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
-    # Remove HTML tags
-    content = re.sub(r'<[^>]*>', '', content)
-    # Remove images and links
-    content = re.sub(r'!\[.*?\]\(.*?\)', '', content)
-    content = re.sub(r'\[(.*?)\]\(.*?\)', r'\1', content)
-    # Split into lines
-    lines = [line.strip() for line in content.split('\n')]
-    
-    clean_paragraphs = []
-    for line in lines:
-        if not line:
+        match = re.match(r"^([A-Za-z_][\w-]*):\s*(.*)$", line)
+        if not match:
             continue
-        # Skip headers
-        if line.startswith('#'):
-            continue
-        # Skip lists/tables lines or code snippets
-        if line.startswith('|') or line.startswith('-') or line.startswith('*') or line.startswith('>'):
-            # Skip bullet points unless they look like normal sentences
-            if len(line) < 25:
-                continue
-        # Clean markdown formatting like bold, code spans
-        line = line.replace('**', '').replace('__', '').replace('`', '').replace('::', '').replace('||', '')
-        line = re.sub(r'\s+', ' ', line).strip()
-        if len(line) > 30 and not line.startswith('/') and not line.startswith('$'):
-            clean_paragraphs.append(line)
-            if len(clean_paragraphs) >= 2:
-                break
-                
-    if clean_paragraphs:
-        summary = " ".join(clean_paragraphs)
-        if len(summary) > 160:
-            summary = summary[:157] + "..."
-        return summary
-    return ""
+        key, value = match.group(1).lower(), match.group(2).strip()
+        active_list = key if not value else None
+        if value.startswith("[") and value.endswith("]"):
+            data[key] = [part.strip(" '\"") for part in value[1:-1].split(",") if part.strip()]
+        else:
+            data[key] = value.strip(" '\"")
+    return data, body
 
-def main():
-    if not os.path.exists(index_path):
-        print(f"Index file not found: {index_path}")
-        return
 
-    with open(index_path, "r", encoding="utf-8-sig") as f:
-        writeups = json.load(f)
+def headings_from(markdown: str) -> list[str]:
+    return [m.group(2).strip() for m in re.finditer(r"^(#{1,6})\s+(.+?)\s*$", markdown, re.MULTILINE)]
 
-    print(f"Initial writeups count: {len(writeups)}")
 
-    pruned_writeups = []
-    removed_count = 0
+def strip_markdown(markdown: str) -> str:
+    text = re.sub(r"^---\n.*?\n---\s*", "", markdown, count=1, flags=re.DOTALL)
+    text = re.sub(r"!\[([^]]*)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"\[([^]]+)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"<https?://[^>]+>", " ", text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"^\s*```[^\n]*$", " ", text, flags=re.MULTILINE)
+    text = re.sub(r"[`*_~|>#]+", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
 
-    for idx, w in enumerate(writeups):
-        path_val = w["path"]
-        full_path = os.path.join(workspace_dir, path_val)
-        
-        # 1. Existence and type check
-        if not os.path.exists(full_path) or not os.path.isfile(full_path):
-            print(f"PRUNING: {path_val} (File does not exist or is not a file)")
-            removed_count += 1
-            # If the file exists but it's not a file (maybe directory), we don't delete. If it's missing, nothing to delete.
-            continue
-            
-        # 2. Size check
-        size = os.path.getsize(full_path)
-        if size == 0:
-            print(f"PRUNING: {path_val} (File is 0 bytes)")
-            removed_count += 1
-            try:
-                os.remove(full_path)
-                print(f"Deleted empty file: {full_path}")
-            except Exception as e:
-                print(f"Failed to delete empty file {full_path}: {e}")
-            continue
-            
-        # 3. Read content
-        with open(full_path, "r", encoding="utf-8", errors="ignore") as mf:
-            content = mf.read().strip()
-            
-        if not content:
-            print(f"PRUNING: {path_val} (Content is empty string)")
-            removed_count += 1
-            try:
-                os.remove(full_path)
-                print(f"Deleted empty file: {full_path}")
-            except Exception as e:
-                print(f"Failed to delete empty file {full_path}: {e}")
-            continue
-            
-        # 4. Check for empty/missing reference files in short writeups
-        current_dir = os.path.dirname(full_path)
-        ref_file = get_referenced_file(content, current_dir)
-        
-        # If it's very short and points to a reference file, verify that reference file
-        if len(content) < 180 and ref_file:
-            ref_rel = os.path.relpath(ref_file, workspace_dir)
-            if not os.path.exists(ref_file) or not os.path.isfile(ref_file) or os.path.getsize(ref_file) == 0:
-                print(f"PRUNING: {path_val} (Points to empty or missing reference file: {ref_rel})")
-                removed_count += 1
-                try:
-                    os.remove(full_path)
-                    print(f"Deleted empty writeup pointer file: {full_path}")
-                except Exception as e:
-                    print(f"Failed to delete file {full_path}: {e}")
-                continue
-                
-        # Keep the writeup and enrich it!
-        pruned_writeups.append((w, content, full_path))
 
-    print(f"Pruning complete. Kept {len(pruned_writeups)} writeups. Removed {removed_count}.")
+def title_for(path: Path, frontmatter: dict[str, object], headings: list[str]) -> str:
+    declared = frontmatter.get("title")
+    if isinstance(declared, str) and declared.strip():
+        return declared.strip()
+    if headings:
+        return headings[0]
+    return path.stem.replace("_", " ").replace("-", " ").strip() or "Untitled"
 
-    final_index = []
 
-    for w, content, full_path in pruned_writeups:
-        # Detect tags based on keywords
-        tags = []
-        for tag, patterns in TAG_KEYWORDS.items():
-            for pattern in patterns:
-                if re.search(pattern, content, re.IGNORECASE):
-                    tags.append(tag)
-                    break
-        
-        # Limit tags count and sort
-        tags = sorted(list(set(tags)))
-        
-        # Generate summary
-        summary = clean_markdown_for_summary(content)
-        if not summary:
-            # Fallback summary
-            category = w.get("category", "General")
-            origin = w.get("origin", "CTF")
-            if tags:
-                summary = f"A {category} challenge from {origin} focusing on {', '.join(tags[:3])}."
-            else:
-                summary = f"Walkthrough of {w['title']} ({category} challenge from {origin})."
-                
-        # Cryptic title context resolution
-        title_raw = w.get("title", "")
-        # Remove markdown decorations from original title to test it
-        title_clean = title_raw.replace("**", "").replace("||", "").replace("::", "").strip()
-        
-        context_title = None
-        # Check if the title is cryptic (e.g., hex string like 0x39, or single number, or very short)
-        is_hex = re.match(r'^0x[0-9a-fA-F]+$', title_clean)
-        is_num = re.match(r'^\d+$', title_clean)
-        is_cryptic = is_hex or is_num or len(title_clean) < 5
-        
-        if is_cryptic:
-            # Try to build context
-            path_lower = full_path.lower()
-            lab_name = ""
-            if "labs/venus" in path_lower or "/venus/" in path_lower:
-                lab_name = "Venus Lab"
-            elif "labs/hades" in path_lower or "/hades/" in path_lower:
-                lab_name = "Hades Lab"
-                
-            # Search for mission description or objective in file
-            mission_match = re.search(r'moving from `([^`]+)` to `([^`]+)`', content)
-            if not mission_match:
-                mission_match = re.search(r'moving from ([^\s]+) to ([^\s]+)', content, re.IGNORECASE)
-                
-            if mission_match:
-                from_user = mission_match.group(1).strip("`'\"(),.:;")
-                to_user = mission_match.group(2).strip("`'\"(),.:;")
-                context_title = f"{lab_name} Mission {title_clean} ({from_user} -> {to_user})"
-            elif lab_name:
-                context_title = f"{lab_name} Mission {title_clean}"
-            else:
-                # General challenge
-                context_title = f"Challenge {title_clean}"
-                
-        # Update/create fields on the index item
-        enriched_item = {
-            "title": w["title"],
-            "path": w["path"],
-            "category": w["category"],
-            "origin": w["origin"],
-            "headings": w.get("headings", []),
-            "snippet": w.get("snippet", ""),
-            "summary": summary,
-            "tags": tags,
-            "text": content
+def origin_for(relative: str, frontmatter: dict[str, object]) -> str:
+    declared = frontmatter.get("origin") or frontmatter.get("platform")
+    if isinstance(declared, str) and declared.strip():
+        return declared.strip()
+    low = f"/{relative.lower()}/"
+    if low.startswith("/_source_tryhackme_cajac/") or low.startswith("/_source_0xb0b_tryhackme/") or "/posts/thm/" in low:
+        return "TryHackMe"
+    if low.startswith("/_source_hackmyvm_writeups/") or "/posts/hackmyvm/" in low:
+        return "HackMyVM"
+    if low.startswith("/_source_picoctf_cajac/"):
+        return "picoCTF"
+    if low.startswith("/_source_crackmesone/"):
+        return "crackmes.one"
+    if low.startswith("/_source_ruycr4ft_cheatsheets/"):
+        return "ruycr4ft"
+    if low.startswith("/_source_sec_fortress/"):
+        if "/posts/htb/" in low:
+            return "HackTheBox"
+        if "/posts/pg/" in low:
+            return "Proving Grounds"
+        if "/posts/ptd/" in low:
+            return "PwnTillDawn"
+        if "/posts/vulnyx/" in low:
+            return "Vulnyx"
+        return "Sec-Fortress"
+    return "Other"
+
+
+def category_for(relative: str, frontmatter: dict[str, object], title: str, body: str) -> str:
+    declared = frontmatter.get("category")
+    if isinstance(declared, str):
+        normalized = declared.strip().lower()
+        aliases = {
+            "pwn": "PWN / Binary Exploit", "binary": "PWN / Binary Exploit",
+            "binary exploitation": "PWN / Binary Exploit", "rev": "Reverse Engineering",
+            "reverse": "Reverse Engineering", "reverse engineering": "Reverse Engineering",
+            "web": "Web Exploitation", "web exploitation": "Web Exploitation",
+            "crypto": "Cryptography", "cryptography": "Cryptography",
+            "forensics": "Forensics", "osint": "OSINT", "stego": "Steganography",
+            "steganography": "Steganography", "machine": "Machine Exploitation",
         }
-        if context_title:
-            enriched_item["context_title"] = context_title
-            
-        final_index.append(enriched_item)
+        if normalized in aliases:
+            return aliases[normalized]
+        if declared in CATEGORIES:
+            return declared
+    low_path = f"/{relative.lower()}/"
+    sample = f" {low_path} {title.lower()} {body[:3000].lower()} "
+    for category, hints in CATEGORY_HINTS:
+        if any(hint in sample for hint in hints):
+            return category
+    if low_path.startswith("/_source_crackmesone/"):
+        return "Reverse Engineering"
+    if low_path.startswith("/_source_hackmyvm_writeups/") or "/posts/hackmyvm/" in low_path:
+        return "Machine Exploitation"
+    if low_path.startswith("/_source_temperance/"):
+        return "Cryptography"
+    if "/posts/pg/" in low_path or "/posts/htb/" in low_path or "/posts/thm/" in low_path or "/posts/vulnyx/" in low_path:
+        return "Machine Exploitation"
+    return "General"
 
-    # Write the enriched writeups index back
-    with open(index_path, "w", encoding="utf-8") as f:
-        json.dump(final_index, f, indent=4, ensure_ascii=False)
-        
-    print(f"Successfully wrote enriched writeups-index.json with {len(final_index)} items.")
+
+def tags_for(frontmatter: dict[str, object], searchable: str) -> list[str]:
+    tags: set[str] = set()
+    declared = frontmatter.get("tags")
+    if isinstance(declared, str):
+        tags.update(x.strip() for x in re.split(r"[, ]+", declared) if x.strip())
+    elif isinstance(declared, list):
+        tags.update(str(x).strip() for x in declared if str(x).strip())
+    for tag, patterns in TAG_KEYWORDS.items():
+        if any(re.search(pattern, searchable, re.IGNORECASE) for pattern in patterns):
+            tags.add(tag)
+    return sorted(tags, key=str.casefold)
+
+
+def snippet_for(body: str, title: str, category: str, origin: str, tags: list[str]) -> str:
+    candidate = body
+    if candidate.lower().startswith(title.lower()):
+        candidate = candidate[len(title) :].lstrip(" :-—")
+    if candidate:
+        return candidate[:197].rstrip() + ("..." if len(candidate) > 200 else "")
+    focus = f" focusing on {', '.join(tags[:3])}" if tags else ""
+    return f"{category} material from {origin}{focus}."
+
+
+def context_title_for(title: str, relative: str, markdown: str) -> str | None:
+    clean = re.sub(r"[*|:]", "", title).strip()
+    if not (re.fullmatch(r"0x[0-9a-f]+|\d+", clean, re.IGNORECASE) or len(clean) < 5):
+        return None
+    low = relative.lower()
+    lab = "Venus Lab" if "/venus/" in f"/{low}" else "Hades Lab" if "/hades/" in f"/{low}" else ""
+    mission = re.search(r"moving from `?([^`\s]+)`? to `?([^`\s]+)`?", markdown, re.IGNORECASE)
+    if mission:
+        return f"{lab + ' ' if lab else ''}Mission {clean} ({mission.group(1)} -> {mission.group(2)})"
+    return f"{lab + ' ' if lab else ''}Mission {clean}" if lab else f"Challenge {clean}"
+
+
+def discover_markdown() -> list[Path]:
+    files: list[Path] = []
+    for source in sorted(VAULT_ROOT.glob("_source_*"), key=lambda p: p.name.casefold()):
+        if source.is_dir():
+            files.extend(source.rglob("*.md"))
+    return sorted(files, key=lambda p: normalize_path(p.relative_to(VAULT_ROOT)).casefold())
+
+
+def build_index() -> tuple[list[dict[str, object]], list[str]]:
+    tracked = tracked_paths()
+    records: list[dict[str, object]] = []
+    warnings: list[str] = []
+    seen: set[str] = set()
+    for path in discover_markdown():
+        relative = normalize_path(path.relative_to(VAULT_ROOT))
+        try:
+            markdown = path.read_text(encoding="utf-8-sig", errors="replace")
+        except OSError as error:
+            warnings.append(f"{relative}: unreadable ({error})")
+            continue
+        if not markdown.strip():
+            warnings.append(f"{relative}: empty; omitted")
+            continue
+        frontmatter, markdown_body = parse_frontmatter(markdown)
+        headings = headings_from(markdown_body)
+        title = title_for(path, frontmatter, headings)
+        body = strip_markdown(markdown_body)
+        origin = origin_for(relative, frontmatter)
+        category = category_for(relative, frontmatter, title, body)
+        tags = tags_for(frontmatter, f"{title}\n{body}")
+        record: dict[str, object] = {
+            "id": relative,
+            "title": title,
+            "path": relative,
+            "category": category,
+            "origin": origin,
+            "headings": headings,
+            "snippet": snippet_for(body, title, category, origin, tags),
+            "tags": tags,
+            "body": body,
+        }
+        context_title = context_title_for(title, relative, markdown_body)
+        if context_title:
+            record["context_title"] = context_title
+        if relative not in tracked:
+            record["source_markdown"] = markdown
+        if relative in seen:
+            warnings.append(f"{relative}: duplicate ID; omitted")
+            continue
+        seen.add(relative)
+        records.append(record)
+    return records, warnings
+
+
+def serialized(records: list[dict[str, object]]) -> str:
+    return json.dumps(records, ensure_ascii=False, indent=2) + "\n"
+
+
+def validate(records: list[dict[str, object]]) -> list[str]:
+    errors: list[str] = []
+    ids = [str(item.get("id", "")) for item in records]
+    if len(ids) != len(set(ids)):
+        errors.append("duplicate IDs detected")
+    required = {"id", "title", "path", "category", "origin", "headings", "snippet", "tags", "body"}
+    for item in records:
+        missing = required.difference(item)
+        if missing:
+            errors.append(f"{item.get('id', '<unknown>')}: missing {sorted(missing)}")
+        if item.get("category") not in CATEGORIES:
+            errors.append(f"{item.get('id')}: unknown category {item.get('category')}")
+    return errors
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true", help="validate and fail if writeups-index.json is stale")
+    args = parser.parse_args()
+    records, warnings = build_index()
+    errors = validate(records)
+    for warning in warnings:
+        print(f"WARNING: {warning}", file=sys.stderr)
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    output = serialized(records)
+    if args.check:
+        current = INDEX_PATH.read_text(encoding="utf-8-sig") if INDEX_PATH.exists() else ""
+        if current != output:
+            print(f"STALE: {INDEX_PATH.name} must be regenerated", file=sys.stderr)
+            return 1
+        print(f"OK: {len(records)} records; {len(warnings)} warning(s); index is current")
+        return 0
+    INDEX_PATH.write_text(output, encoding="utf-8")
+    embedded = sum("source_markdown" in record for record in records)
+    print(f"Wrote {INDEX_PATH.name}: {len(records)} records, {embedded} embedded sources, {len(warnings)} warning(s)")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -486,7 +486,8 @@
   <script src="search.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const requestedFile = params.get("file") || "H4G Training.md";
+    const requestedId = params.get("id");
+    const requestedFile = params.get("file") || (requestedId ? "" : "H4G Training.md");
     const content = document.getElementById("content");
     const pathLabel = document.getElementById("path");
     const rawLink = document.getElementById("raw-link");
@@ -553,28 +554,50 @@
         if (!linkPath.toLowerCase().endsWith(".md")) return;
 
         const nextPath = normalizePath(`${baseDir}/${linkPath}`);
-        anchor.href = `viewer.html?file=${encodeURIComponent(nextPath)}${hash ? `#${hash}` : ""}`;
+        anchor.href = `viewer.html?id=${encodeURIComponent(nextPath)}${hash ? `#${hash}` : ""}`;
       });
     }
 
-    async function loadMarkdown() {
-      const filePath = normalizePath(requestedFile);
-      pathLabel.textContent = filePath;
-      rawLink.href = encodeURI(filePath);
+    function renderMarkdown(markdown, filePath) {
+      const html = marked.parse(markdown, { gfm: true, breaks: false });
+      content.className = "";
+      content.innerHTML = DOMPurify.sanitize(html);
+      rewriteMarkdownLinks(filePath);
+      renderToc();
+      loadRecommendations(filePath);
+    }
 
+    async function loadMarkdown() {
       try {
+        let filePath = normalizePath(requestedFile || requestedId);
+        let embeddedMarkdown = null;
+
+        if (requestedId) {
+          const indexResponse = await fetch('writeups-index.json');
+          if (!indexResponse.ok) throw new Error(`Index HTTP ${indexResponse.status}`);
+          const index = await indexResponse.json();
+          const record = index.find(item => normalizePath(item.id || item.path) === filePath);
+          if (!record) throw new Error('Unknown writeup ID');
+          filePath = normalizePath(record.path);
+          embeddedMarkdown = record.source_markdown || null;
+        }
+
+        pathLabel.textContent = filePath;
+        if (embeddedMarkdown !== null) {
+          rawLink.hidden = true;
+          renderMarkdown(embeddedMarkdown, filePath);
+          return;
+        }
+
+        rawLink.hidden = false;
+        rawLink.href = encodeURI(filePath);
         const response = await fetch(encodeURI(filePath), { cache: "no-cache" });
         if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
         const markdown = await response.text();
-        const html = marked.parse(markdown, { gfm: true, breaks: false });
-        content.className = "";
-        content.innerHTML = DOMPurify.sanitize(html);
-        rewriteMarkdownLinks(filePath);
-        renderToc();
-        loadRecommendations(filePath);
+        renderMarkdown(markdown, filePath);
       } catch (error) {
         content.className = "status";
-        content.textContent = `Could not load ${filePath}: ${error.message}`;
+        content.textContent = `Could not load ${requestedId || requestedFile}: ${error.message}`;
       }
     }
 

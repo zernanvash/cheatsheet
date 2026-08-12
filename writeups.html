@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>H4G CTF Writeups Vault</title>
-  <meta name="description" content="Search and filter 1,220+ CTF writeups from TryHackMe, HackMyVM, picoCTF, HackTheBox and more.">
+  <meta name="description" content="Search and filter 1,380+ CTF writeups from TryHackMe, HackMyVM, picoCTF, HackTheBox and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -674,6 +674,14 @@
       .search-shell { flex-direction: column; }
       .category-chips { gap: 6px; }
     }
+    mark {
+      background: rgba(92, 242, 169, 0.25);
+      color: inherit;
+      padding: 1px 2px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .load-more-container[hidden] { display: none !important; }
   </style>
 </head>
 <body>
@@ -682,7 +690,7 @@
     <header>
       <div class="header-left">
         <h1>H4G Writeups Vault</h1>
-        <p class="subtitle">Search and filter 1,220+ writeups from TryHackMe, HackMyVM, picoCTF, HackTheBox and more.</p>
+        <p class="subtitle">Search and filter 1,380+ writeups from TryHackMe, HackMyVM, picoCTF, HackTheBox and more.</p>
       </div>
       <div class="nav-actions">
         <a href="index.html" class="btn">
@@ -852,7 +860,7 @@
     </footer>
   </div>
 
-  <script>
+  <script type="application/x-h4g-legacy-search">
     // ─── State ────────────────────────────────────────────
     let allWriteups    = [];
     let filteredWriteups = [];
@@ -1240,5 +1248,7 @@
     // ─── Boot ─────────────────────────────────────────────
     loadDatabase();
   </script>
+  <script src="assets/vendor/minisearch-7.2.0.min.js"></script>
+  <script src="assets/search.js"></script>
 </body>
 </html>
