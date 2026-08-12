@@ -38,6 +38,7 @@ Local source folders retained for future restructuring and writeup mining. These
   - Scope: Educational FAQ/reference content only; converters, solvers, forms, scripts, APIs, and implementation code are excluded.
   - Attribution: dCode.fr under the CC BY notice displayed on each captured source page.
   - Folded into: [dCode Cryptography Reference Index](dCode%20Cryptography%20Index.md) and [offline cryptography reference](../cryptography-reference.html).
+  - ASCII converter behavioral reference: https://www.dcode.fr/ascii-code, retrieved 2026-08-12; a user-provided CSV export was used for local import compatibility testing. The independent offline implementation is [ASCII Workbench](../ascii-code.html).
 - `_source_0xrefs`
   - Upstream: https://github.com/0xrefs/0xrefs.github.io
   - Use for: Interactive command cheatsheet queries, variable injection, and shell history generation.

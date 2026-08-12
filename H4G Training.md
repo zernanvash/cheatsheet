@@ -170,12 +170,14 @@ Solving ciphers, breaking encodings, and cracking hashes.
 * [Password Attacks Playbook](guides/Password%20Attacks%20Playbook.md) — Hashcat rules and cracking modes (NTLM, NTLMv2, Kerberoast, ASREP, md5, zip).
 
 ### Offline References
+* [Offline ASCII Workbench](ascii-code.html) — Local ASCII encoder/decoder for binary, octal, decimal, and hexadecimal, with CSV export inspection and a searchable 0–127 table.
 * [dCode Cryptography Reference](cryptography-reference.html) — Searchable offline cipher atlas with 319 attributed reference pages and locally stored symbol samples.
 * [dCode Cryptography Markdown Index](references/dCode%20Cryptography%20Index.md) — Obsidian-friendly categorized index for the same reference collection.
 
 ### Learning
 * [Steganography And Cryptography Fundamentals](learning/Steganography%20And%20Cryptography%20Fundamentals.md)
 * [Crypto 101 — Searchable Course Book](crypto101-course.html) — 16 guided lessons plus the complete migrated book text across 22 chapters and 96 sections, with search, objectives, checkpoints, glossary, references, and retained figures. The [course note](learning/Crypto101.md) and [source archive](references/Crypto101%20Full%20Text%20Archive.md) remain available offline; no PDF reader is required.
+* [RsaCtfTool Weak RSA Analysis Guide](learning/RsaCtfTool%20Guide.md) — Learn attack selection, key recovery, ciphertext handling, validation, and failure diagnosis for weak RSA CTF challenges.
 
 ---
 

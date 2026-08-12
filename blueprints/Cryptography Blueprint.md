@@ -177,7 +177,7 @@ Use web tools for CTF data only, not sensitive real-world secrets.
 - FactorDB: small/known RSA modulus factorization.
 - CrackStation: common unsalted hash lookup.
 - jwt.io: JWT structure inspection; crack weak secrets locally.
-- RsaCtfTool: local tool, useful for weak RSA attacks.
+- RsaCtfTool: local tool, useful for weak RSA attacks. Use the [RsaCtfTool Weak RSA Analysis Guide](../learning/RsaCtfTool%20Guide.md) for installation, attack assumptions, key recovery, decryption, and validation.
 
 ## 5. Decision Branches
 

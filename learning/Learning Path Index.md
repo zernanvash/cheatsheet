@@ -15,6 +15,8 @@ Use learning notes when the terminology is the blocker. Use [Blueprint Index](..
 | Stego, encodings, hashes, classical ciphers, crypto triage | [Steganography And Cryptography Fundamentals](Steganography%20And%20Cryptography%20Fundamentals.md) | [Steganography Blueprint](../blueprints/Steganography%20Blueprint.md), [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md) |
 | RSA, AES, stream ciphers, MACs, TLS, GPG — full crypto depth | [Crypto 101 Searchable Course](../crypto101-course.html) ([course note](Crypto101.md)) | [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md) |
 
+| Weak RSA keys, attack selection, private-key recovery, and ciphertext validation | [RsaCtfTool Guide](RsaCtfTool%20Guide.md) | [Cryptography Blueprint](../blueprints/Cryptography%20Blueprint.md) |
+
 ## Rule
 
 Learning pages should explain concepts and recognition. Blueprint pages should tell you exactly what to do during a challenge.
