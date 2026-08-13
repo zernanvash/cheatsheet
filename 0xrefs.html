@@ -578,6 +578,13 @@
 .custom-action-btn:hover { color: var(--text); border-color: var(--accent); }
 .custom-action-btn.delete:hover { color: #ff8f8f; border-color: #ff8f8f; }
 .custom-empty { color: var(--muted); padding: 20px 0; font-size: .9rem; }
+.custom-folder { margin-top: 12px; border: 1px solid var(--border); border-radius: 9px; background: rgba(255,255,255,.012); overflow: hidden; }
+.custom-folder summary { display: flex; align-items: center; gap: 9px; padding: 12px 14px; cursor: pointer; list-style: none; font-weight: 700; }
+.custom-folder summary::-webkit-details-marker { display: none; }
+.custom-folder summary::before { content: "▸"; color: var(--accent); transition: transform .15s; }
+.custom-folder[open] summary::before { transform: rotate(90deg); }
+.custom-folder-count { margin-left: auto; color: var(--muted); font-size: .78rem; font-weight: 500; }
+.custom-folder-grid { padding: 0 12px 12px; }
 .custom-dialog { width: min(620px, calc(100% - 28px)); border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); padding: 0; }
 .custom-dialog::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(3px); }
 .custom-form { padding: 22px; display: grid; gap: 14px; }
@@ -864,6 +871,7 @@
       <h2 id="custom-form-title">Add custom command</h2>
       <input type="hidden" id="custom-id">
       <label>Name *<input class="input-text" id="custom-name" required maxlength="100" placeholder="e.g. Quick Nmap scan"></label>
+      <label>Section / folder<input class="input-text" id="custom-section-name" maxlength="80" list="custom-section-suggestions" placeholder="General"><datalist id="custom-section-suggestions"></datalist></label>
       <label>Description<input class="input-text" id="custom-description" maxlength="240" placeholder="What this command does"></label>
       <label>Command *<textarea class="input-text" id="custom-command" required placeholder="nmap -sC -sV $IP"></textarea></label>
       <div class="custom-form-row">
@@ -1161,6 +1169,7 @@
         const entry = {
           id, custom: true,
           name: document.getElementById("custom-name").value.trim(),
+          section: document.getElementById("custom-section-name").value.trim() || "General",
           description: document.getElementById("custom-description").value.trim(),
           command: document.getElementById("custom-command").value.trim(),
           os: split(document.getElementById("custom-os").value),
@@ -1179,6 +1188,9 @@
       document.getElementById("custom-form-title").textContent = command ? "Edit custom command" : "Add custom command";
       document.getElementById("custom-id").value = command?.id || "";
       document.getElementById("custom-name").value = command?.name || "";
+      document.getElementById("custom-section-name").value = command?.section || "General";
+      const sectionList = document.getElementById("custom-section-suggestions");
+      sectionList.replaceChildren(...[...new Set(customCommands.map(item => item.section || "General"))].sort().map(name => { const option = document.createElement("option"); option.value = name; return option; }));
       document.getElementById("custom-description").value = command?.description || "";
       document.getElementById("custom-command").value = command?.command || "";
       document.getElementById("custom-os").value = (command?.os || []).join(", ");
@@ -1231,7 +1243,7 @@
     }
 
     function commandMatches(cmd, queryText, queryFilters) {
-      const searchPool = [cmd.name, cmd.description || "", cmd.command || "", ...(cmd.variants || []).map(v => v.command + " " + v.label)].join(" ").toLowerCase();
+      const searchPool = [cmd.name, cmd.section || "", cmd.description || "", cmd.command || "", ...(cmd.variants || []).map(v => v.command + " " + v.label)].join(" ").toLowerCase();
       if (queryText && !searchPool.includes(queryText)) return false;
       if (activeFilters.size > 0) {
         const grouped = {};
@@ -1515,7 +1527,7 @@
       customEmpty.style.display = filteredCustomCommands.length ? "none" : "block";
       customEmpty.textContent = customCommands.length ? "No custom commands match the current search and filters." : "No custom commands yet.";
 
-      filteredCustomCommands.forEach(cmd => {
+      const createCustomCard = cmd => {
         const card = document.createElement("div"); card.className = "cmd-card";
         const header = document.createElement("div"); header.className = "card-header";
         const titleArea = document.createElement("div"); titleArea.className = "card-title-area";
@@ -1539,7 +1551,25 @@
         const footer = document.createElement("div"); footer.className = "card-actions";
         const tags = document.createElement("div"); tags.className = "tags-container";
         [...(cmd.os || []), ...(cmd.phase || []), ...(cmd.service || []), ...(cmd.category || [])].forEach(value => { const badge = document.createElement("span"); badge.className = "tag"; badge.textContent = value; tags.appendChild(badge); });
-        footer.appendChild(tags); card.appendChild(footer); customContainer.appendChild(card);
+        footer.appendChild(tags); card.appendChild(footer);
+        return card;
+      };
+
+      const groupedCustom = new Map();
+      filteredCustomCommands.forEach(command => {
+        const section = (command.section || "General").trim() || "General";
+        if (!groupedCustom.has(section)) groupedCustom.set(section, []);
+        groupedCustom.get(section).push(command);
+      });
+      [...groupedCustom.entries()].sort(([a], [b]) => a.localeCompare(b)).forEach(([section, sectionCommands]) => {
+        const folder = document.createElement("details"); folder.className = "custom-folder"; folder.open = true;
+        const summary = document.createElement("summary");
+        const name = document.createElement("span"); name.textContent = section;
+        const count = document.createElement("span"); count.className = "custom-folder-count"; count.textContent = `${sectionCommands.length} command${sectionCommands.length === 1 ? "" : "s"}`;
+        summary.append(name, count);
+        const grid = document.createElement("div"); grid.className = "cards-grid custom-folder-grid";
+        sectionCommands.forEach(command => grid.appendChild(createCustomCard(command)));
+        folder.append(summary, grid); customContainer.appendChild(folder);
       });
     }
 

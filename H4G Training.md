@@ -180,6 +180,8 @@ Solving ciphers, breaking encodings, and cracking hashes.
 
 ### Learning
 * [Steganography And Cryptography Fundamentals](learning/Steganography%20And%20Cryptography%20Fundamentals.md)
+* [Crypto Notes Vault](crypto-notes/) — Dedicated searchable reader for the topic notes under `cryptography_notes/`.
+* [CTF Cryptography Field Guide](learning/CTF%20Cryptography%20Field%20Guide.md) — Integrated H4G 2025 notes covering crypto triage, classical and symmetric ciphers, RSA, DH, ECC, lattices, PRNG attacks, signatures, and cracking workflows.
 * [Crypto 101 — Searchable Course Book](crypto101-course.html) — 16 guided lessons plus the complete migrated book text across 22 chapters and 96 sections, with search, objectives, checkpoints, glossary, references, and retained figures. The [course note](learning/Crypto101.md) and [source archive](references/Crypto101%20Full%20Text%20Archive.md) remain available offline; no PDF reader is required.
 * [RsaCtfTool Weak RSA Analysis Guide](learning/RsaCtfTool%20Guide.md) — Learn attack selection, key recovery, ciphertext handling, validation, and failure diagnosis for weak RSA CTF challenges.
 
