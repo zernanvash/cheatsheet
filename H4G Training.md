@@ -173,6 +173,7 @@ Solving ciphers, breaking encodings, and cracking hashes.
 ### Offline References
 * [Cipher Identifier](cipher-identifier/) — Algorithm-first cipher family ranking with measured evidence and an optional constrained OpenCode review.
 * [Offline Vigenere Workbench](vigenere-cipher.html) — Encrypt, decrypt, inspect key alignment, recover known keys, and perform local key-length/frequency analysis.
+* [Offline ROT Cipher Workbench](rot-cipher.html) — Brute-force and rank ROT shifts, use standard ROT13/ROT47/Base36 presets, or encrypt and decrypt with custom alphabets.
 * [Offline ASCII Workbench](ascii-code.html) — Local ASCII encoder/decoder for binary, octal, decimal, and hexadecimal, with CSV export inspection and a searchable 0–127 table.
 * [dCode Cryptography Reference](cryptography-reference.html) — Searchable offline cipher atlas with 319 attributed reference pages and locally stored symbol samples.
 * [dCode Cryptography Markdown Index](references/dCode%20Cryptography%20Index.md) — Obsidian-friendly categorized index for the same reference collection.
