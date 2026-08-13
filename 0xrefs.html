@@ -549,12 +549,44 @@
       background: var(--panel-hover);
     }
 
-    .card-copy-btn.copied {
+.card-copy-btn.copied {
       border-color: var(--accent) !important;
       color: #0b0d11 !important;
       background: var(--accent) !important;
       box-shadow: 0 0 10px var(--accent-glow);
-    }
+}
+
+.custom-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.custom-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.custom-section-title { margin: 0; font-size: 1.05rem; }
+.custom-section-note { margin: 3px 0 0; color: var(--muted); font-size: .82rem; }
+.custom-actions { display: flex; gap: 7px; margin-left: auto; }
+.custom-action-btn {
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  border-radius: 6px; padding: 5px 9px; cursor: pointer; font: inherit; font-size: .78rem;
+}
+.custom-action-btn:hover { color: var(--text); border-color: var(--accent); }
+.custom-action-btn.delete:hover { color: #ff8f8f; border-color: #ff8f8f; }
+.custom-empty { color: var(--muted); padding: 20px 0; font-size: .9rem; }
+.custom-dialog { width: min(620px, calc(100% - 28px)); border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); padding: 0; }
+.custom-dialog::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(3px); }
+.custom-form { padding: 22px; display: grid; gap: 14px; }
+.custom-form h2 { margin: 0; font-size: 1.15rem; }
+.custom-form label { display: grid; gap: 6px; font-size: .82rem; color: var(--muted); }
+.custom-form textarea { min-height: 120px; resize: vertical; font-family: var(--font-mono); }
+.custom-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.custom-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+@media (max-width: 600px) { .custom-section-header,.custom-form-row { display: grid; grid-template-columns: 1fr; } }
 
     .tags-container {
       display: flex;
@@ -783,6 +815,15 @@
         <!-- Rendered dynamically -->
       </div>
 
+      <section class="custom-section" aria-labelledby="custom-commands-title">
+        <div class="custom-section-header">
+          <div><h2 id="custom-commands-title" class="custom-section-title">Custom Commands</h2><p class="custom-section-note">Saved only in this browser. Custom entries can be edited or deleted.</p></div>
+          <button id="add-custom-command" class="btn" type="button">Add custom command +</button>
+        </div>
+        <div class="cards-grid" id="custom-commands-container"></div>
+        <div id="custom-empty" class="custom-empty">No custom commands yet.</div>
+      </section>
+
       <!-- Shell History Install Panel -->
       <div class="shell-install-panel">
         <h3 class="shell-install-title">
@@ -818,17 +859,38 @@
     </section>
   </main>
 
+  <dialog id="custom-command-dialog" class="custom-dialog">
+    <form id="custom-command-form" class="custom-form">
+      <h2 id="custom-form-title">Add custom command</h2>
+      <input type="hidden" id="custom-id">
+      <label>Name *<input class="input-text" id="custom-name" required maxlength="100" placeholder="e.g. Quick Nmap scan"></label>
+      <label>Description<input class="input-text" id="custom-description" maxlength="240" placeholder="What this command does"></label>
+      <label>Command *<textarea class="input-text" id="custom-command" required placeholder="nmap -sC -sV $IP"></textarea></label>
+      <div class="custom-form-row">
+        <label>Operating system<input class="input-text" id="custom-os" placeholder="Linux, Windows"></label>
+        <label>Category<input class="input-text" id="custom-category" placeholder="enumeration, web"></label>
+      </div>
+      <div class="custom-form-row">
+        <label>Phase<input class="input-text" id="custom-phase" placeholder="recon, exploitation"></label>
+        <label>Service / tags<input class="input-text" id="custom-service" placeholder="http, smb, ssh"></label>
+      </div>
+      <div class="custom-form-actions"><button id="cancel-custom-command" class="btn" type="button">Cancel</button><button class="btn" type="submit">Save command</button></div>
+    </form>
+  </dialog>
+
   <!-- Load the precompiled command dataset -->
   <script src="references/0xrefs-data.js"></script>
   <script>
     // Constants
     const STORAGE_KEY = "0xrefs.vars";
+    const CUSTOM_STORAGE_KEY = "0xrefs.customCommands";
     const PRIORITY_VARS = ["IP", "USER", "PASSWORD", "DOMAIN", "DCIP", "HASH", "LHOST", "LPORT"];
     
     // Global State
     const values = loadValues();
     const activeFilters = new Set();
     let commands = [];
+    let customCommands = loadCustomCommands();
     let metadata = {};
     let uniqueVars = [];
 
@@ -843,7 +905,7 @@
       metadata = OXREFS_DATA.metadata;
       
       // Extract unique variables across all commands
-      uniqueVars = extractAllVariables(commands);
+      uniqueVars = extractAllVariables([...commands, ...customCommands]);
       
       // Setup dynamic variables panel
       buildVariablesPanel();
@@ -868,6 +930,19 @@
 
     function saveValues() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+    }
+
+    function loadCustomCommands() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CUSTOM_STORAGE_KEY));
+        return Array.isArray(saved) ? saved : [];
+      } catch { return []; }
+    }
+
+    function saveCustomCommands() {
+      localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customCommands));
+      uniqueVars = extractAllVariables([...commands, ...customCommands]);
+      buildVariablesPanel();
     }
 
     function extractAllVariables(cmds) {
@@ -1074,6 +1149,50 @@
           btn.classList.remove("copied");
         }, 1200);
       });
+
+      const dialog = document.getElementById("custom-command-dialog");
+      document.getElementById("add-custom-command").addEventListener("click", () => openCustomForm());
+      document.getElementById("cancel-custom-command").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", e => { if (e.target === dialog) dialog.close(); });
+      document.getElementById("custom-command-form").addEventListener("submit", e => {
+        e.preventDefault();
+        const id = document.getElementById("custom-id").value || `custom-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
+        const split = value => value.split(",").map(item => item.trim()).filter(Boolean);
+        const entry = {
+          id, custom: true,
+          name: document.getElementById("custom-name").value.trim(),
+          description: document.getElementById("custom-description").value.trim(),
+          command: document.getElementById("custom-command").value.trim(),
+          os: split(document.getElementById("custom-os").value),
+          category: split(document.getElementById("custom-category").value),
+          phase: split(document.getElementById("custom-phase").value),
+          service: split(document.getElementById("custom-service").value),
+          have: []
+        };
+        const index = customCommands.findIndex(item => item.id === id);
+        if (index >= 0) customCommands[index] = entry; else customCommands.push(entry);
+        saveCustomCommands(); dialog.close(); render();
+      });
+    }
+
+    function openCustomForm(command = null) {
+      document.getElementById("custom-form-title").textContent = command ? "Edit custom command" : "Add custom command";
+      document.getElementById("custom-id").value = command?.id || "";
+      document.getElementById("custom-name").value = command?.name || "";
+      document.getElementById("custom-description").value = command?.description || "";
+      document.getElementById("custom-command").value = command?.command || "";
+      document.getElementById("custom-os").value = (command?.os || []).join(", ");
+      document.getElementById("custom-category").value = (command?.category || []).join(", ");
+      document.getElementById("custom-phase").value = (command?.phase || []).join(", ");
+      document.getElementById("custom-service").value = (command?.service || []).join(", ");
+      document.getElementById("custom-command-dialog").showModal();
+      document.getElementById("custom-name").focus();
+    }
+
+    function deleteCustomCommand(command) {
+      if (!confirm(`Delete custom command “${command.name}”?`)) return;
+      customCommands = customCommands.filter(item => item.id !== command.id);
+      saveCustomCommands(); render();
     }
 
     function escapeHtml(s) {
@@ -1111,6 +1230,21 @@
       });
     }
 
+    function commandMatches(cmd, queryText, queryFilters) {
+      const searchPool = [cmd.name, cmd.description || "", cmd.command || "", ...(cmd.variants || []).map(v => v.command + " " + v.label)].join(" ").toLowerCase();
+      if (queryText && !searchPool.includes(queryText)) return false;
+      if (activeFilters.size > 0) {
+        const grouped = {};
+        activeFilters.forEach(filter => { const [type, val] = filter.split(":"); (grouped[type] ||= []).push(val); });
+        if (!Object.entries(grouped).every(([type, vals]) => vals.some(val => (cmd[type] || []).includes(val)))) return false;
+      }
+      if (queryFilters.length > 0) {
+        const tags = [...(cmd.os || []), ...(cmd.category || []), ...(cmd.phase || []), ...(cmd.service || []), ...(cmd.have || [])].map(tag => tag.toLowerCase());
+        if (!queryFilters.every(filter => tags.some(tag => tag.includes(filter)))) return false;
+      }
+      return true;
+    }
+
     // Main render function
     function render() {
       const container = document.getElementById("commands-container");
@@ -1128,62 +1262,14 @@
       }
       
       // Filter commands
-      const filteredCommands = commands.filter(cmd => {
-        // Search text matching
-        const searchPool = [
-          cmd.name,
-          cmd.description || "",
-          cmd.command || "",
-          ...(cmd.variants || []).map(v => v.command + " " + v.label)
-        ].join(" ").toLowerCase();
-        
-        if (queryText && !searchPool.includes(queryText)) {
-          return false;
-        }
-        
-        // Active Filter Checkboxes
-        let matchesSidebarFilters = true;
-        if (activeFilters.size > 0) {
-          // Group active filters by type (OR within types, AND between types)
-          const grouped = {};
-          activeFilters.forEach(f => {
-            const [type, val] = f.split(":");
-            if (!grouped[type]) grouped[type] = [];
-            grouped[type].push(val);
-          });
-          
-          matchesSidebarFilters = Object.entries(grouped).every(([type, vals]) => {
-            const cmdVals = cmd[type] || [];
-            return vals.some(v => cmdVals.includes(v));
-          });
-        }
-        
-        if (!matchesSidebarFilters) return false;
-        
-        // Search bar tag filters (AND logic: +enum +smb)
-        if (queryFilters.length > 0) {
-          const cmdTags = [
-            ...(cmd.os || []),
-            ...(cmd.category || []),
-            ...(cmd.phase || []),
-            ...(cmd.service || []),
-            ...(cmd.have || [])
-          ].map(t => t.toLowerCase());
-          
-          const matchesQueryFilters = queryFilters.every(qf => {
-            return cmdTags.some(tag => tag.includes(qf));
-          });
-          if (!matchesQueryFilters) return false;
-        }
-        
-        return true;
-      });
+      const filteredCommands = commands.filter(cmd => commandMatches(cmd, queryText, queryFilters));
+      const filteredCustomCommands = customCommands.filter(cmd => commandMatches(cmd, queryText, queryFilters));
       
       // Display counter
-      document.getElementById("results-counter").textContent = `Showing ${filteredCommands.length} of ${commands.length} commands`;
+      document.getElementById("results-counter").textContent = `Showing ${filteredCommands.length} of ${commands.length} preloaded commands · ${filteredCustomCommands.length} of ${customCommands.length} custom`;
       
       // Handle empty state
-      document.getElementById("no-results-panel").style.display = filteredCommands.length === 0 ? "block" : "none";
+      document.getElementById("no-results-panel").style.display = filteredCommands.length === 0 && filteredCustomCommands.length === 0 ? "block" : "none";
       
       // Build DOM
       container.innerHTML = "";
@@ -1421,6 +1507,39 @@
         }
         
         container.appendChild(card);
+      });
+
+      const customContainer = document.getElementById("custom-commands-container");
+      const customEmpty = document.getElementById("custom-empty");
+      customContainer.innerHTML = "";
+      customEmpty.style.display = filteredCustomCommands.length ? "none" : "block";
+      customEmpty.textContent = customCommands.length ? "No custom commands match the current search and filters." : "No custom commands yet.";
+
+      filteredCustomCommands.forEach(cmd => {
+        const card = document.createElement("div"); card.className = "cmd-card";
+        const header = document.createElement("div"); header.className = "card-header";
+        const titleArea = document.createElement("div"); titleArea.className = "card-title-area";
+        const title = document.createElement("div"); title.className = "card-title"; title.textContent = cmd.name;
+        const customBadge = document.createElement("span"); customBadge.className = "tag"; customBadge.textContent = "Custom"; title.appendChild(customBadge);
+        const desc = document.createElement("p"); desc.className = "card-desc"; desc.textContent = cmd.description || "";
+        titleArea.append(title, desc); header.appendChild(titleArea);
+        const controls = document.createElement("div"); controls.className = "custom-actions";
+        const edit = document.createElement("button"); edit.type = "button"; edit.className = "custom-action-btn"; edit.textContent = "edit"; edit.addEventListener("click", () => openCustomForm(cmd));
+        const remove = document.createElement("button"); remove.type = "button"; remove.className = "custom-action-btn delete"; remove.textContent = "delete"; remove.addEventListener("click", () => deleteCustomCommand(cmd));
+        controls.append(edit, remove); header.appendChild(controls); card.appendChild(header);
+
+        const codeContainer = document.createElement("div"); codeContainer.className = "code-box-container";
+        const wrapper = document.createElement("div"); wrapper.className = "code-block-wrapper";
+        const pre = document.createElement("pre"); pre.className = "code-block";
+        const code = document.createElement("code"); code.className = "cmd-code-text"; code.dataset.rawTemplate = cmd.command; code.innerHTML = substituteVariables(cmd.command);
+        const copy = document.createElement("button"); copy.type = "button"; copy.className = "card-copy-btn"; copy.textContent = "copy";
+        copy.addEventListener("click", async () => { await navigator.clipboard.writeText(getSubstitutedRawText(cmd.command).trim()); copy.textContent = "copied!"; copy.classList.add("copied"); setTimeout(() => { copy.textContent = "copy"; copy.classList.remove("copied"); }, 1200); });
+        pre.appendChild(code); wrapper.append(pre, copy); codeContainer.appendChild(wrapper); card.appendChild(codeContainer);
+
+        const footer = document.createElement("div"); footer.className = "card-actions";
+        const tags = document.createElement("div"); tags.className = "tags-container";
+        [...(cmd.os || []), ...(cmd.phase || []), ...(cmd.service || []), ...(cmd.category || [])].forEach(value => { const badge = document.createElement("span"); badge.className = "tag"; badge.textContent = value; tags.appendChild(badge); });
+        footer.appendChild(tags); card.appendChild(footer); customContainer.appendChild(card);
       });
     }
 
