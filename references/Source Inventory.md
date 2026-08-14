@@ -30,6 +30,7 @@ Local source folders retained for future restructuring and writeup mining. These
 - `_source_zen`
   - Superseded by the operator-provided offline Notion Markdown export at `my_writeups/ZEN_CTFNotesh4g` (`CTF Checklists + Tools + Syntax`).
   - Local contents observed: category checklists for web exploitation, OSINT, forensics/networking, cryptography/reverse engineering, programming/scripting, tool syntax, SQL injection, and command injection.
+  - The Web Exploit parent page is derived from the public Notion block data for page `3bb4ae7c-812d-80c8-bc4f-c2e8df4b556b` with `scripts/notion-blocks-to-markdown.mjs`, avoiding the locally quarantined export copy.
   - Folded into: [Zen CTF Notes](../zen-ctf-notes/index.html), generated with `scripts/build-zen-ctf-notes.ps1`; only the generated browser data is required at runtime.
 - `_source_e0sec_ctf_writeups`
   - Upstream: https://github.com/e0sec/ctf-writeups

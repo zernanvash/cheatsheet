@@ -6,6 +6,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $source = (Resolve-Path -LiteralPath $SourceRoot).Path
 New-Item -ItemType Directory -Force -Path $OutputRoot | Out-Null
+$derivedWebPath = Join-Path $OutputRoot 'web-exploit-checklist.md'
 
 function Repair-NotionText([string]$Text) {
     if ($Text -match '[Ãâ]') {
@@ -27,7 +28,13 @@ $notes = @(foreach ($file in Get-ChildItem -LiteralPath $source -Recurse -File -
     if ($folders.Count -gt 0) { $folders = @($folders | Select-Object -Skip 1) }
     $title = Clean-NotionName ([System.IO.Path]::GetFileNameWithoutExtension($file.Name))
     $group = if ($folders.Count) { $folders -join ' / ' } elseif ($title -eq 'CTF Checklists + Tools + Syntax') { 'Start Here' } else { 'CTF Checklists' }
-    $text = Repair-NotionText (Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8)
+    if ($title -eq 'Web Exploit Checklist' -and (Test-Path -LiteralPath $derivedWebPath)) { continue }
+    try {
+        $text = Repair-NotionText (Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8)
+    } catch {
+        Write-Warning "Skipped unreadable source: $relative ($($_.Exception.Message))"
+        continue
+    }
     if (-not [string]::IsNullOrWhiteSpace($text)) {
         [ordered]@{
             id = ($relative -replace '\s+[0-9a-f]{32}(?=\.md$)', '' -replace '[^A-Za-z0-9]+', '-').Trim('-').ToLowerInvariant()
@@ -40,10 +47,25 @@ $notes = @(foreach ($file in Get-ChildItem -LiteralPath $source -Recurse -File -
     }
 })
 
+if (Test-Path -LiteralPath $derivedWebPath) {
+    $notes += [ordered]@{
+        id = 'web-exploit-checklist'
+        title = 'Web Exploit Checklist'
+        group = 'Web Exploit Checklist'
+        source = 'Public Notion page 3bb4ae7c-812d-80c8-bc4f-c2e8df4b556b'
+        format = 'MD'
+        text = (Get-Content -LiteralPath $derivedWebPath -Raw -Encoding UTF8).Trim()
+        folderIndex = $true
+    }
+}
+
 # Notion exported the Web Exploit page as a folder with child pages but omitted
 # the parent Markdown file. Recreate a navigable parent from the exported pages.
-$webChildren = @($notes | Where-Object group -eq 'Web Exploit Checklist' | Sort-Object title)
-if ($webChildren.Count) {
+$webChildren = @($notes | Where-Object group -eq 'Web Exploit Checklist' | Where-Object title -ne 'Web Exploit Checklist' | Sort-Object title)
+$webParent = $notes | Where-Object title -eq 'Web Exploit Checklist' | Select-Object -First 1
+if ($webParent) {
+    $webParent['folderIndex'] = $true
+} elseif ($webChildren.Count) {
     $webBody = @(
         '# Web Exploit Checklist'
         ''
