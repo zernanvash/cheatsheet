@@ -27,6 +27,10 @@ Local source folders retained for future restructuring and writeup mining. These
 
 ## Existing Sources
 
+- `_source_zen`
+  - Upstream: private Notion export, `CTF Checklists, Tools & Syntax`.
+  - Local contents observed: quick-reference text notes, HackMyVM writeups, Hack The Box training notes, and command/payload images.
+  - Folded into: [Zen CTF Notes](../zen-ctf-notes/index.html), generated with `scripts/build-zen-ctf-notes.ps1` while the raw export remains Git-ignored.
 - `_source_e0sec_ctf_writeups`
   - Upstream: https://github.com/e0sec/ctf-writeups
   - Local snapshot: commit `d510aba023ecff221d017cf920c6f95dd95f2193` (2026-08-10).
