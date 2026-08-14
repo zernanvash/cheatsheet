@@ -19,7 +19,7 @@ function Clean-NotionName([string]$Name) {
     return (($Name -replace '\s+[0-9a-f]{32}$', '') -replace '_', ' ').Trim()
 }
 
-$notes = foreach ($file in Get-ChildItem -LiteralPath $source -Recurse -File -Filter '*.md') {
+$notes = @(foreach ($file in Get-ChildItem -LiteralPath $source -Recurse -File -Filter '*.md') {
     $relative = $file.FullName.Substring($source.Length + 1).Replace('\', '/')
     $relativeParts = $relative.Split('/')
     $folders = if ($relativeParts.Length -gt 1) { @($relativeParts[0..($relativeParts.Length - 2)] | ForEach-Object { Clean-NotionName $_ }) } else { @() }
@@ -37,6 +37,28 @@ $notes = foreach ($file in Get-ChildItem -LiteralPath $source -Recurse -File -Fi
             format = 'MD'
             text = $text.Trim()
         }
+    }
+})
+
+# Notion exported the Web Exploit page as a folder with child pages but omitted
+# the parent Markdown file. Recreate a navigable parent from the exported pages.
+$webChildren = @($notes | Where-Object group -eq 'Web Exploit Checklist' | Sort-Object title)
+if ($webChildren.Count) {
+    $webBody = @(
+        '# Web Exploit Checklist'
+        ''
+        'This section groups the exported web exploitation checklists.'
+        ''
+        ($webChildren | ForEach-Object { "- [$($_.title)](local:$($_.id))" })
+    ) -join "`n"
+    $notes += [ordered]@{
+        id = 'web-exploit-checklist'
+        title = 'Web Exploit Checklist'
+        group = 'Web Exploit Checklist'
+        source = 'Generated from exported Web Exploit Checklist children'
+        format = 'INDEX'
+        text = $webBody
+        folderIndex = $true
     }
 }
 
