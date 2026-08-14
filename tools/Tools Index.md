@@ -84,6 +84,7 @@ Command-focused cheatsheets organized by CTF challenge category. Start from [H4G
 ## 🔐 Cryptography & Password Attacks
 
 - [Password Attacks](Password%20Attacks.md)
+- [REV Python Toolkit — Modular Arithmetic & Crypto Math](REV%20Python%20Toolkit.md#modular-arithmetic-and-crypto-math) — SymPy, SageMath, gmpy2, PyCryptodome, modular roots, inverses, CRT, finite fields, and validation patterns.
 - [RsaCtfTool Weak RSA Analysis Guide](../learning/RsaCtfTool%20Guide.md) — Guided workflow for selecting weak-RSA attacks, recovering keys, and validating results.
 
 ---

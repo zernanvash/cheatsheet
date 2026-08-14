@@ -29,11 +29,20 @@ Reference analyzed: `hgbe02/Hackmyvm-HMVLabs-Temperance`, a set of Python solver
 - `pefile` - PE parsing
 - `elftools` - ELF parsing
 - `pwntools` - packing, tubes, ELF helpers
+- `sympy` - number theory, modular roots, CRT, factoring, and symbolic algebra
+- `gmpy2` - fast GMP-backed large-integer arithmetic
+- `sage` / SageMath - finite fields, polynomial rings, lattices, and integrated crypto mathematics
 
 Install common stack:
 
 ```bash
 python -m pip install pycryptodome z3-solver angr capstone keystone-engine unicorn lief pefile pyelftools pwntools
+```
+
+Add the common crypto-math helpers:
+
+```bash
+python -m pip install sympy gmpy2 pycryptodome
 ```
 
 For image/OCR/QR challenge automation:
@@ -412,6 +421,298 @@ s.add(((x * 7) ^ 0x55) == 0x2a)
 if s.check() == sat:
     print(s.model()[x].as_long())
 ```
+
+## Modular Arithmetic And Crypto Math
+
+Use this section when a challenge gives equations such as:
+
+```text
+x^2 ≡ a (mod p)
+c ≡ m^e (mod n)
+x ≡ r1 (mod p), x ≡ r2 (mod q)
+```
+
+The `% modulus` part changes the problem. A modular square root is not the ordinary real or integer square root: it asks for an integer `x` whose square leaves remainder `a` after division by the modulus.
+
+### Dissecting `sympy.sqrt_mod`
+
+```python
+from sympy import isprime, sqrt_mod
+
+a = 8479994658316772151941616510097127087554541274812435112009425778595495359700244470400642403747058566807127814165396640215844192327900454116257979487432016769329970767046735091249898678088061634796559556704959846424131820416048436501387617211770124292793308079214153179977624440438616958575058361193975686620046439877308339989295604537867493683872778843921771307305602776398786978353866231661453376056771972069776398999013769588936194859344941268223184197231368887060609212875507518936172060702209557124430477137421847130682601666968691651447236917018634902407704797328509461854842432015009878011354022108661461024768
+
+p = 30531851861994333252675935111487950694414332763909083514133769861350960895076504687261369815735742549428789138300843082086550059082835141454526618160634109969195486322015775943030060449557090064811940139431735209185996454739163555910726493597222646855506445602953689527405362207926990442391705014604777038685880527537489845359101552442292804398472642356609304810680731556542002301547846635101455995732584071355903010856718680732337369128498655255277003643669031694516851390505923416710601212618443109844041514942401969629158975457079026906304328749039997262960301209158175920051890620947063936347307238412281568760161
+
+print("probable prime modulus:", isprime(p))
+
+root = sqrt_mod(a, p)
+if root is None:
+    print("No square root exists modulo p")
+else:
+    print("one root:", root)
+    assert pow(root, 2, p) == a % p
+
+    # For an odd prime, a nonzero root normally has the partner p - root.
+    partner = (-root) % p
+    assert pow(partner, 2, p) == a % p
+    print("paired root:", partner)
+```
+
+What each part means:
+
+- `a` is the residue whose square root you want.
+- `p` is the modulus; the variable name suggests a prime, but always test or establish that assumption.
+- `sqrt_mod(a, p)` solves `x**2 % p == a % p`; it does not compute `sqrt(a)`.
+- The default call returns one root at most `p // 2`, but SymPy does not promise that it is the numerically smallest root.
+- `None` means no modular square root exists.
+- Never trust a solver result without checking `pow(root, 2, p) == a % p`.
+
+Request every root only when the result set is expected to be small:
+
+```python
+from sympy import sqrt_mod
+
+roots = sqrt_mod(a, p, all_roots=True)
+print(roots)
+assert all(pow(x, 2, p) == a % p for x in roots)
+```
+
+For a composite modulus, the number of roots can grow quickly. Iterate instead of constructing a large list:
+
+```python
+from sympy.ntheory.residue_ntheory import sqrt_mod_iter
+
+for root in sqrt_mod_iter(a, p):
+    assert pow(root, 2, p) == a % p
+    print(root)
+```
+
+### First Checks Before Solving
+
+```python
+from math import gcd
+from sympy import isprime, legendre_symbol
+
+a %= p
+print("bits:", p.bit_length())
+print("gcd(a, p):", gcd(a, p))
+print("prime modulus:", isprime(p))
+
+if isprime(p) and p != 2 and gcd(a, p) == 1:
+    symbol = legendre_symbol(a, p)
+    print("Legendre symbol:", symbol)  # 1=root exists, -1=no root
+```
+
+The Legendre-symbol shortcut applies to an odd prime modulus. Do not use that conclusion blindly for composite moduli.
+
+### Plain Python: The Core Operations
+
+Modern Python already handles large integers and the three most common operations:
+
+```python
+from math import gcd, isqrt
+
+g = gcd(a, p)
+power = pow(a, 65537, p)       # efficient a**65537 mod p
+inverse = pow(a, -1, p)        # raises ValueError when gcd(a, p) != 1
+integer_root = isqrt(a)        # floor(sqrt(a)); not a modular root
+
+assert (a * inverse) % p == 1
+assert integer_root**2 <= a < (integer_root + 1)**2
+```
+
+When `p % 4 == 3` is prime, a square root has a short exponent formula:
+
+```python
+assert isprime(p) and p % 4 == 3
+root = pow(a, (p + 1) // 4, p)
+if pow(root, 2, p) != a % p:
+    raise ValueError("a is not a quadratic residue modulo p")
+```
+
+That exponent shortcut is not a general replacement for Tonelli-Shanks or `sqrt_mod`.
+
+### SymPy Number-Theory Toolkit
+
+```python
+from sympy import (
+    discrete_log,
+    factorint,
+    integer_nthroot,
+    isprime,
+    mod_inverse,
+    nextprime,
+    nthroot_mod,
+    primitive_root,
+    quadratic_congruence,
+)
+from sympy.ntheory.modular import crt, solve_congruence
+
+print(mod_inverse(17, 3120))
+print(factorint(2**32 - 1))
+print(integer_nthroot(27, 3))       # (3, True): ordinary exact integer root
+print(nthroot_mod(8, 3, 13, True)) # modular cube roots
+print(quadratic_congruence(1, 0, -10, 13))
+print(primitive_root(17))
+print(discrete_log(41, 15, 7))
+
+x, modulus = crt([3, 5, 7], [2, 3, 2])
+assert [x % m for m in (3, 5, 7)] == [2, 3, 2]
+
+# Handles compatible non-coprime moduli too; returns None if inconsistent.
+solution = solve_congruence((2, 3), (5, 6))
+print(solution)
+```
+
+Keep these distinctions straight:
+
+| Goal | Correct helper |
+| --- | --- |
+| Floor of the ordinary square root | `math.isqrt(n)` |
+| Exact ordinary nth root | `sympy.integer_nthroot(n, k)` or `gmpy2.iroot(n, k)` |
+| Square root modulo `m` | `sympy.sqrt_mod(a, m)` |
+| Nth root modulo `m` | `sympy.nthroot_mod(a, k, m)` |
+| Solve several congruences | `sympy.ntheory.modular.crt` / `solve_congruence` |
+| Multiplicative inverse | `pow(a, -1, m)` / `sympy.mod_inverse` |
+
+### SageMath: Best For Algebraic Structure
+
+Sage is usually the cleanest choice when the challenge moves beyond integer helpers into finite fields, polynomial rings, elliptic curves, matrices, or lattices.
+
+```python
+p = 101
+R = Zmod(p)
+a = R(56)
+
+roots = a.sqrt(all=True)
+assert all(x**2 == a for x in roots)
+
+inverse = R(17)^-1
+assert R(17) * inverse == 1
+
+F = GF(p)
+PR.<x> = PolynomialRing(F)
+print((x^3 + 2*x + 1).roots())
+```
+
+CRT and finite-field examples:
+
+```python
+result = crt([2, 3, 2], [3, 5, 7])
+assert result % 3 == 2
+
+F.<z> = GF(2^8)
+print(z.multiplicative_order())
+```
+
+> 💡 **What to watch out for:** Sage uses `^` for exponentiation in Sage code, while ordinary Python uses `**`. In a normal `.py` file, `^` means bitwise XOR.
+
+### `gmpy2`: Fast Large-Integer Primitives
+
+Use `gmpy2` when the mathematics is already understood and the bottleneck is repeated big-integer work.
+
+```python
+import gmpy2
+
+a = gmpy2.mpz(a)
+p = gmpy2.mpz(p)
+
+value = gmpy2.powmod(a, 65537, p)
+inverse = gmpy2.invert(a, p)  # ZeroDivisionError if no inverse exists
+root, exact = gmpy2.iroot(a, 2)
+
+assert gmpy2.is_congruent(a * inverse, 1, p)
+print(root, exact)  # ordinary integer root, not sqrt modulo p
+```
+
+For secret-dependent production operations, `gmpy2.powmod_sec` offers a constant-time modular exponentiation primitive under its documented input constraints. CTF solver scripts normally optimize for analysis speed, but do not mistake them for hardened cryptographic implementations.
+
+### PyCryptodome: RSA And Byte Conversion Glue
+
+PyCryptodome is not a general computer-algebra system. It is useful around RSA challenges for primes, inverses, key construction, and integer/byte conversion.
+
+```python
+from Crypto.Util.number import (
+    bytes_to_long,
+    getPrime,
+    inverse,
+    isPrime,
+    long_to_bytes,
+)
+
+m = bytes_to_long(b"flag{example}")
+block = long_to_bytes(m)
+p = getPrime(1024)
+d = inverse(65537, p - 1)
+
+assert isPrime(p)
+assert block == b"flag{example}"
+```
+
+Prefer native Python when it is equally clear:
+
+```python
+m = int.from_bytes(b"flag{example}", "big")
+block = m.to_bytes((m.bit_length() + 7) // 8, "big")
+```
+
+### Which Library Should You Reach For?
+
+| Situation | First choice | Why |
+| --- | --- | --- |
+| One inverse, GCD, modular power | Plain Python | Built in, exact, dependency-free |
+| Modular roots, CRT, discrete logs, small factoring | SymPy | Direct number-theory API |
+| Finite fields, polynomial systems, ECC, lattices | SageMath | Models the actual algebraic structures |
+| Millions of large-integer operations | `gmpy2` | GMP-backed performance |
+| RSA bytes, primes, and key objects | PyCryptodome | Practical crypto plumbing |
+| Bit-vector constraints copied from a binary | Z3 | Models overflow and machine-width arithmetic |
+
+### Validation-First CTF Workflow
+
+1. Rewrite the challenge statement as an explicit congruence.
+2. Record whether each modulus is known prime, composite, a prime power, or unknown.
+3. Reduce inputs with `% modulus` and compute relevant GCDs.
+4. Choose the narrowest solver that matches the mathematics.
+5. Ask for all roots only when you understand how many may exist.
+6. Verify every returned candidate by substituting it into the original equation.
+7. Convert integers to bytes only after the math checks pass.
+8. Check both endiannesses and preserve leading zero bytes when the protocol specifies a fixed block size.
+
+Reusable verification pattern:
+
+```python
+def verified_modular_roots(a, modulus):
+    from sympy import sqrt_mod
+
+    roots = sqrt_mod(a, modulus, all_roots=True)
+    if not roots:
+        return []
+    expected = a % modulus
+    valid = [int(x) for x in roots if pow(int(x), 2, modulus) == expected]
+    if len(valid) != len(roots):
+        raise ValueError("solver returned an unverified candidate")
+    return valid
+```
+
+### Common Mistakes
+
+- Using `math.sqrt()` or floating point on 1,000-bit integers.
+- Confusing `isqrt(a)` with a square root modulo `p`.
+- Assuming a variable named `p` is prime without evidence.
+- Keeping only one root when the plaintext could correspond to its paired root.
+- Applying the `p % 4 == 3` shortcut to another prime class or a composite modulus.
+- Calling CRT on non-coprime moduli without checking consistency.
+- Treating `factorint()` as a magic RSA breaker; well-generated RSA moduli remain infeasible to factor.
+- Converting a candidate to text before verifying the modular equation.
+- Using Sage syntax such as `^` inside ordinary Python.
+
+### Official References
+
+- [SymPy number theory](https://docs.sympy.org/latest/modules/ntheory.html)
+- [SageMath integers modulo n](https://doc.sagemath.org/html/en/reference/finite_rings/sage/rings/finite_rings/integer_mod.html)
+- [SageMath finite rings](https://doc.sagemath.org/html/en/reference/finite_rings/sage/rings/finite_rings/integer_mod_ring.html)
+- [gmpy2 integer functions](https://gmpy2.readthedocs.io/en/stable/mpz.html)
+- [PyCryptodome `Crypto.Util.number`](https://pycryptodome.readthedocs.io/en/latest/src/util/util.html)
 
 ## Hashing
 
