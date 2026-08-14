@@ -28,9 +28,9 @@ Local source folders retained for future restructuring and writeup mining. These
 ## Existing Sources
 
 - `_source_zen`
-  - Upstream: private Notion export, `CTF Checklists, Tools & Syntax`.
-  - Local contents observed: quick-reference text notes, HackMyVM writeups, Hack The Box training notes, and command/payload images.
-  - Folded into: [Zen CTF Notes](../zen-ctf-notes/index.html), generated with `scripts/build-zen-ctf-notes.ps1` while the raw export remains Git-ignored.
+  - Superseded by the operator-provided offline Notion Markdown export at `my_writeups/ZEN_CTFNotesh4g` (`CTF Checklists + Tools + Syntax`).
+  - Local contents observed: category checklists for web exploitation, OSINT, forensics/networking, cryptography/reverse engineering, programming/scripting, tool syntax, SQL injection, and command injection.
+  - Folded into: [Zen CTF Notes](../zen-ctf-notes/index.html), generated with `scripts/build-zen-ctf-notes.ps1`; only the generated browser data is required at runtime.
 - `_source_e0sec_ctf_writeups`
   - Upstream: https://github.com/e0sec/ctf-writeups
   - Local snapshot: commit `d510aba023ecff221d017cf920c6f95dd95f2193` (2026-08-10).
