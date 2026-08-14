@@ -1,0 +1,26 @@
+[Unit]
+Description=H4G public Zen CTF Notes editor API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=h4g-zen-notes
+Group=h4g-zen-notes
+WorkingDirectory=/var/www/h4g
+Environment=PYTHONUNBUFFERED=1
+Environment=ZEN_NOTES_HOST=127.0.0.1
+Environment=ZEN_NOTES_PORT=8788
+Environment=ZEN_NOTES_DATA=/var/lib/h4g-zen-notes/notes.json
+ExecStart=/usr/bin/python3 -m services.zen_notes.server
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+StateDirectory=h4g-zen-notes
+ReadWritePaths=/var/lib/h4g-zen-notes
+
+[Install]
+WantedBy=multi-user.target
