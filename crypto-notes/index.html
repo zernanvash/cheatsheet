@@ -13,7 +13,7 @@
 <script>
 const NOTES=[
   ['classical-ciphers.md','Classical Ciphers','Classical'],['vigenere.md','Vigenère Cipher','Classical'],['xor.md','XOR','Symmetric'],['aes.md','AES','Symmetric'],['padding-oracle.md','Padding Oracle','Symmetric'],
-  ['rsa.md','RSA','Public Key'],['chinese-remainder-theorem.md','Chinese Remainder Theorem','Public Key'],['diffie-hellman.md','Diffie–Hellman','Public Key'],['ecc.md','Elliptic Curve Cryptography','Public Key'],['hash.md','Hashes','Integrity']
+  ['rsa.md','RSA','Public Key'],['weak-structured-primes.md','Weak & Structured RSA Primes','Public Key'],['chinese-remainder-theorem.md','Chinese Remainder Theorem','Public Key'],['diffie-hellman.md','Diffie–Hellman','Public Key'],['ecc.md','Elliptic Curve Cryptography','Public Key'],['hash.md','Hashes','Integrity']
 ].map(([file,title,group])=>({file,title,group,text:''}));
 const $=id=>document.getElementById(id);let active=null;
 const escapeHtml=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
