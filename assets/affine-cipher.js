@@ -1,0 +1,21 @@
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const mod = (n, m) => ((n % m) + m) % m;
+  const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
+  function inverse(a, m) { let [oldR, r, oldS, s] = [m, mod(a, m), 0, 1]; while (r) { const q = Math.floor(oldR / r); [oldR, r] = [r, oldR - q * r]; [oldS, s] = [s, oldS - q * s]; } return oldR === 1 ? mod(oldS, m) : null; }
+  function alphabet() { const a = $('alphabet').value; if (a.length < 2) throw Error('Alphabet needs at least 2 characters.'); if (new Set([...a]).size !== [...a].length) throw Error('Alphabet characters must be unique.'); return [...a]; }
+  function locate(ch, alpha) { let i = alpha.indexOf(ch); if (i >= 0) return [i, false]; const up = ch.toUpperCase(); i = alpha.indexOf(up); return [i, i >= 0 && ch !== up]; }
+  function transform(text, a, b, alpha, decrypt) { const m = alpha.length; a = mod(a, m); b = mod(b, m); const inv = inverse(a, m); if (inv === null) throw Error(`A=${a} is not coprime with alphabet length ${m}.`); return [...text].map(ch => { const [x, lower] = locate(ch, alpha); if (x < 0) return ch; const y = decrypt ? mod(inv * (x - b), m) : mod(a * x + b, m); const out = alpha[y]; return lower ? out.toLowerCase() : out; }).join(''); }
+  const common = [' THE ',' AND ',' THAT ',' THIS ',' WITH ',' FOR ',' YOU ',' IS ',' OF ',' TO ',' IN ',' CTF',' FLAG',' CODE',' ATTACK',' KEY'];
+  function score(text) { const s = ` ${text.toUpperCase().replace(/[^A-Z]+/g, ' ')} `; let n = 0; for (const w of common) n += s.split(w).length * w.length; for (const c of ['TH','HE','IN','ER','AN','RE','ON','AT','EN','ND']) n += (s.split(c).length - 1) * 1.5; n -= (s.match(/[JQXZ]{2,}/g) || []).length * 5; return n; }
+  function status(id, message, error=false) { const el=$(id); el.textContent=message; el.classList.toggle('error', error); }
+  function keys() { const alpha=alphabet(), a=Number($('dec-a').value), b=Number($('dec-b').value); if (!Number.isInteger(a)||!Number.isInteger(b)) throw Error('A and B must be integers.'); return {alpha,a,b}; }
+  function renderTable(a, b, alpha) { const cipher=alpha.map((_,x)=>alpha[mod(a*x+b,alpha.length)]); $('formula').textContent=`E(x) = (${a}x + ${b}) mod ${alpha.length}; inverse A = ${inverse(a,alpha.length) ?? 'undefined'}`; $('mapping').innerHTML=`<table><tr><th>Plain</th>${alpha.map(c=>`<td>${escape(c)}</td>`).join('')}</tr><tr><th>Cipher</th>${cipher.map(c=>`<td>${escape(c)}</td>`).join('')}</tr></table>`; }
+  function escape(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+  $('decrypt').addEventListener('click',()=>{ try { const {alpha,a,b}=keys(); const out=transform($('ciphertext').value,a,b,alpha,true); $('plaintext-output').value=out; renderTable(mod(a,alpha.length),mod(b,alpha.length),alpha); status('dec-status',`Decrypted with A=${a}, B=${b}.`); } catch(e){status('dec-status',e.message,true);} });
+  $('encrypt').addEventListener('click',()=>{ try { const alpha=alphabet(),a=Number($('enc-a').value),b=Number($('enc-b').value); const out=transform($('plaintext').value,a,b,alpha,false); $('cipher-output').value=out; renderTable(mod(a,alpha.length),mod(b,alpha.length),alpha); status('enc-status',`Encrypted with A=${a}, B=${b}.`); } catch(e){status('enc-status',e.message,true);} });
+  $('bruteforce').addEventListener('click',()=>{ try { const alpha=alphabet(), m=alpha.length, text=$('ciphertext').value, candidates=[]; for(let a=0;a<m;a++) if(gcd(a,m)===1) for(let b=0;b<m;b++){const plain=transform(text,a,b,alpha,true); candidates.push({a,b,plain,score:score(plain)});} candidates.sort((x,y)=>y.score-x.score); $('plaintext-output').value=candidates[0]?.plain||''; $('results').innerHTML=candidates.slice(0,30).map((r,i)=>`<article class="result"><div class="result-head"><b>#${i+1} &middot; A=${r.a}, B=${r.b}</b><span>score ${r.score.toFixed(1)}</span></div><pre>${escape(r.plain)}</pre></article>`).join(''); status('dec-status',`Tested ${candidates.length} valid key pairs; showing the top ${Math.min(30,candidates.length)}.`); }catch(e){status('dec-status',e.message,true);} });
+  $('decrypt').click(); $('encrypt').click();
+  window.AffineCipher={transform,inverse,gcd};
+})();
