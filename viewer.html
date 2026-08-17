@@ -554,7 +554,7 @@
         if (!linkPath.toLowerCase().endsWith(".md")) return;
 
         const nextPath = normalizePath(`${baseDir}/${linkPath}`);
-        anchor.href = `viewer.html?id=${encodeURIComponent(nextPath)}${hash ? `#${hash}` : ""}`;
+        anchor.href = `viewer.html?file=${encodeURIComponent(nextPath)}${hash ? `#${hash}` : ""}`;
       });
     }
 
