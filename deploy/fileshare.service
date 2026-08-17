@@ -1,0 +1,29 @@
+[Unit]
+Description=H4G public file sharing service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=h4g-fileshare
+Group=h4g-fileshare
+WorkingDirectory=/var/www/h4g
+Environment=PYTHONUNBUFFERED=1
+Environment=FILESHARE_HOST=127.0.0.1
+Environment=FILESHARE_PORT=8789
+Environment=FILESHARE_DATA_DIR=/var/lib/h4g-fileshare
+Environment=FILESHARE_MAX_FILE_BYTES=104857600
+Environment=FILESHARE_MAX_TOTAL_BYTES=10737418240
+Environment=FILESHARE_RATE_LIMIT=30
+ExecStart=/usr/bin/python3 -m services.fileshare.server
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+StateDirectory=h4g-fileshare
+ReadWritePaths=/var/lib/h4g-fileshare
+
+[Install]
+WantedBy=multi-user.target
