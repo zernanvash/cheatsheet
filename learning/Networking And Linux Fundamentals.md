@@ -48,6 +48,26 @@ find . -type f
 grep -Rni 'password' .
 ```
 
+### Unknown Artifact Reflex
+
+When a challenge provides a file, identify it before trusting its name or opening it with a category-specific tool:
+
+```bash
+sha256sum ./challenge
+file ./challenge
+stat ./challenge
+strings -a -n 6 ./challenge | head -n 80
+```
+
+Search filenames and file contents as separate tasks:
+
+```bash
+find . -type f -iname '*secret*'
+rg -n -i 'flag\{|password|token' .
+```
+
+See [CTF Primer Foundations](CTF%20Primer%20Foundations.md) for pipes, redirection, disk-image offsets, Python byte handling, and the general challenge loop.
+
 Important paths:
 
 - `/etc/passwd`: local users.

@@ -2232,5 +2232,12 @@
         "category": "Guides",
         "headings": ["Ret2win Guide", "Fast Decision Tree", "Triage Before Exploiting", "Find the Vulnerable Input Path", "Locate the Win Function", "Measure the Exact Offset", "Prove Return-Address Control", "Minimal Pwntools Exploit", "amd64 Stack Alignment", "Win Functions with Arguments", "PIE Strategies", "Canary Cases", "Input and Remote Reliability", "Failure Matrix", "Solve Checklist", "Practice and References"],
         "text": "Ret2win binary exploitation guide for authorized CTF and lab targets. Covers IDA, Ghidra, GDB, checksec, unsafe input triage, cyclic patterns, saved return-address offset discovery, pwntools payloads, stripped ELF binaries, amd64 stack alignment, function arguments, PIE leaks, partial overwrites, stack canaries, remote reliability, debugging, ROP Emporium practice, and remediation."
+    },
+    {
+        "title": "CTF Primer Foundations",
+        "path": "learning/CTF Primer Foundations.md",
+        "category": "Learning",
+        "headings": ["CTF Primer Foundations", "The Universal Challenge Loop", "Shell Literacy for CTF Work", "Searching Files and Content", "Forensics: Artifact Before Tool", "Python as CTF Glue", "Web: Follow the Data Across Boundaries", "Cryptography: Classify Before Decoding", "C Memory Model for PWN and REV", "Assembly Reading Loop", "Regex for Flag and Signal Extraction", "Where to Continue", "Source"],
+        "text": "Foundational CTF workflow adapted from the official picoCTF CTF Primer. Covers evidence preservation, artifact identification, shell commands, pipes, redirection, find, grep, ripgrep, disk images, Sleuth Kit fls and icat, PCAP reasoning, Python bytes and pwntools packing, HTTP data flow, cryptography classification, C arrays and pointers, stack memory, assembly reading, and regular expressions."
     }
 ]

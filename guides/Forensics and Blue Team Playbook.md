@@ -15,6 +15,29 @@ export LPORT_ALT="4445"           # Secondary staging / shell listener port
 
 ## 10. Forensics and Blue Team Notes
 
+### 10.0 Preserve And Identify
+
+Work from a copy, hash it, and identify the artifact before selecting a parser:
+
+```bash
+sha256sum ./artifact
+file ./artifact
+stat ./artifact
+exiftool ./artifact
+7z l ./artifact
+binwalk ./artifact
+```
+
+For disk images, distinguish the partition start sector from byte offsets. Obtain evidence first, then substitute the observed values:
+
+```bash
+mmls ./disk.img
+fls -r -p -o START_SECTOR ./disk.img
+icat -o START_SECTOR ./disk.img INODE > recovered.bin
+```
+
+Do not mount or modify the sole evidence copy. Record the hash, partition offset, inode, command, and output path for every extracted artifact. See [CTF Primer Foundations](../learning/CTF%20Primer%20Foundations.md#forensics-artifact-before-tool) for the beginner reasoning model.
+
 ### 10.1 PCAP Analysis
 
 ```bash

@@ -6,6 +6,7 @@ Use learning notes when the terminology is the blocker. Use [Blueprint Index](..
 
 | If you need to learn... | Open | Then practice with |
 |---|---|---|
+| The universal CTF workflow, shell literacy, artifact triage, Python bytes, C memory, and regex | [CTF Primer Foundations](CTF%20Primer%20Foundations.md) | [Blueprint Index](../blueprints/Blueprint%20Index.md) |
 | HTTP, URLs, methods, headers, cookies, request/response bodies | [Web Fundamentals](Web%20Fundamentals.md) | [Web Exploit Blueprint](../blueprints/Web%20Exploit%20Blueprint.md) |
 | IDOR, auth failures, crypto failures, basic web risk categories | [Web Application Security Fundamentals](Web%20Application%20Security%20Fundamentals.md) | [Challenge Use Cases](../references/Challenge%20Use%20Cases.md#web-use-cases) |
 | IPs, ports, Linux files, shell basics, service thinking | [Networking And Linux Fundamentals](Networking%20And%20Linux%20Fundamentals.md) | [Machine Exploitation Databank](../blueprints/Machine%20Exploitation%20Databank.md) |

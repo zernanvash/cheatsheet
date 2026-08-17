@@ -42,6 +42,27 @@ Ask:
 - Stack: memory region for calls, local data, and return addresses.
 - Control flow: branches, jumps, calls, and returns.
 
+## From Source Code To Machine State
+
+Keep these levels distinct while reversing:
+
+```text
+source code -> compiler intermediate form -> assembly -> machine-code bytes -> runtime state
+```
+
+A decompiler reconstructs plausible source-like code; it does not recover the original source exactly. Confirm important variable sizes, signedness, pointer arithmetic, and control flow in assembly or the debugger.
+
+C arrays are contiguous memory rather than bounds-checked containers. Conceptually, `array[index]` selects `base + index * element_size`. This is why an unchecked copy or invalid index can reach adjacent stack data, including a saved return address.
+
+AT&T and Intel are alternative assembly syntaxes, not different architectures. This vault generally uses Intel syntax:
+
+```gdb
+set disassembly-flavor intel
+disassemble main
+```
+
+For a source-to-stack walkthrough, continue with [CTF Primer Foundations](CTF%20Primer%20Foundations.md#c-memory-model-for-pwn-and-rev), then use the [Ret2win Guide](../guides/Ret2win%20Guide.md) for controlled return-address overwrites.
+
 ## Safe Beginner Workflow
 
 1. Work in a lab VM or disposable folder.
