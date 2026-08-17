@@ -577,9 +577,12 @@
           if (!indexResponse.ok) throw new Error(`Index HTTP ${indexResponse.status}`);
           const index = await indexResponse.json();
           const record = index.find(item => normalizePath(item.id || item.path) === filePath);
-          if (!record) throw new Error('Unknown writeup ID');
-          filePath = normalizePath(record.path);
-          embeddedMarkdown = record.source_markdown || null;
+          if (record) {
+            filePath = normalizePath(record.path);
+            embeddedMarkdown = record.source_markdown || null;
+          } else if (!filePath.toLowerCase().endsWith('.md')) {
+            throw new Error('Unknown writeup ID');
+          }
         }
 
         pathLabel.textContent = filePath;
