@@ -121,7 +121,8 @@ Static and dynamic analysis of compiled binaries, bytecode, managed code, and ob
 
 Stack overflows, buffer overflows, ROP chains, ret2libc, shellcode injection, and format strings.
 
-### Blueprints
+### Playbooks & Blueprints
+* **[Ret2win Guide](guides/Ret2win%20Guide.md)** — IDA/Ghidra triage, cyclic offsets, pwntools exploits, stripped binaries, PIE, canaries, arguments, stack alignment, and remote debugging.
 * **[Buffer Overflow Blueprint](blueprints/Buffer%20Overflow%20Blueprint.md)** — Full workflow: checksec triage, offset discovery, ret2win, ret2libc, ROP chains, and remote exploit templates.
 * **[Reverse Engineering Playbook — BOF Section](Reverse%20Engineering%20Playbook.md#buffer-overflow-quick-reference)** — Inline quick reference for buffer overflow challenges.
 

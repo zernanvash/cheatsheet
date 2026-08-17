@@ -69,6 +69,7 @@ Command-focused cheatsheets organized by CTF challenge category. Start from [H4G
 
 ## 💥 PWN (Binary Exploitation)
 
+- [Ret2win Guide](../guides/Ret2win%20Guide.md) — end-to-end ret2win triage, offset discovery, pwntools payloads, PIE, canaries, alignment, and remote reliability
 - [GDB (gef) Cheat Sheet](GDB%20Cheat%20Sheet.md) — breakpoints, pattern tools, canary, GOT, PIE
 - [Reversing CLI Tools Cheat Sheet](Reversing%20CLI%20Tools%20Cheat%20Sheet.md) — checksec, ROPgadget, ropper, one_gadget
 - [REV Python Toolkit](REV%20Python%20Toolkit.md) — pwntools exploit templates

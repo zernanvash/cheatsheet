@@ -124,6 +124,8 @@ Use `p32()` for 32-bit targets and `p64()` for 64-bit targets. If the process cr
 
 Use this when the binary contains a useful function such as `win`, `flag`, `print_flag`, or `get_shell`.
 
+For the complete workflow—including stripped binaries, PIE, canaries, arguments, amd64 stack alignment, and remote failure diagnosis—use the [Ret2win Guide](../guides/Ret2win%20Guide.md).
+
 Find symbols:
 
 ```bash
