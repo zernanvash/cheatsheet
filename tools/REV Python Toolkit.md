@@ -4,6 +4,8 @@ Common Python helpers for reverse engineering, crackmes, binary parsing, byte co
 
 Reference analyzed: `hgbe02/Hackmyvm-HMVLabs-Temperance`, a set of Python solvers for HackMyVM Temperance levels using `pwntools`, encoding transforms, image parsing, hashing, OCR, QR decoding, ZIP parsing, HTTP parsing, and XOR.
 
+> **Dedicated walkthrough:** [Temperance Challenge Solutions (levelx00-levelx32)](../rev_source/Temperance%20Challenge%20Solutions.md) documents every preserved level, recorded flag, reusable solver, dependency, and source correction.
+
 ## Core Libraries
 
 - `bytes`, `bytearray`, `memoryview` - raw byte handling

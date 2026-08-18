@@ -6,6 +6,57 @@ This repository follows the standard GitHub Forking Workflow. Below is a step-by
 
 ---
 
+## Run the Vault Locally Offline
+
+The repository's local HTML interfaces can be served without an internet connection or build step. You need Python 3 and a web browser.
+
+Open PowerShell in the repository root:
+
+```powershell
+Set-Location G:\HackForGov2025\h4g
+python -m http.server 8080
+```
+
+If Windows provides the `py` launcher instead of `python`, use:
+
+```powershell
+py -m http.server 8080
+```
+
+On Linux or macOS, open a terminal in the cloned repository root:
+
+```bash
+python3 -m http.server 8080
+```
+
+Keep the terminal open, then use these local URLs:
+
+| Interface | URL |
+| --- | --- |
+| Vault home | `http://localhost:8080/` |
+| Zen CTF Notes | `http://localhost:8080/zen-ctf-notes/` |
+| Web Exploit Checklist | `http://localhost:8080/zen-ctf-notes/#web-exploit-checklist` |
+| Writeup browser | `http://localhost:8080/writeups.html` |
+| 0xrefs cheatsheet | `http://localhost:8080/0xrefs.html` |
+
+Stop the server with `Ctrl+C`.
+
+### Local Viewer Troubleshooting
+
+- Use `python -m http.server 8080`, not `python http.server 8080`.
+- If port 8080 is busy, replace it with another port such as `8081` in both the command and URL.
+- Use `Ctrl+F5` if recent local changes do not appear.
+- Python's built-in server is read-only. The Zen CTF Notes Edit button requires an optional `/api/zen-notes` backend and remains disabled on the static server.
+- Open the HTML interface rather than a `.md` file directly when you want rendered Markdown.
+
+After editing the derived Zen Web Exploit Checklist, rebuild its embedded note data from the repository root:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-zen-ctf-notes.ps1
+```
+
+---
+
 ## Workflow Overview
 
 1. Fork the repository

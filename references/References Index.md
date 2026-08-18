@@ -20,6 +20,7 @@ Long-form source and offline reference material.
 - [Reverse Engineering Source Inventory](../rev_source/README.md)
 - [CODEX system prompt](CODEX_SYSTEM_PROMPT.md)
 - [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md)
+- [HackMyVM Crypto Challenges Writeup Reference](HackMyVM%20Crypto%20Challenges%20Writeup%20Reference.md)
 
 ## External Course References
 

@@ -58,6 +58,7 @@ A standalone guide covering learning, triage, cheatsheet commands, solver script
   - [Remote Exploit Template](#remote-exploit-template)
 - **Tool Reference**
   - [Local Cheatsheets](#local-cheatsheets) (Includes [IDA Pro](tools/IDA%20Pro%20Cheat%20Sheet.md), [Ghidra](tools/Ghidra%20Cheat%20Sheet.md), [x64dbg](tools/x64dbg%20Cheat%20Sheet.md), [GDB (gef)](tools/GDB%20Cheat%20Sheet.md))
+  - [Print and Format Specifiers Cheat Sheet](reverse-engineering-vault/tools/Print%20and%20Format%20Specifiers%20Cheat%20Sheet.md)
   - [Essential CLI Tools](#essential-cli-tools)
   - [Decompilers & Disassemblers](#decompilers--disassemblers)
   - [Debuggers](#debuggers)
@@ -1171,6 +1172,7 @@ Use these when you need quick reference syntax, hotkeys, and workflows:
 | Open-source static analysis, type refactoring, function graphing, and Jython scripts | [Ghidra Cheat Sheet](tools/Ghidra%20Cheat%20Sheet.md) |
 | CLI-first disassembly, XREFs, function lists, strings, graphs, and patch planning | [Rizin / Radare2 Cheat Sheet](tools/Rizin%20Radare2%20Cheat%20Sheet.md) |
 | C validation logic, signedness, libc calls, input functions, and transform patterns | [C Reversing Cheat Sheet](tools/C%20Reversing%20Cheat%20Sheet.md) |
+| C `printf`, Python `%` formatting and f-strings, shell `printf`, byte dumps, and format-string reversing clues | [Print and Format Specifiers Cheat Sheet](reverse-engineering-vault/tools/Print%20and%20Format%20Specifiers%20Cheat%20Sheet.md) |
 | Windows user-mode debugging, memory dumps, patching, and malware unpacking (Scylla) | [x64dbg Cheat Sheet](tools/x64dbg%20Cheat%20Sheet.md) |
 | Linux ELF dynamic debugging, GEF context features, telescope, memory, and automation | [GDB (gef) Cheat Sheet](tools/GDB%20Cheat%20Sheet.md) |
 | Hex editing, dump analysis, text processing, and command line helpers | [Vim For Reversing Cheat Sheet](tools/Vim%20For%20Reversing%20Cheat%20Sheet.md) |

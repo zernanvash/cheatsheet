@@ -63,6 +63,7 @@ Command-focused cheatsheets organized by CTF challenge category. Start from [H4G
 
 ### Solver & Scripting
 - [REV Python Toolkit](REV%20Python%20Toolkit.md)
+- [Temperance Challenge Solutions (levelx00-levelx32)](../rev_source/Temperance%20Challenge%20Solutions.md)
 - [Vim For Reversing Cheat Sheet](Vim%20For%20Reversing%20Cheat%20Sheet.md)
 
 ---
@@ -87,6 +88,7 @@ Command-focused cheatsheets organized by CTF challenge category. Start from [H4G
 - [Password Attacks](Password%20Attacks.md)
 - [REV Python Toolkit — Modular Arithmetic & Crypto Math](REV%20Python%20Toolkit.md#modular-arithmetic-and-crypto-math) — SymPy, SageMath, gmpy2, PyCryptodome, modular roots, inverses, CRT, finite fields, and validation patterns.
 - [RsaCtfTool Weak RSA Analysis Guide](../learning/RsaCtfTool%20Guide.md) — Guided workflow for selecting weak-RSA attacks, recovering keys, and validating results.
+- [HackMyVM Crypto Challenges Writeup Reference](../references/HackMyVM%20Crypto%20Challenges%20Writeup%20Reference.md) — English technique map and analyzed solutions for 26 encoding, classical cipher, steganography, Unicode, and layered-decoding challenges.
 
 ---
 

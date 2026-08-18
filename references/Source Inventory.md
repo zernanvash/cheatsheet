@@ -27,6 +27,12 @@ Local source folders retained for future restructuring and writeup mining. These
 
 ## Existing Sources
 
+- External CSDN article: [hackmyvm_challenge_crypto专题](https://blog.csdn.net/f1agccc/article/details/147709479)
+  - Author handle: `f1agccc`; published 2025-05-05; retrieved 2026-08-18.
+  - Source license shown by CSDN: CC BY-SA 4.0.
+  - Contents observed: 26 HackMyVM crypto challenge solutions covering common encodings, classical ciphers, symbolic alphabets, Unicode steganography, barcodes, layered archives, known-plaintext substitution, and mixed-format puzzles.
+  - Folded into: [HackMyVM Crypto Challenges Writeup Reference](HackMyVM%20Crypto%20Challenges%20Writeup%20Reference.md), an independently structured English analysis with verification labels and source-dependent caveats.
+
 - `_source_zen`
   - Superseded by the operator-provided offline Notion Markdown export at `my_writeups/ZEN_CTFNotesh4g` (`CTF Checklists + Tools + Syntax`).
   - Local contents observed: category checklists for web exploitation, OSINT, forensics/networking, cryptography/reverse engineering, programming/scripting, tool syntax, SQL injection, and command injection.
@@ -60,7 +66,9 @@ Local source folders retained for future restructuring and writeup mining. These
   - Use later for: indexed writeup technique mining across TryHackMe, HackTheBox, Proving Grounds, PwnTillDawn, Vulnyx, and HackMyVM.
   - Folded into: [Sec-Fortress Writeups Index](../guides/Sec-Fortress%20Writeups%20Index.md) and new blueprints for SSRF, WebDAV, XXE, SSTI, Webmin, ActiveMQ/CVE-style services, ADCS, NTLM capture, TFTP, and port knocking.
 - `_source_temperance`
-  - Use later for: solver scripting, service interaction, and reverse/support challenge workflows.
+  - Local contents observed: 33 solved Python service challenges (`levelx00`-`levelx32`) plus the `rockyou_top100` candidate list used by level 20.
+  - Techniques: pwntools service interaction, byte/string transforms, Base64/hex/ROT13/Morse, image metadata and alpha-channel extraction, in-memory ZIP parsing, bounded MD5 lookup, HTTP body/header parsing, OCR, passwd-field parsing, JWT verification, geodesic distance, repeating-key XOR, QR decoding, and permutation search.
+  - Folded into: [REV Python Toolkit](../tools/REV%20Python%20Toolkit.md) and [Temperance Challenge Solutions](../rev_source/Temperance%20Challenge%20Solutions.md).
 
 ## Fundamentals Sources Added
 

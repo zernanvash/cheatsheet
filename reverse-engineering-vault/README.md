@@ -10,6 +10,7 @@ This folder is designed to be copied as-is to a Kali machine. It keeps the rever
 - `Reverse Engineering Playbook.md` - main reversing workflow, triage commands, solver cookbook, and tool map.
 - `blueprints/Reverse Engineering Blueprint.md` - decision tree for ELF, PE, bytecode, WASM, packed binaries, VM challenges, and more.
 - `guides/Reverse Engineering Tool Workflow.md` - situation-driven tool selection for Kali and Windows-host PE work.
+- `tools/Print and Format Specifiers Cheat Sheet.md` - C `printf`, Python `%` formatting, f-strings, shell `printf`, byte dumps, and reversing clues.
 - `.agents/AGENTS.md` - OpenCode agent instructions for GhidraMCP-assisted solving.
 - `references/CODEX_SYSTEM_PROMPT.md` - evidence-first note workflow used by the original vault.
 
