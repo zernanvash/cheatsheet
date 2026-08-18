@@ -7,7 +7,7 @@ Wants=network-online.target
 Type=simple
 User=ch-vault
 Group=ch-vault
-WorkingDirectory=/srv/ch-vault
+WorkingDirectory=/var/www/ch.zernanvash.dev
 EnvironmentFile=/etc/ch-vault/ch-vault.env
 ExecStart=/opt/ch-vault-venv/bin/uvicorn secure_server.app:app --host 127.0.0.1 --port 8765 --workers 1
 Restart=on-failure
@@ -21,4 +21,3 @@ UMask=0027
 
 [Install]
 WantedBy=multi-user.target
-

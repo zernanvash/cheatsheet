@@ -19,7 +19,7 @@ The authoritative runbook is [`deploy/provision-ubuntu.md`](../deploy/provision-
 
 ## Required VM decisions and checks
 
-1. Confirm the checkout path. The supplied service assumes `/srv/ch-vault`; adjust `WorkingDirectory` and `CH_VAULT_ROOT` together if the VM uses another absolute path.
+1. Confirm the checkout exists at `/var/www/ch.zernanvash.dev`. The supplied service and environment example use that absolute path.
 2. Preserve the current loopback services on ports 8787–8789 for cipher identification, Zen notes, and file sharing. The secure app proxies their `/api/*` routes after authentication.
 3. Check whether CyberChef is physically inside the checkout or served from a separate location. If separate, do not add a public unauthenticated Caddy route. Mount or copy it beneath the protected vault root, or extend the FastAPI server with an explicit authenticated secondary root and tests.
 4. Generate the Argon2id hash interactively on the VM. Never ask the user to paste the plaintext passphrase into chat, shell history, Git, or a service file.
@@ -29,7 +29,7 @@ The authoritative runbook is [`deploy/provision-ubuntu.md`](../deploy/provision-
 ## Commands after prerequisites are installed
 
 ```bash
-cd /srv/ch-vault
+cd /var/www/ch.zernanvash.dev
 /opt/ch-vault-venv/bin/pip install --requirement requirements-secure-server-dev.txt
 /opt/ch-vault-venv/bin/pytest -q
 sudo caddy validate --config /etc/caddy/Caddyfile
@@ -53,4 +53,3 @@ Stop and report rather than improvising if:
 - Any known vault URL is accessible without authentication after rollout.
 
 Rollback means maintenance/closed ports, not an unauthenticated public vault.
-

@@ -12,10 +12,10 @@ This handout is written for the AI or administrator operating the Ubuntu VM. It 
 
 ## 1. Preflight
 
-Confirm that the checkout is `/srv/ch-vault`, DNS points to this VM, no stale `AAAA` record exists without working IPv6, and TCP 80/443 are allowed by the Azure NSG and Ubuntu firewall.
+The checkout is `/var/www/ch.zernanvash.dev`. Confirm DNS points to this VM, no stale `AAAA` record exists without working IPv6, and TCP 80/443 are allowed by the Azure NSG and Ubuntu firewall.
 
 ```bash
-cd /srv/ch-vault
+cd /var/www/ch.zernanvash.dev
 git status --short --branch
 python3 --version
 getent ahostsv4 ch.zernanvash.dev
@@ -29,7 +29,7 @@ The service expects Python 3.12. Install Caddy from its official Ubuntu reposito
 ```bash
 sudo useradd --system --home-dir /nonexistent --shell /usr/sbin/nologin ch-vault
 sudo python3 -m venv /opt/ch-vault-venv
-sudo /opt/ch-vault-venv/bin/pip install --requirement /srv/ch-vault/requirements-secure-server-dev.txt
+sudo /opt/ch-vault-venv/bin/pip install --requirement /var/www/ch.zernanvash.dev/requirements-secure-server-dev.txt
 sudo install -d -o root -g ch-vault -m 0750 /etc/ch-vault
 sudo install -d -o ch-vault -g ch-vault -m 0750 /var/lib/ch-vault
 ```
@@ -47,7 +47,7 @@ sudo /opt/ch-vault-venv/bin/python -c 'from getpass import getpass; from argon2 
 Copy the example, place the generated hash after `CH_VAULT_PASSPHRASE_HASH=`, and protect the file:
 
 ```bash
-sudo install -m 0640 -o root -g ch-vault /srv/ch-vault/deploy/ch-vault.env.example /etc/ch-vault/ch-vault.env
+sudo install -m 0640 -o root -g ch-vault /var/www/ch.zernanvash.dev/deploy/ch-vault.env.example /etc/ch-vault/ch-vault.env
 sudoedit /etc/ch-vault/ch-vault.env
 sudo stat -c '%U %G %a %n' /etc/ch-vault/ch-vault.env /var/lib/ch-vault
 ```
@@ -55,7 +55,7 @@ sudo stat -c '%U %G %a %n' /etc/ch-vault/ch-vault.env /var/lib/ch-vault
 ## 4. Install and start the application
 
 ```bash
-sudo install -m 0644 /srv/ch-vault/deploy/ch-vault.service /etc/systemd/system/ch-vault.service
+sudo install -m 0644 /var/www/ch.zernanvash.dev/deploy/ch-vault.service /etc/systemd/system/ch-vault.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now ch-vault
 sudo systemctl status ch-vault --no-pager
@@ -71,7 +71,7 @@ Back up the current Caddyfile before replacing it. Validate before reload:
 
 ```bash
 sudo cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.pre-ch-vault
-sudo install -m 0644 /srv/ch-vault/deploy/Caddyfile /etc/caddy/Caddyfile
+sudo install -m 0644 /var/www/ch.zernanvash.dev/deploy/Caddyfile /etc/caddy/Caddyfile
 sudo caddy validate --config /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 sudo systemctl status caddy --no-pager
@@ -96,14 +96,14 @@ From a separate device:
 Run the repository test suite before deployment:
 
 ```bash
-cd /srv/ch-vault
+cd /var/www/ch.zernanvash.dev
 /opt/ch-vault-venv/bin/pytest -q
 ```
 
 ## Updating
 
 ```bash
-cd /srv/ch-vault
+cd /var/www/ch.zernanvash.dev
 git pull --ff-only origin main
 sudo /opt/ch-vault-venv/bin/pip install --requirement requirements-secure-server.txt
 sudo systemctl restart ch-vault
