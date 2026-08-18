@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in · H4G Training Vault</title>
+  <link rel="stylesheet" href="/_auth-static/login.css">
+</head>
+<body>
+  <main class="login-card">
+    <div class="mark">H4G</div>
+    <p class="eyebrow">TRAINING VAULT</p>
+    <h1>Enter the shared passphrase</h1>
+    <p class="muted">Access is kept active while a vault tab remains open.</p>
+    <form action="/auth/login" method="post">
+      <input type="hidden" name="next" value="{{NEXT}}">
+      <label for="passphrase">Passphrase</label>
+      <input id="passphrase" name="passphrase" type="password" autocomplete="current-password" autofocus required>
+      <p class="error" role="alert">{{ERROR}}</p>
+      <button type="submit">Unlock vault</button>
+    </form>
+  </main>
+</body>
+</html>
+

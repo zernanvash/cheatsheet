@@ -1,0 +1,24 @@
+[Unit]
+Description=Authenticated H4G training vault
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ch-vault
+Group=ch-vault
+WorkingDirectory=/srv/ch-vault
+EnvironmentFile=/etc/ch-vault/ch-vault.env
+ExecStart=/opt/ch-vault-venv/bin/uvicorn secure_server.app:app --host 127.0.0.1 --port 8765 --workers 1
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ch-vault
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
+

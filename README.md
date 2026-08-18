@@ -41,6 +41,16 @@ Keep the terminal open, then use these local URLs:
 
 Stop the server with `Ctrl+C`.
 
+> `python -m http.server` is for trusted local development only. Never bind it to a public interface or use it for the Azure deployment.
+
+## Protected Azure Deployment
+
+The production site uses Caddy for HTTPS and a loopback-only FastAPI service for shared-passphrase authentication. Vault files remain in their current directories and are not application-encrypted. Every HTML, Markdown, index, asset, download, and `/api/*` request is authorized by the server.
+
+Deployment configuration lives in `deploy/`. Follow [`deploy/provision-ubuntu.md`](deploy/provision-ubuntu.md) on the VM. The live environment file, passphrase hash, session database, and uploaded data must remain outside Git.
+
+To exercise the protected server locally, create an Argon2id hash and set the configuration contract before starting Uvicorn. Because the authentication cookie is deliberately `Secure`, use an HTTPS development proxy or test through Caddy rather than weakening the cookie flags.
+
 ### Local Viewer Troubleshooting
 
 - Use `python -m http.server 8080`, not `python http.server 8080`.
