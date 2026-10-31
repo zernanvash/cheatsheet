@@ -1,6 +1,6 @@
 # Tools Index
 
-Command-focused cheatsheets organized by CTF challenge category. Start from [H4G Training](../H4G%20Training.md) for the full hub, or jump straight to a tool below.
+Command-focused cheatsheets organized by category and technical domain. Start from [H4G Training](../H4G%20Training.md) for the full hub, or jump straight to a tool below.
 
 > 🛠️ **Interactive Tool:** Use the [0xrefs Interactive Command Reference](../0xrefs.html) to search, filter, and dynamically inject environment variables into pentesting commands.
 
@@ -97,6 +97,14 @@ Command-focused cheatsheets organized by CTF challenge category. Start from [H4G
 - [Passive Recon](Passive%20Recon.md)
 - [Dig Cheat Sheet](Dig%20Cheat%20Sheet.md)
 - [Cloud and Misc Recon Alternatives](Cloud%20and%20Misc%20Recon%20Alternatives.md)
+
+---
+
+## 🌐 Networking
+
+- [Networking Cheat Sheet](Networking%20Cheat%20Sheet.md) — Comprehensive CCNA & enterprise networking reference (IPv4 Subnetting, IPv6, Ports & Protocols, Cabling, Switching, VLANs, Trunking, STP, EtherChannel, Inter-VLAN, Routing, OSPFv2, FHRP, NAT/PAT, Services, Port Security, ACLs, AAA & Automation)
+- [Linux Networking & Packet Analysis](Networking.md) — Network support commands for recon, packet inspection, and lab automation (tcpdump, Scapy, Responder)
+- [Wireless](Wireless.md) — 802.11 standards, capture, inspect, and WPA handshake cracking
 
 ---
 

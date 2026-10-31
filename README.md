@@ -1,6 +1,6 @@
-# Contributing to H4G CTF Vault
+# zernan's cheatsheet
 
-Welcome! Thank you for considering contributing to the H4G CTF Vault & Cheatsheet repository. Whether you are adding new tool cheatsheets, fixing typos, or documenting CTF challenge walkthroughs, your contributions are welcome.
+Welcome to zernan's cheatsheet — a personal cybersecurity, network engineering, CTF, and operational cheatsheet repository. Whether you are adding new tool cheatsheets, fixing typos, or documenting CTF challenge walkthroughs, your contributions are welcome.
 
 This repository follows the standard GitHub Forking Workflow. Below is a step-by-step guide on how to contribute using a fork.
 

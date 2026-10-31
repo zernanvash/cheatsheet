@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>H4G CTF Training Hub</title>
+  <title>zernan's cheatsheet</title>
   <style>
     :root {
       color-scheme: dark;
@@ -27,6 +27,7 @@
       --color-osint: #eab308;
       --color-forensics: #14b8a6;
       --color-reporting: #64748b;
+      --color-networking: #06b6d4;
     }
 
     * {
@@ -340,6 +341,7 @@
     .category-btn[data-cat="osint"]::before { background: var(--color-osint); }
     .category-btn[data-cat="forensics"]::before { background: var(--color-forensics); }
     .category-btn[data-cat="reporting"]::before { background: var(--color-reporting); }
+    .category-btn[data-cat="networking"]::before { background: var(--color-networking); }
 
     /* Content Area */
     .content-area {
@@ -688,8 +690,8 @@
   <div class="app-container">
     <header>
       <div class="header-left">
-        <h1>H4G CTF Training Hub</h1>
-        <p class="subtitle">Your localized training vault. Select a CTF challenge type to filter playbooks, specific cheatsheets, and solver tools.</p>
+        <h1>zernan's cheatsheet</h1>
+        <p class="subtitle">Personal cybersecurity, network engineering, and CTF cheatsheet. Select a category to explore playbooks, tool references, and solvers.</p>
         <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
           <a href="writeups.html" class="btn btn-primary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -771,6 +773,7 @@
         <button class="category-btn" data-cat="crypto">Cryptography</button>
         <button class="category-btn" data-cat="osint">OSINT</button>
         <button class="category-btn" data-cat="forensics">Forensics</button>
+        <button class="category-btn" data-cat="networking">Networking</button>
         <button class="category-btn" data-cat="reporting">Reporting & Hubs</button>
       </aside>
 
@@ -1751,6 +1754,97 @@
           </div>
         </section>
 
+        <!-- ================= NETWORKING ================= -->
+        <section class="category-section section-networking" id="section-networking">
+          <div class="category-header">
+            <div class="category-icon" style="color: var(--color-networking);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="6" height="6" rx="1"></rect>
+                <rect x="16" y="2" width="6" height="6" rx="1"></rect>
+                <rect x="9" y="16" width="6" height="6" rx="1"></rect>
+                <path d="M5 8v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8"></path>
+                <line x1="12" y1="12" x2="12" y2="16"></line>
+              </svg>
+            </div>
+            <div class="category-title-wrap">
+              <h2 class="category-title">Networking</h2>
+              <p class="category-desc">CCNA &amp; Enterprise routing/switching, IPv4/IPv6 subnetting, protocols, packet analysis, and Layer 2/3 defense.</p>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Core Architecture &amp; Cheatsheets</h3>
+            <div class="cards-grid">
+              <a class="card" href="viewer.html?file=tools%2FNetworking%20Cheat%20Sheet.md" style="border: 1px solid var(--color-networking); background: rgba(6, 182, 212, 0.03);">
+                <div class="card-content">
+                  <span class="card-title" style="color: #67e8f9;">Networking Cheat Sheet (CCNA &amp; Enterprise)</span>
+                  <span class="card-desc">Subnetting table (/24-/32), IPv4/IPv6, ports, cabling, VLANs, STP, EtherChannel, OSPFv2, FHRP, NAT/PAT, ACLs, and AAA hardening.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight" style="color: #67e8f9; border-color: rgba(6,182,212,.35); background: rgba(6,182,212,.1);">Master Cheatsheet</span>
+                  <span class="badge">tools/Networking Cheat Sheet.md</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FNetworking.md">
+                <div class="card-content">
+                  <span class="card-title">Linux Networking &amp; Packet Analysis</span>
+                  <span class="card-desc">Interface status, IP routes, live tcpdump filters, Scapy packet crafting, and Responder poisoned responses.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Packet Analysis</span>
+                  <span class="badge">tools/Networking.md</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FWireless.md">
+                <div class="card-content">
+                  <span class="card-title">Wireless Networking &amp; Security</span>
+                  <span class="card-desc">802.11 standards (Wi-Fi 4/5/6/6E), channel planning, WPA2/WPA3, airmon-ng, and 4-way handshake cracking.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">802.11 Wi-Fi</span>
+                  <span class="badge">tools/Wireless.md</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FNmap%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Nmap Port &amp; Service Scanner</span>
+                  <span class="card-desc">Host discovery, TCP SYN/Connect scans, UDP scans, version detection, NSE scripts, and evasion timing.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">Recon &amp; Scan</span>
+                  <span class="badge">tools/Nmap Cheat Sheet.md</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="subtopic-group">
+            <h3 class="subtopic-title">Interactive Reference &amp; Tools</h3>
+            <div class="cards-grid">
+              <a class="card" href="0xrefs.html" style="border: 1px solid var(--accent); background: rgba(92, 242, 169, 0.02);">
+                <div class="card-content">
+                  <span class="card-title" style="color: var(--accent);">0xrefs Command Reference</span>
+                  <span class="card-desc">Filter network recon and service interaction commands with interactive parameter injection ($TARGET, $LHOST, $LPORT).</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-highlight">Interactive Cheatsheet</span>
+                  <span class="badge">0xrefs.html</span>
+                </div>
+              </a>
+              <a class="card" href="viewer.html?file=tools%2FDig%20Cheat%20Sheet.md">
+                <div class="card-content">
+                  <span class="card-title">Dig &amp; DNS Reference</span>
+                  <span class="card-desc">A, AAAA, MX, NS, TXT record queries, reverse DNS pointer lookups, and AXFR zone transfers.</span>
+                </div>
+                <div class="card-footer">
+                  <span class="badge">DNS Protocol</span>
+                  <span class="badge">tools/Dig Cheat Sheet.md</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
         <!-- ================= REPORTING & CROSS-CUTTING ================= -->
         <section class="category-section section-reporting" id="section-reporting">
           <div class="category-header">
@@ -1946,7 +2040,7 @@
     </div>
 
     <footer>
-      <span>H4G Vault &copy; 2026. Made for Security Analysts & CTF Players.</span>
+      <span>zernan's cheatsheet &copy; 2026. Made for Security Analysts, Engineers &amp; CTF Players.</span>
       <div>
         <a href="viewer.html?file=H4G%20Training.md">Markdown Home</a> &bull;
         <a href="0xrefs.html">0xrefs Interactive</a>

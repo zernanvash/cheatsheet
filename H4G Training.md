@@ -1,6 +1,6 @@
-# H4G Training CTF Playbook Hub
+# zernan's cheatsheet — Master Hub
 
-Welcome to the H4G Training Vault. Pick the **challenge category** you're working on and everything you need — playbooks, blueprints, cheatsheets, and learning paths — is grouped right there.
+Welcome to zernan's cheatsheet. Pick the **challenge category** you're working on and everything you need — playbooks, blueprints, cheatsheets, and learning paths — is grouped right there.
 
 New to CTF workflows? Start with **[CTF Primer Foundations](learning/CTF%20Primer%20Foundations.md)** for artifact identification, shell literacy, forensic triage, Python bytes, C memory, assembly, and regex, adapted from the official picoCTF Primer.
 
@@ -198,6 +198,17 @@ Open-source intelligence gathering and passive reconnaissance.
 * [Passive Recon](tools/Passive%20Recon.md) — Whois, DNS, Google dorking, Shodan, and public data sources.
 * [Dig Cheat Sheet](tools/Dig%20Cheat%20Sheet.md) — DNS record queries and zone transfers.
 * [Cloud and Misc Recon Alternatives](tools/Cloud%20and%20Misc%20Recon%20Alternatives.md) — Cloud-specific and non-standard recon.
+
+---
+
+## 🌐 Networking
+
+Enterprise networking, Cisco routing & switching, subnetting, protocols, packet analysis, and Layer 2/3 defense.
+
+### Cheatsheets & References
+* **[Networking Cheat Sheet](tools/Networking%20Cheat%20Sheet.md)** — Comprehensive CCNA & enterprise networking reference (IPv4 Subnetting, IPv6, Ports, Cabling, VLANs, Trunking, STP, EtherChannel, OSPFv2, FHRP, NAT/PAT, Services, Port Security, ACLs, AAA & Automation).
+* **[Linux Networking & Packet Analysis](tools/Networking.md)** — Network commands for interface management, routes, tcpdump packet captures, Scapy scripting, and Responder.
+* **[Wireless Cheat Sheet](tools/Wireless.md)** — 802.11 standards, channel allocations, WPA2/WPA3, packet capture, and handshake analysis.
 
 ---
 
