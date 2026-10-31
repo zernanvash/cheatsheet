@@ -387,6 +387,13 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      flex: 1;
+    }
+
+    .pillar-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .pillar-bullet {
@@ -412,12 +419,40 @@
       color: var(--muted);
     }
 
+    .pillar-chevron {
+      color: var(--muted);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s ease;
+      flex-shrink: 0;
+      padding: 2px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .pillar-header-btn:hover .pillar-chevron {
+      color: var(--text);
+    }
+
+    .pillar-group.collapsed .pillar-chevron {
+      transform: rotate(-90deg);
+    }
+
     .subcat-list {
       display: flex;
       flex-direction: column;
       gap: 2px;
       padding-left: 6px;
       margin-top: 2px;
+      transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.2s ease;
+      max-height: 400px;
+      overflow: hidden;
+      opacity: 1;
+    }
+
+    .pillar-group.collapsed .subcat-list {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+      pointer-events: none;
     }
 
     .category-btn {
@@ -854,7 +889,10 @@
               <span class="pillar-bullet pillar-red"></span>
               <span class="pillar-title">Red Team</span>
             </div>
-            <span class="pillar-tag">Offensive</span>
+            <div class="pillar-meta">
+              <span class="pillar-tag">Offensive</span>
+              <svg class="pillar-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
           </button>
           <div class="subcat-list">
             <button class="category-btn subcat-btn" data-cat="machine" data-pillar-parent="red">
@@ -891,7 +929,10 @@
               <span class="pillar-bullet pillar-blue"></span>
               <span class="pillar-title">Blue Team</span>
             </div>
-            <span class="pillar-tag">Defensive</span>
+            <div class="pillar-meta">
+              <span class="pillar-tag">Defensive</span>
+              <svg class="pillar-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
           </button>
           <div class="subcat-list">
             <button class="category-btn subcat-btn" data-cat="forensics" data-pillar-parent="blue">
@@ -916,7 +957,10 @@
               <span class="pillar-bullet pillar-network"></span>
               <span class="pillar-title">Network</span>
             </div>
-            <span class="pillar-tag">Infra</span>
+            <div class="pillar-meta">
+              <span class="pillar-tag">Infra</span>
+              <svg class="pillar-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
           </button>
           <div class="subcat-list">
             <button class="category-btn subcat-btn" data-cat="networking" data-pillar-parent="network">
@@ -2205,6 +2249,11 @@
     // Subcategory or All Categories button click
     categoryBtns.forEach(btn => {
       btn.addEventListener("click", () => {
+        const parentPillarGroup = btn.closest(".pillar-group");
+        if (parentPillarGroup && parentPillarGroup.classList.contains("collapsed")) {
+          parentPillarGroup.classList.remove("collapsed");
+        }
+
         categoryBtns.forEach(b => b.classList.remove("active"));
         pillarBtns.forEach(p => p.classList.remove("active"));
         btn.classList.add("active");
@@ -2229,14 +2278,35 @@
       });
     });
 
-    // Main Pillar click (Red, Blue, Network)
+    // Explicit chevron click toggles drawer without forcing filter change
+    document.querySelectorAll('.pillar-chevron').forEach(chevron => {
+      chevron.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pillarGroup = chevron.closest('.pillar-group');
+        if (pillarGroup) {
+          pillarGroup.classList.toggle('collapsed');
+        }
+      });
+    });
+
+    // Main Pillar click (Red, Blue, Network) - Toggles drawer and filters section
     pillarBtns.forEach(btn => {
       btn.addEventListener("click", () => {
+        const pillarGroup = btn.closest(".pillar-group");
+        const targetPillar = btn.getAttribute("data-pillar");
+        const isCollapsed = pillarGroup.classList.contains("collapsed");
+
+        // Toggle drawer collapse
+        if (isCollapsed) {
+          pillarGroup.classList.remove("collapsed");
+        } else if (btn.classList.contains("active")) {
+          // If already active and clicked, collapse drawer
+          pillarGroup.classList.add("collapsed");
+        }
+
         categoryBtns.forEach(b => b.classList.remove("active"));
         pillarBtns.forEach(p => p.classList.remove("active"));
         btn.classList.add("active");
-
-        const targetPillar = btn.getAttribute("data-pillar");
 
         sections.forEach(sec => {
           if (sec.getAttribute("data-pillar") === targetPillar) {
