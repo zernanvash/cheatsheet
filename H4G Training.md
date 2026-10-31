@@ -1,6 +1,6 @@
-# zernan's cheatsheet — Master Hub
+# FynSheet — Master Hub
 
-Welcome to zernan's cheatsheet. Pick the **challenge category** you're working on and everything you need — playbooks, blueprints, cheatsheets, and learning paths — is grouped right there.
+Welcome to FynSheet. Pick the **challenge category** you're working on and everything you need — playbooks, blueprints, cheatsheets, and learning paths — is grouped right there.
 
 New to CTF workflows? Start with **[CTF Primer Foundations](learning/CTF%20Primer%20Foundations.md)** for artifact identification, shell literacy, forensic triage, Python bytes, C memory, assembly, and regex, adapted from the official picoCTF Primer.
 
